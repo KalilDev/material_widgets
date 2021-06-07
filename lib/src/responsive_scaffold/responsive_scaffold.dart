@@ -377,6 +377,12 @@ class ResponsiveScaffoldState extends State<Scaffold>
   GlobalKey<StandardDrawerControllerState> _endDrawerKey;
   _ResponsiveScaffoldResolver _resolvedLayout;
 
+  bool _standardEndDrawerOpen = false;
+  bool _standardDrawerOpen = false;
+
+  void _standardEndDrawerChanged(bool open) => _standardEndDrawerOpen = open;
+  void _standardDrawerChanged(bool open) => _standardDrawerOpen = open;
+
   @override
   ResponsiveScaffold get widget => super.widget as ResponsiveScaffold;
 
@@ -435,6 +441,7 @@ class ResponsiveScaffoldState extends State<Scaffold>
     if (drawer?._resolvedType == DrawerType.Standard) {
       _drawerKey ??= GlobalKey();
     } else {
+      _standardDrawerOpen = false;
       _drawerKey = null;
     }
     final drawerWidget = _drawerKey == null
@@ -442,12 +449,14 @@ class ResponsiveScaffoldState extends State<Scaffold>
         : StandardDrawerController(
             child: drawer?.child,
             alignment: DrawerAlignment.start,
+            drawerCallback: _standardDrawerChanged,
             key: _drawerKey,
           );
 
     final endDrawer = resolver.standardOrPermanentEndDrawer;
     if (endDrawer?._resolvedType == DrawerType.Standard) {
       _endDrawerKey ??= GlobalKey();
+      _standardEndDrawerOpen = false;
     } else {
       _endDrawerKey = null;
     }
@@ -456,6 +465,7 @@ class ResponsiveScaffoldState extends State<Scaffold>
         : StandardDrawerController(
             child: endDrawer.child,
             alignment: DrawerAlignment.end,
+            drawerCallback: _standardEndDrawerChanged,
             key: _endDrawerKey,
           );
     final navigationRail = resolver.navigationRail;
@@ -615,7 +625,11 @@ class ResponsiveScaffoldState extends State<Scaffold>
       return;
     }
     if (_drawerKey != null) {
-      _drawerKey.currentState.open();
+      if (_standardDrawerOpen) {
+        _drawerKey.currentState.close();
+      } else {
+        _drawerKey.currentState.open();
+      }
       return;
     }
   }
@@ -626,7 +640,11 @@ class ResponsiveScaffoldState extends State<Scaffold>
       return _scaffoldKey.currentState.openEndDrawer();
     }
     if (_endDrawerKey != null) {
-      _endDrawerKey.currentState.open();
+      if (_standardEndDrawerOpen) {
+        _endDrawerKey.currentState.close();
+      } else {
+        _endDrawerKey.currentState.open();
+      }
       return;
     }
   }

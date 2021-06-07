@@ -67,7 +67,7 @@ class StandardDrawerController extends StatefulWidget {
 ///
 /// Typically used by a [Scaffold] to [open] and [close] the drawer.
 class StandardDrawerControllerState extends State<StandardDrawerController>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
@@ -119,18 +119,44 @@ class StandardDrawerControllerState extends State<StandardDrawerController>
     return null;
   }
 
+  Alignment get _overflowBoxAlignment {
+    switch (widget.alignment) {
+      case DrawerAlignment.start:
+        return Alignment.centerRight;
+      case DrawerAlignment.end:
+        return Alignment.centerLeft;
+    }
+    return null;
+  }
+
+  Tween<double> get _drawerSizeTween {
+    assert(widget.alignment != null);
+    switch (widget.alignment) {
+      case DrawerAlignment.start:
+        return Tween(begin: 0, end: _kWidth);
+      case DrawerAlignment.end:
+        return Tween(begin: 0, end: _kWidth);
+    }
+    return null;
+  }
+
   Widget _buildDrawer(BuildContext context) {
     if (_controller.status == AnimationStatus.dismissed) {
       return const SizedBox.shrink();
     } else {
-      print(_controller.value);
       return RepaintBoundary(
         child: FocusScope(
           key: _drawerKey,
           node: _focusScopeNode,
-          child: Transform.translate(
-              offset: _drawerTranslationTween.evaluate(_controller),
-              child: widget.child),
+          child: SizedBox(
+            width: _drawerSizeTween.evaluate(_controller),
+            child: OverflowBox(
+              alignment: _overflowBoxAlignment,
+              minWidth: _kWidth,
+              maxWidth: _kWidth,
+              child: widget.child,
+            ),
+          ),
         ),
       );
     }

@@ -158,13 +158,14 @@ class NavigationDrawerGroupHeader extends StatelessWidget {
   }
 
   Widget _buildSubtitle(BuildContext context) {
-    final offset = kTitleOffset;
-    var widget = DefaultTextStyle(
-        style: Theme.of(context).textTheme.caption, child: subtitle);
+    final style = Theme.of(context).textTheme.caption;
+    final textHeight = style.fontSize * (style.height ?? 1.0);
+    final offset = kTitleOffset - textHeight;
+    var widget = DefaultTextStyle(style: style, child: subtitle);
     return Positioned(
       child: widget,
       left: _getbaseline(context),
-      bottom: offset,
+      top: offset,
     );
   }
 
@@ -196,7 +197,7 @@ class NavigationDrawerItem extends StatelessWidget {
       {Key key,
       this.title,
       this.icon,
-      this.selected,
+      this.selected = false,
       this.padding,
       this.onTap,
       this.shape,
@@ -238,11 +239,17 @@ class NavigationDrawerItem extends StatelessWidget {
     if (iconTitleSpacing != null) {
       return iconTitleSpacing;
     }
-    const defaultVal = 32.0;
+    const defaultVal = 24.0;
     return NavigationDrawerTheme.of(context)?.iconTitleSpacing ?? defaultVal;
   }
 
-  EdgeInsetsGeometry _getPadding(BuildContext context) {
+  double _getLeftSpacing(BuildContext context) {
+    final padding = _getPadding(context);
+    final baseline = NavigationDrawerTheme.of(context)?.headerBaseline ?? 16.0;
+    return baseline - padding.left;
+  }
+
+  EdgeInsets _getPadding(BuildContext context) {
     if (padding != null) {
       return padding;
     }
@@ -291,15 +298,15 @@ class NavigationDrawerItem extends StatelessWidget {
         onTap: onTap,
         child: Row(
           children: [
-            if (icon != null)
-              AspectRatio(
-                aspectRatio: 1,
-                child: _buildIcon(context),
-              ),
-            if (icon != null)
+            SizedBox(
+              width: _getLeftSpacing(context),
+            ),
+            if (icon != null) ...[
+              _buildIcon(context),
               SizedBox(
                 width: _getIconTitleSpacing(context),
               ),
+            ],
             if (title != null)
               Align(
                   alignment: Alignment.centerLeft, child: _buildLabel(context)),

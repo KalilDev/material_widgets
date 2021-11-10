@@ -1,5 +1,6 @@
 library material_widgets;
 
+export 'src/fab.dart';
 export 'src/material_breakpoint.dart';
 export 'src/material_layout.dart';
 export 'src/material_layout_data.dart';

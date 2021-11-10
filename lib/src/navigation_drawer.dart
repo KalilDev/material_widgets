@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:material_you/material_you.dart';
 
 class NavigationDrawerThemeData {
   final bool isStandardDrawer;
@@ -6,19 +7,22 @@ class NavigationDrawerThemeData {
   final EdgeInsetsGeometry itemPadding;
   final ShapeBorder itemShape;
   final Color itemSelectedColor;
+  final Color itemUnselectedColor;
   final Color itemSelectedColorBackground;
   final double iconTitleSpacing;
   final double spacerHeight;
 
-  const NavigationDrawerThemeData(
-      {this.isStandardDrawer,
-      this.headerBaseline,
-      this.itemPadding,
-      this.itemShape,
-      this.itemSelectedColor,
-      this.itemSelectedColorBackground,
-      this.iconTitleSpacing,
-      this.spacerHeight});
+  const NavigationDrawerThemeData({
+    this.isStandardDrawer,
+    this.headerBaseline,
+    this.itemPadding,
+    this.itemShape,
+    this.itemSelectedColor,
+    this.itemUnselectedColor,
+    this.itemSelectedColorBackground,
+    this.iconTitleSpacing,
+    this.spacerHeight,
+  });
 }
 
 class NavigationDrawerTheme extends InheritedWidget {
@@ -45,7 +49,7 @@ class NavigationDrawerHeader extends StatelessWidget {
   const NavigationDrawerHeader(
       {Key key,
       this.title,
-      this.subtitle,
+      @Deprecated('Deprecated on MD3') this.subtitle,
       this.isStandardDrawer,
       this.baseline})
       : super(key: key);
@@ -61,9 +65,6 @@ class NavigationDrawerHeader extends StatelessWidget {
   // bottom to text baseline
   static const double kModalSubtitleOffset = 18;
 
-  double _getHeight(BuildContext context) =>
-      _getIsStandardDrawer(context) ? kStandardHeight : kModalHeight;
-
   bool _getIsStandardDrawer(BuildContext context) {
     if (isStandardDrawer != null) {
       return isStandardDrawer;
@@ -77,7 +78,7 @@ class NavigationDrawerHeader extends StatelessWidget {
       return baseline;
     }
 
-    const defaultVal = 16.0;
+    const defaultVal = 28.0;
     return NavigationDrawerTheme.of(context)?.headerBaseline ?? defaultVal;
   }
 
@@ -86,12 +87,12 @@ class NavigationDrawerHeader extends StatelessWidget {
         ? kStandardTitleOffset
         : kModalTitleOffset;
     var widget = DefaultTextStyle(
-        style: Theme.of(context).textTheme.headline6, child: title);
-    return Positioned(
-      child: widget,
-      left: _getbaseline(context),
-      bottom: _getHeight(context) - offset,
+      style: context.textTheme.titleSmall.copyWith(
+        color: context.colorScheme.onSurfaceVariant,
+      ),
+      child: title,
     );
+    return widget;
   }
 
   Widget buildSubtitle(BuildContext context) {
@@ -108,17 +109,15 @@ class NavigationDrawerHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: _getHeight(context),
-      width: double.infinity,
-      child: Stack(
-        fit: StackFit.expand,
-        children: [
-          if (subtitle != null && !_getIsStandardDrawer(context))
-            buildSubtitle(context),
-          if (title != null) buildTitle(context)
-        ],
-      ),
-    );
+        height: 56,
+        width: double.infinity,
+        child: Padding(
+          padding: EdgeInsets.only(left: _getbaseline(context)),
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: buildTitle(context),
+          ),
+        ));
   }
 }
 
@@ -130,56 +129,38 @@ class NavigationDrawerSpacer extends StatelessWidget {
     if (height != null) {
       return height;
     }
-    const defaultVal = 8.0;
+    const defaultVal = 32.0;
     return NavigationDrawerTheme.of(context)?.spacerHeight ?? defaultVal;
   }
 
   @override
-  Widget build(BuildContext context) => SizedBox(height: _getHeight(context));
+  Widget build(BuildContext context) => Divider(
+        height: _getHeight(context),
+        thickness: 1,
+        indent: 28,
+        endIndent: 28,
+        color: context.colorScheme.outline,
+      );
 }
 
 class NavigationDrawerGroupHeader extends StatelessWidget {
   final Widget subtitle;
   final double baseline;
 
-  const NavigationDrawerGroupHeader({Key key, this.subtitle, this.baseline})
-      : super(key: key);
+  const NavigationDrawerGroupHeader({
+    Key key,
+    this.subtitle,
+    this.baseline,
+  }) : super(key: key);
   static const double kHeight = 36;
   // top to text baseline
   static const double kTitleOffset = 28;
 
-  double _getbaseline(BuildContext context) {
-    if (baseline != null) {
-      return baseline;
-    }
-
-    const defaultVal = 16.0;
-    return NavigationDrawerTheme.of(context)?.headerBaseline ?? defaultVal;
-  }
-
-  Widget _buildSubtitle(BuildContext context) {
-    final style = Theme.of(context).textTheme.caption;
-    final textHeight = style.fontSize * (style.height ?? 1.0);
-    final offset = kTitleOffset - textHeight;
-    var widget = DefaultTextStyle(style: style, child: subtitle);
-    return Positioned(
-      child: widget,
-      left: _getbaseline(context),
-      top: offset,
-    );
-  }
-
   @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: kHeight,
-      width: double.infinity,
-      child: Stack(
-        fit: StackFit.expand,
-        children: [if (subtitle != null) _buildSubtitle(context)],
-      ),
-    );
-  }
+  Widget build(BuildContext context) => NavigationDrawerHeader(
+        title: subtitle,
+        baseline: baseline,
+      );
 }
 
 class NavigationDrawerItem extends StatelessWidget {
@@ -206,7 +187,7 @@ class NavigationDrawerItem extends StatelessWidget {
       this.iconTitleSpacing})
       : super(key: key);
 
-  final double kHeight = 48.0;
+  final double kHeight = 56.0;
 
   Color _getSelectedColorBackground(BuildContext context) {
     if (selectedColor != null) {
@@ -217,13 +198,12 @@ class NavigationDrawerItem extends StatelessWidget {
     if (inherited != null) {
       return inherited;
     }
-    final colorScheme = Theme.of(context).colorScheme;
-    final defaultVal = Color.alphaBlend(
-        colorScheme.primary.withAlpha(70), colorScheme.surface);
+    final colorScheme = context.colorScheme;
+    final defaultVal = colorScheme.secondaryContainer;
     return defaultVal;
   }
 
-  Color _getSelectedColor(BuildContext context) {
+  Color _getSelectedForegroundColor(BuildContext context) {
     if (selectedContentColor != null) {
       return selectedContentColor;
     }
@@ -231,7 +211,19 @@ class NavigationDrawerItem extends StatelessWidget {
     if (inherited != null) {
       return inherited;
     }
-    final defaultVal = Theme.of(context).colorScheme.primary;
+    final defaultVal = context.colorScheme.onSecondaryContainer;
+    return defaultVal;
+  }
+
+  Color _getUnselectedForegroundColor(BuildContext context) {
+    if (selectedContentColor != null) {
+      return selectedContentColor;
+    }
+    final inherited = NavigationDrawerTheme.of(context)?.itemUnselectedColor;
+    if (inherited != null) {
+      return inherited;
+    }
+    final defaultVal = context.colorScheme.onSurfaceVariant;
     return defaultVal;
   }
 
@@ -239,13 +231,14 @@ class NavigationDrawerItem extends StatelessWidget {
     if (iconTitleSpacing != null) {
       return iconTitleSpacing;
     }
-    const defaultVal = 24.0;
+    const defaultVal = 12.0;
     return NavigationDrawerTheme.of(context)?.iconTitleSpacing ?? defaultVal;
   }
 
+  double _getRightSpacing(BuildContext context) => 24;
   double _getLeftSpacing(BuildContext context) {
     final padding = _getPadding(context);
-    final baseline = NavigationDrawerTheme.of(context)?.headerBaseline ?? 16.0;
+    final baseline = NavigationDrawerTheme.of(context)?.headerBaseline ?? 28.0;
     return baseline - padding.left;
   }
 
@@ -253,7 +246,7 @@ class NavigationDrawerItem extends StatelessWidget {
     if (padding != null) {
       return padding;
     }
-    const defaultVal = EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0);
+    const defaultVal = EdgeInsets.symmetric(horizontal: 12.0, vertical: 0.0);
     return NavigationDrawerTheme.of(context)
             ?.itemPadding
             ?.resolve(Directionality.of(context)) ??
@@ -264,38 +257,40 @@ class NavigationDrawerItem extends StatelessWidget {
     if (shape != null) {
       return shape;
     }
-    const defaultVal = RoundedRectangleBorder(
-      borderRadius: BorderRadius.all(
-        Radius.circular(4.0),
-      ),
-    );
+    const defaultVal = StadiumBorder();
     return NavigationDrawerTheme.of(context)?.itemShape ?? defaultVal;
   }
 
   Widget _buildIcon(BuildContext context) {
     var icon = this.icon;
-    if (selected) {
-      icon = IconTheme(
-          data:
-              IconTheme.of(context).copyWith(color: _getSelectedColor(context)),
-          child: icon);
-    }
+    icon = IconTheme(
+      data: IconTheme.of(context).copyWith(
+        color: selected
+            ? _getSelectedForegroundColor(context)
+            : _getUnselectedForegroundColor(context),
+      ),
+      child: icon,
+    );
     return icon;
   }
 
   Widget _buildLabel(BuildContext context) {
     return DefaultTextStyle(
-        style: Theme.of(context)
-            .textTheme
-            .bodyText2
-            .copyWith(color: selected ? _getSelectedColor(context) : null),
-        child: title);
+      style: context.textTheme.labelLarge.copyWith(
+        color: selected
+            ? _getSelectedForegroundColor(context)
+            : _getUnselectedForegroundColor(context),
+      ),
+      child: title,
+    );
   }
 
   Widget buildInner(BuildContext context) {
+    final shape = _getShape(context);
     return Material(
-      color: selected ? _getSelectedColorBackground(context) : null,
-      shape: _getShape(context),
+      color:
+          selected ? _getSelectedColorBackground(context) : Colors.transparent,
+      shape: shape,
       child: InkWell(
         customBorder: shape,
         onTap: onTap,
@@ -312,7 +307,12 @@ class NavigationDrawerItem extends StatelessWidget {
             ],
             if (title != null)
               Align(
-                  alignment: Alignment.centerLeft, child: _buildLabel(context)),
+                alignment: Alignment.centerLeft,
+                child: _buildLabel(context),
+              ),
+            SizedBox(
+              width: _getRightSpacing(context),
+            ),
           ],
         ),
       ),
@@ -322,11 +322,12 @@ class NavigationDrawerItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-        height: kHeight,
-        width: double.infinity,
-        child: Padding(
-          padding: _getPadding(context),
-          child: buildInner(context),
-        ));
+      height: kHeight,
+      width: double.infinity,
+      child: Padding(
+        padding: _getPadding(context),
+        child: buildInner(context),
+      ),
+    );
   }
 }

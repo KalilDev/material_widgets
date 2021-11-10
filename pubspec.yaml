@@ -1,6 +1,6 @@
 name: material_widgets
 description: An package of widgets conforming to the material design spec.
-version: 0.3.0
+version: 0.4.0
 author: KalilDev
 # homepage:
 
@@ -15,6 +15,7 @@ dependencies:
   smooth_page_indicator: ^0.2.0
   meta: ^1.2.4
   collection: ^1.14.0
+  material_you: ^0.0.7
 
 dev_dependencies:
   demostudo_lint: ^1.0.2

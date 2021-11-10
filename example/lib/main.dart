@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:material_widgets/material_widgets.dart';
+import 'package:material_you/material_you.dart';
+import 'package:flutter_monet_theme/flutter_monet_theme.dart';
 
 final List<MaterialBreakpoint> kBreakpoints = [
   MaterialBreakpoint.one,
@@ -11,21 +13,30 @@ final List<MaterialBreakpoint> kBreakpoints = [
 ];
 
 void main() {
-  runApp(MyApp());
+  runPlatformThemedApp(
+    MyApp(),
+    initialOrFallback: () => PlatformPalette.fallback(
+      primaryColor: Color(
+        0xDEADBEEF,
+      ),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-          primarySwatch: Colors.blue,
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-          brightness: Brightness.dark),
-      debugShowCheckedModeBanner: false,
-      home: FluidGridMaterialLayout(
-        child: Home(),
+    return MD3Themes(
+      monetThemeForFallbackPalette: baseline_3p,
+      builder: (context, lightTheme, darkTheme) => MaterialApp(
+        title: 'Flutter Demo',
+        theme: lightTheme,
+        darkTheme: darkTheme,
+        debugShowCheckedModeBanner: false,
+        themeMode: ThemeMode.dark,
+        home: FluidGridMaterialLayout(
+          child: Home(),
+        ),
       ),
     );
   }
@@ -44,9 +55,13 @@ class Home extends StatelessWidget {
         showWithExtendedDrawer: true,
         fullHeightDrawer: true,
         items: List.generate(
-            4,
-            (index) => NavigationItem(
-                icon: Icon(Icons.home), label: Text("Label$index"))),
+          4,
+          (index) => NavigationItem(
+            icon: Icon(Icons.home),
+            label: Text("Label$index"),
+            labelText: "Label$index",
+          ),
+        ),
         navHeaderBuilder: (context) => NavigationDrawerHeader(
             title: Text("Navigation"), subtitle: Text('Drawer example')),
         onChanged: (_) => null);

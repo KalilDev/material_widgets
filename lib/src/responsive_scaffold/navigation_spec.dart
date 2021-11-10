@@ -20,9 +20,15 @@ class NavigationItem {
   final Widget activeIcon;
   // Only used in BottomNavigationBar
   final Color backgroundColor;
+  final String labelText;
 
-  const NavigationItem(
-      {this.label, this.icon, this.activeIcon, this.backgroundColor});
+  const NavigationItem({
+    @required this.label,
+    @required this.icon,
+    @required this.activeIcon,
+    this.backgroundColor,
+    this.labelText,
+  });
 }
 
 typedef NavigationRailBuilder = Widget Function(BuildContext context,
@@ -73,7 +79,7 @@ class NavigationSpec {
   static BottomNavigationBarItem itemToBottomNavItem(NavigationItem item) =>
       BottomNavigationBarItem(
           icon: item.icon,
-          title: item.label,
+          label: item.labelText,
           activeIcon: item.activeIcon,
           backgroundColor: item.backgroundColor);
 }

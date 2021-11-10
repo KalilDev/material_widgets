@@ -1,6 +1,6 @@
 name: material_widgets
 description: An package of widgets conforming to the material design spec.
-version: 0.1.0
+version: 0.3.0
 author: KalilDev
 # homepage:
 
@@ -17,7 +17,6 @@ dependencies:
   collection: ^1.14.0
 
 dev_dependencies:
-  demostudo_lint:
-    path: ../../demostudo_lint
+  demostudo_lint: ^1.0.2
   flutter_test:
     sdk: flutter

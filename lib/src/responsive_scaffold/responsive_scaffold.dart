@@ -667,12 +667,14 @@ class ResponsiveScaffoldState extends State<Scaffold>
           double elevation,
           ShapeBorder shape,
           Clip clipBehavior,
+          BoxConstraints constraints,
           AnimationController transitionAnimationController}) =>
       _scaffoldKey.currentState.showBottomSheet<T>(builder,
           backgroundColor: backgroundColor,
           elevation: elevation,
           shape: shape,
           clipBehavior: clipBehavior,
+          constraints: constraints,
           transitionAnimationController: transitionAnimationController);
 
   @override
@@ -818,12 +820,14 @@ class _ScaffoldContextShadowerState extends State<Scaffold>
           double elevation,
           ShapeBorder shape,
           Clip clipBehavior,
+          BoxConstraints constraints,
           AnimationController transitionAnimationController}) =>
       _state.showBottomSheet(builder,
           backgroundColor: backgroundColor,
           elevation: elevation,
           shape: shape,
           clipBehavior: clipBehavior,
+          constraints: constraints,
           transitionAnimationController: transitionAnimationController);
   @override
   ScaffoldFeatureController<SnackBar, SnackBarClosedReason> showSnackBar(

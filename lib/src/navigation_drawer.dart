@@ -186,7 +186,7 @@ class NavigationDrawerItem extends StatelessWidget {
   final Widget title;
   final Widget icon;
   final bool selected;
-  final EdgeInsetsGeometry padding;
+  final EdgeInsets padding;
   final VoidCallback onTap;
   final ShapeBorder shape;
   final Color selectedColor;
@@ -254,7 +254,10 @@ class NavigationDrawerItem extends StatelessWidget {
       return padding;
     }
     const defaultVal = EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0);
-    return NavigationDrawerTheme.of(context)?.itemPadding ?? defaultVal;
+    return NavigationDrawerTheme.of(context)
+            ?.itemPadding
+            ?.resolve(Directionality.of(context)) ??
+        defaultVal;
   }
 
   ShapeBorder _getShape(BuildContext context) {

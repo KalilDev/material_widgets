@@ -5,6 +5,17 @@ import '../../material_widgets.dart';
 import '../shrinkable_drawer_controller.dart';
 import 'navigation_scaffold.dart';
 
+typedef FloatingActionButtonBuilder = Widget Function(BuildContext, bool);
+Widget _removeFabElevation(BuildContext context, Widget fab) =>
+    MD3FloatingActionButtonTheme(
+      data: MD3FloatingActionButtonThemeData(
+        style:
+            (MD3FloatingActionButtonTheme.of(context)?.style ?? ButtonStyle())
+                .copyWith(elevation: MaterialStateProperty.all(0)),
+      ),
+      child: fab,
+    );
+
 class MD3BottomNavigationDelegate extends MD3NavigationDelegate {
   const MD3BottomNavigationDelegate({
     this.appBar,
@@ -12,6 +23,7 @@ class MD3BottomNavigationDelegate extends MD3NavigationDelegate {
     this.endDrawer,
     this.endModalDrawer,
     this.floatingActionButton,
+    this.navigationFabBuilder,
     this.showModalDrawerOnCompact = true,
   });
 
@@ -20,6 +32,7 @@ class MD3BottomNavigationDelegate extends MD3NavigationDelegate {
   final Widget endDrawer;
   final Widget endModalDrawer;
   final Widget floatingActionButton;
+  final FloatingActionButtonBuilder navigationFabBuilder;
   final bool showModalDrawerOnCompact;
 
   @override
@@ -33,7 +46,8 @@ class MD3BottomNavigationDelegate extends MD3NavigationDelegate {
         appBar: appBar,
         endDrawer: endDrawer,
         endModalDrawer: endModalDrawer,
-        floatingActionButton: floatingActionButton,
+        floatingActionButton:
+            floatingActionButton ?? navigationFabBuilder?.call(context, false),
         startModalDrawer: showModalDrawerOnCompact
             ? _buildDrawer(context, spec, drawerHeader)
             : null,
@@ -61,18 +75,44 @@ class MD3BottomNavigationDelegate extends MD3NavigationDelegate {
   Widget _buildNavigationRail(
     BuildContext context,
     MD3NavigationSpec spec,
+    Widget floatingActionButton,
   ) =>
       SizedBox(
         width: 80,
-        child: _buildDrawer(
+        child: _drawer(
           context,
-          spec,
-          SizedBox.square(
-            dimension: 56,
-          ),
-          noLabel: true,
-          tooltip: true,
           level0Elevation: true,
+          child: SafeArea(
+            child: Column(
+              children: [
+                const SizedBox.square(
+                  dimension: 56,
+                ),
+                Expanded(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        if (floatingActionButton != null)
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 12.0),
+                            child: _removeFabElevation(
+                                context, floatingActionButton),
+                          ),
+                        const Expanded(child: const SizedBox())
+                      ],
+                    ),
+                    flex: 4),
+                ..._navigationDrawerItems(
+                  context,
+                  spec,
+                  noLabel: true,
+                  tooltip: true,
+                ),
+                const Expanded(child: const SizedBox(), flex: 7),
+              ],
+            ),
+          ),
         ),
       );
 
@@ -87,8 +127,13 @@ class MD3BottomNavigationDelegate extends MD3NavigationDelegate {
         appBar: appBar,
         endDrawer: endDrawer,
         endModalDrawer: endModalDrawer,
-        floatingActionButton: floatingActionButton,
-        startDrawer: _buildNavigationRail(context, spec),
+        floatingActionButton:
+            navigationFabBuilder == null ? floatingActionButton : null,
+        startDrawer: _buildNavigationRail(
+          context,
+          spec,
+          navigationFabBuilder?.call(context, false),
+        ),
       );
 
   @override
@@ -102,13 +147,15 @@ class MD3BottomNavigationDelegate extends MD3NavigationDelegate {
         appBar: appBar,
         endDrawer: endDrawer,
         endModalDrawer: endModalDrawer,
-        floatingActionButton: floatingActionButton,
+        floatingActionButton:
+            navigationFabBuilder == null ? floatingActionButton : null,
         startDrawer: _buildShrinkableDrawer(context, spec),
       );
 
   Widget _buildShrinkableDrawer(BuildContext context, MD3NavigationSpec spec) =>
       _ShrinkableDrawer(
         spec: spec,
+        floatingActionButtonBuilder: navigationFabBuilder,
         header: drawerHeader ??
             const NavigationDrawerHeader(
               title: Text('Navegação'),
@@ -197,9 +244,11 @@ class _ShrinkableDrawer extends StatefulWidget {
   const _ShrinkableDrawer({
     Key key,
     this.spec,
+    this.floatingActionButtonBuilder,
     this.header,
   }) : super(key: key);
   final MD3NavigationSpec spec;
+  final FloatingActionButtonBuilder floatingActionButtonBuilder;
   final Widget header;
 
   @override
@@ -213,8 +262,10 @@ class _ShrinkableDrawerState extends State<_ShrinkableDrawer>
   AnimationController iconAnimController;
   void initState() {
     super.initState();
-    iconAnimController =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 200));
+    iconAnimController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 200),
+    );
   }
 
   bool _isOpen = false;
@@ -257,10 +308,26 @@ class _ShrinkableDrawerState extends State<_ShrinkableDrawer>
         axisAlignment: -1,
         child: Center(child: child),
       );
-  Widget _header(BuildContext context) => Row(
+  Widget _header(BuildContext context) => Column(
+        mainAxisSize: MainAxisSize.max,
         children: [
-          Expanded(child: _shrinkable(context, widget.header)),
-          _button(context),
+          Row(
+            children: [
+              Expanded(child: _shrinkable(context, widget.header)),
+              _button(context),
+            ],
+          ),
+          if (widget.floatingActionButtonBuilder != null)
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              child: SizedBox(
+                child: _removeFabElevation(
+                  context,
+                  widget.floatingActionButtonBuilder(context, _isOpen),
+                ),
+                width: double.infinity,
+              ),
+            ),
         ],
       );
 
@@ -298,13 +365,14 @@ class _ShrinkableDrawerState extends State<_ShrinkableDrawer>
       child: _drawer(
         context,
         level0Elevation: true,
-        child: ListView(
+        child: Column(
           children: [
-            _header(context),
+            Expanded(child: _header(context), flex: 4),
             ..._navigationDrawerItems(
               context,
               widget.spec,
             ),
+            const Expanded(child: const SizedBox(), flex: 7),
           ],
         ),
       ),

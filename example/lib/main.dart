@@ -147,24 +147,18 @@ class _HomeState extends State<Home> {
               title: Text("$i")),
       ],
     );
-    final fab = MD3FloatingActionButton.expanded(
-      fabColorScheme: MD3FABColorScheme.tertiary,
-      onPressed: widget.toggleDark,
-      isExpanded: true,
-      label: Text('Home'),
-      icon: Icon(Icons.home),
-    );
     return MD3NavigationScaffold(
       delegate: _isDrawers
           ? MD3DrawersNavigationDelegate(
               appBar: appBar,
               endModalDrawer: endDrawer,
-              floatingActionButton: fab,
+              floatingActionButton: _buildFab(context, false, true),
             )
           : MD3BottomNavigationDelegate(
               appBar: appBar,
               endModalDrawer: endDrawer,
-              floatingActionButton: fab,
+              navigationFabBuilder: (context, isExpanded) =>
+                  _buildFab(context, isExpanded, false),
             ),
       spec: navSpec,
       body: Stack(
@@ -179,6 +173,28 @@ class _HomeState extends State<Home> {
           )
         ],
       ),
+    );
+  }
+
+  Widget _buildFab(
+      BuildContext context, bool isExpanded, bool expandedOnMediumAndLarge) {
+    if (context.sizeClass == MD3WindowSizeClass.compact) {
+      return MD3FloatingActionButton.large(
+        fabColorScheme: MD3FABColorScheme.tertiary,
+        onPressed: widget.toggleDark,
+        isLowered: true,
+        child: Icon(Icons.color_lens),
+      );
+    }
+    return MD3FloatingActionButton.expanded(
+      fabColorScheme: MD3FABColorScheme.tertiary,
+      onPressed: widget.toggleDark,
+      isLowered: true,
+      isExpanded: expandedOnMediumAndLarge || isExpanded,
+      icon: Icon(Icons.color_lens),
+      label: expandedOnMediumAndLarge
+          ? Text('Change Theme')
+          : Center(child: Text('Change Theme')),
     );
   }
 }

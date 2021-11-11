@@ -13,6 +13,12 @@ int _getButtonCountForBreakpoint(MaterialBreakpoint bp) {
 }
 
 abstract class ResponsiveAppbarAction {
+  factory ResponsiveAppbarAction(
+      {Widget icon,
+      String tooltip,
+      Widget title,
+      VoidCallback onPressed}) = _ResponsiveAppBarAction;
+  @Deprecated('Use ResponsiveAppbarAction()')
   static _ResponsiveAppBarAction create(
           {Widget icon,
           String tooltip,
@@ -20,6 +26,7 @@ abstract class ResponsiveAppbarAction {
           VoidCallback onPressed}) =>
       _ResponsiveAppBarAction(
           icon: icon, tooltip: tooltip, title: title, onPressed: onPressed);
+  @Deprecated('Use ResponsiveAppbar.buildActions')
   static _ResponsiveAppBarActionBuilder builder(
           _ResponsiveAppBarAction Function(BuildContext) build) =>
       _ResponsiveAppBarActionBuilder(build);
@@ -45,14 +52,22 @@ class ResponsiveAppbar extends StatelessWidget implements PreferredSizeWidget {
   final double toolbarHeight;
   final PreferredSizeWidget bottom;
   final Widget title;
-  final List<ResponsiveAppbarAction> actions;
+  final List<ResponsiveAppbarAction> Function(BuildContext) buildActions;
 
-  ResponsiveAppbar(
-      {Key key, this.bottom, this.toolbarHeight, this.title, this.actions})
-      : preferredSize = Size.fromHeight(toolbarHeight ??
+  ResponsiveAppbar({
+    Key key,
+    this.bottom,
+    this.toolbarHeight,
+    this.title,
+    @Deprecated('use buildActions') List<ResponsiveAppbarAction> actions,
+    List<ResponsiveAppbarAction> Function(BuildContext) buildActions,
+  })  : preferredSize = Size.fromHeight(toolbarHeight ??
             kToolbarHeight + (bottom?.preferredSize?.height ?? 0.0)),
+        buildActions = actions == null ? buildActions : ((_) => actions),
         super(key: key);
 
+  @override
+  final Size preferredSize;
   Widget _actionToActionWidget(_ResponsiveAppBarAction action) {
     return IconButton(
       icon: action.icon,
@@ -111,11 +126,12 @@ class ResponsiveAppbar extends StatelessWidget implements PreferredSizeWidget {
       };
 
   List<Widget> _buildActions(BuildContext context, MaterialLayoutData data) {
-    if (this.actions == null || this.actions.isEmpty) {
+    final builtActions = this.buildActions(context);
+    if (builtActions == null || builtActions.isEmpty) {
       return null;
     }
     final limit = _getButtonCountForBreakpoint(data.breakpoint);
-    final concreteActions = this.actions.map((e) {
+    final concreteActions = builtActions.map((e) {
       if (e is _ResponsiveAppBarAction) {
         return e;
       }

@@ -16,6 +16,7 @@ dependencies:
   meta: ^1.2.4
   collection: ^1.14.0
   material_you: ^0.0.8
+  shape_theme_switcher:
 
 dev_dependencies:
   demostudo_lint: ^1.0.2

@@ -4,8 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-
-import 'deprecated/material_breakpoint.dart';
+import 'package:material_you/material_you.dart';
 import 'text_aligner.dart';
 
 class _OnboardingPageScope extends InheritedWidget {
@@ -264,8 +263,7 @@ class _MaterialOnboardingState extends State<MaterialOnboarding> {
     super.dispose();
   }
 
-  bool get isDesktop =>
-      MediaQuery.of(context).size.width >= MaterialBreakpoint.eight.min;
+  bool get isDesktop => context.deviceType == MD3DeviceType.desktop;
 
   bool get isPortrait =>
       isDesktop || MediaQuery.of(context).orientation == Orientation.portrait;

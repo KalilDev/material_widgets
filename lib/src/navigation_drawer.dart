@@ -235,7 +235,7 @@ class NavigationDrawerItem extends StatelessWidget {
     return NavigationDrawerTheme.of(context)?.iconTitleSpacing ?? defaultVal;
   }
 
-  double _getRightSpacing(BuildContext context) => 24;
+  double _getRightSpacing(BuildContext context) => 4;
   double _getLeftSpacing(BuildContext context) {
     final padding = _getPadding(context);
     final baseline = NavigationDrawerTheme.of(context)?.headerBaseline ?? 28.0;

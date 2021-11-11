@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:material_widgets/src/material_breakpoint.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
+import 'deprecated/material_breakpoint.dart';
 import 'text_aligner.dart';
 
 class _OnboardingPageScope extends InheritedWidget {

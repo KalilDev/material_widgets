@@ -52,6 +52,7 @@ class _MaterialLayoutPaperPainter extends CustomPainter {
   bool hitTest(Offset position) => false;
 }
 
+@Deprecated('Use the newer MD3DeviceType or MD3WindowSizeClass instead')
 class MaterialLayoutPaper extends StatelessWidget {
   const MaterialLayoutPaper({
     Key key,

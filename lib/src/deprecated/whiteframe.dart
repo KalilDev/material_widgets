@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'material_layout.dart';
 
+@Deprecated('Use the newer MD3DeviceType or MD3WindowSizeClass instead')
 class Whiteframe extends StatelessWidget {
   final Widget child;
   final Clip clip;

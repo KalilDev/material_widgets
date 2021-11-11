@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 
+import '../../navigation_drawer.dart';
 import '../material_breakpoint.dart';
-import '../navigation_drawer.dart';
 import 'navigation_spec.dart';
 import 'responsive_scaffold.dart';
 
+@Deprecated(
+    'Use the newer MD3AdaptativeScaffold or MD3NavigationScaffold instead')
 abstract class ResponsiveScaffoldDefaults {
   static const scaffoldBreakpoints = {
     MaterialBreakpoint.one: ScaffoldBreakpoint.Mobile,

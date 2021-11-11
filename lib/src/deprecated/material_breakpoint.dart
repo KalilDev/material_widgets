@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:meta/meta.dart';
 
+@Deprecated('Use the newer MD3DeviceType or MD3WindowSizeClass instead')
 enum DeviceType {
   smallHandset,
   mediumHandset,
@@ -9,9 +10,10 @@ enum DeviceType {
   largeTablet,
   undefined
 }
-
+@Deprecated('Use the newer MD3DeviceType or MD3WindowSizeClass instead')
 enum WindowSize { xsmall, small, medium, large, xlarge }
 
+@Deprecated('Use the newer MD3DeviceType or MD3WindowSizeClass instead')
 class MaterialBreakpoint with Diagnosticable {
   const MaterialBreakpoint._(
       {@required this.min,

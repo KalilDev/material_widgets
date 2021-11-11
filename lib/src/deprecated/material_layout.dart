@@ -22,6 +22,7 @@ class _InheritedMaterialLayout extends InheritedWidget with Diagnosticable {
 
 /// An material layout that will have columns, margins and gutters, as defined
 /// in http://material.io
+@Deprecated('Use the newer MD3DeviceType or MD3WindowSizeClass instead')
 abstract class MaterialLayout extends StatelessWidget {
   final bool debugEnableVisualization;
   final Widget child;
@@ -83,6 +84,7 @@ double _columnSize(
   return size / columnCount;
 }
 
+@Deprecated('Use the newer MD3DeviceType or MD3WindowSizeClass instead')
 class MaterialLayoutWithData extends MaterialLayout {
   final MaterialLayoutData data;
 
@@ -102,6 +104,7 @@ class MaterialLayoutWithData extends MaterialLayout {
       data;
 }
 
+@Deprecated('Use the newer MD3DeviceType or MD3WindowSizeClass instead')
 class FixedGridMaterialLayout extends MaterialLayout {
   final double gutter;
 
@@ -139,6 +142,7 @@ class FixedGridMaterialLayout extends MaterialLayout {
   }
 }
 
+@Deprecated('Use the newer MD3DeviceType or MD3WindowSizeClass instead')
 class FluidGridMaterialLayout extends MaterialLayout {
   final double gutter;
   final double margin;
@@ -167,6 +171,7 @@ class FluidGridMaterialLayout extends MaterialLayout {
   }
 }
 
+@Deprecated('Use the newer MD3DeviceType or MD3WindowSizeClass instead')
 class FluidUntilMaterialLayout extends MaterialLayout {
   final double gutter;
   final double margin;

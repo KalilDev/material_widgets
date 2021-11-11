@@ -3,8 +3,6 @@ import 'package:material_widgets/src/standard_drawer_controller.dart';
 import 'package:material_you/material_you.dart';
 import 'package:flutter/material.dart';
 
-import '../responsive_scaffold/navigation_spec.dart'
-    show NavigationItem, NavigationSpec;
 import '../shrinkable_drawer_controller.dart';
 
 class MD3AdaptativeScaffold extends StatelessWidget {

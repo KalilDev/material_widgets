@@ -21,6 +21,22 @@ abstract class MD3NavigationDelegate {
   );
 }
 
+class NavigationItem {
+  final Widget label;
+  final Widget icon;
+  final Widget activeIcon;
+  final Color backgroundColor;
+  final String labelText;
+
+  const NavigationItem({
+    @required this.label,
+    @required this.icon,
+    @required this.activeIcon,
+    this.backgroundColor,
+    this.labelText,
+  });
+}
+
 class MD3NavigationSpec {
   final List<NavigationItem> items;
   final ValueChanged<int> onChanged;

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:material_widgets/src/md3_scaffold/navigation_scaffold.dart';
 
 import '../material_breakpoint.dart';
-import '../navigation_drawer.dart';
+import '../../navigation_drawer.dart';
 import 'responsive_scaffold_defaults.dart';
 
 // ignore_for_file: constant_identifier_names
-
+@Deprecated(
+    'Use the newer MD3AdaptativeScaffold or MD3NavigationScaffold instead')
 enum NavigationType {
   NavigationRail,
   ExpandedNavigationRail,
@@ -14,32 +16,19 @@ enum NavigationType {
   NavigationDrawer
 }
 
-class NavigationItem {
-  final Widget label;
-  final Widget icon;
-  final Widget activeIcon;
-  // Only used in BottomNavigationBar
-  final Color backgroundColor;
-  final String labelText;
-
-  const NavigationItem({
-    @required this.label,
-    @required this.icon,
-    @required this.activeIcon,
-    this.backgroundColor,
-    this.labelText,
-  });
-}
-
+@deprecated
 typedef NavigationRailBuilder = Widget Function(BuildContext context,
     {List<NavigationRailDestination> destinations,
     NavigationSpec navigationSpec,
     bool expanded});
+@deprecated
 typedef BottomNavBuilder = Widget Function(BuildContext context,
     {List<BottomNavigationBarItem> items, NavigationSpec navigationSpec});
+@deprecated
 typedef NavDrawerBuilder = Widget Function(BuildContext context,
     {Widget header, List<NavigationDrawerItem> items});
 
+@Deprecated('Use the newer MD3NavigationSpec instead')
 class NavigationSpec {
   final List<NavigationItem> items;
   // When the display size is too big, the [ResponsiveScaffold] will place an

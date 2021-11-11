@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../material_widgets.dart';
-import 'material_layout.dart';
-import 'material_layout_data.dart';
+import 'deprecated/material_breakpoint.dart';
+import 'deprecated/material_layout.dart';
+import 'deprecated/material_layout_data.dart';
 
 int _getButtonCountForBreakpoint(MaterialBreakpoint bp) {
   final entries = MaterialBreakpoint.values.asMap().entries;

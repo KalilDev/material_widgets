@@ -2,10 +2,10 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
+import '../../navigation_drawer.dart';
+import '../../standard_drawer_controller.dart';
 import '../material_breakpoint.dart';
 import '../material_layout.dart';
-import '../navigation_drawer.dart';
-import '../standard_drawer_controller.dart';
 import 'navigation_spec.dart';
 import 'responsive_scaffold_defaults.dart';
 
@@ -13,12 +13,15 @@ part 'resolver.dart';
 
 // ignore_for_file: constant_identifier_names
 
+@Deprecated(
+    'Use the newer MD3AdaptativeScaffold or MD3NavigationScaffold instead')
 enum ScaffoldBreakpoint {
   Mobile,
   SingleDrawer,
   DualDrawers,
 }
-
+@Deprecated(
+    'Use the newer MD3AdaptativeScaffold or MD3NavigationScaffold instead')
 enum DrawerType {
   Modal,
   Bottom,
@@ -28,6 +31,8 @@ enum DrawerType {
   Persistent
 }
 
+@Deprecated(
+    'Use the newer MD3AdaptativeScaffold or MD3NavigationScaffold instead')
 class ResponsiveScaffoldDrawer {
   final Widget child;
   final Map<MaterialBreakpoint, DrawerType> types;
@@ -51,208 +56,8 @@ class ResponsiveScaffoldDrawer {
           child: child, isFullHeight: isFullHeight, resolvedType: type);
 }
 
-class ResponsiveScaffoldOLD extends StatelessWidget {
-  const ResponsiveScaffoldOLD({
-    Key key,
-    this.appBar,
-    this.body,
-    this.floatingActionButton,
-    this.floatingActionButtonLocations =
-        ResponsiveScaffoldDefaults.fabPositions,
-    this.floatingActionButtonAnimator,
-    this.persistentFooterButtons,
-    this.drawer,
-    this.endDrawer,
-    this.bottomSheet,
-    this.backgroundColor,
-    this.resizeToAvoidBottomInset,
-    this.primary = true,
-    this.drawerDragStartBehavior = DragStartBehavior.start,
-    this.extendBody = false,
-    this.extendBodyBehindAppBar = false,
-    this.drawerScrimColor,
-    this.drawerEdgeDragWidth,
-    this.drawerEnableOpenDragGesture = true,
-    this.endDrawerEnableOpenDragGesture = true,
-    this.navigationSpec,
-    this.scaffoldBreakpoints = ResponsiveScaffoldDefaults.scaffoldBreakpoints,
-  })  : assert(primary != null),
-        assert(extendBody != null),
-        assert(extendBodyBehindAppBar != null),
-        assert(drawerDragStartBehavior != null),
-        assert(scaffoldBreakpoints != null),
-        super(key: key);
-  final bool extendBody;
-
-  final bool extendBodyBehindAppBar;
-
-  final PreferredSizeWidget appBar;
-
-  final Widget body;
-
-  final Widget floatingActionButton;
-
-  final Map<MaterialBreakpoint, FloatingActionButtonLocation>
-      floatingActionButtonLocations;
-
-  final FloatingActionButtonAnimator floatingActionButtonAnimator;
-
-  final List<Widget> persistentFooterButtons;
-
-  final ResponsiveScaffoldDrawer drawer;
-
-  final ResponsiveScaffoldDrawer endDrawer;
-
-  final Color drawerScrimColor;
-
-  final Color backgroundColor;
-
-  final Widget bottomSheet;
-
-  final bool resizeToAvoidBottomInset;
-
-  final bool primary;
-
-  final DragStartBehavior drawerDragStartBehavior;
-
-  final double drawerEdgeDragWidth;
-
-  final bool drawerEnableOpenDragGesture;
-  final bool endDrawerEnableOpenDragGesture;
-  final NavigationSpec navigationSpec;
-  final Map<MaterialBreakpoint, ScaffoldBreakpoint> scaffoldBreakpoints;
-
-  Widget _buildNavRail(BuildContext context, {bool expanded = false}) {
-    final items =
-        navigationSpec.items.map(NavigationSpec.itemToRailDestination).toList();
-    final builder = navigationSpec.navigationRailBuilder ??
-        ResponsiveScaffoldDefaults.navigationRailBuilder;
-    return builder(context,
-        expanded: expanded,
-        destinations: items,
-        navigationSpec: navigationSpec);
-  }
-
-  Widget _buildBottomNav(BuildContext context) {
-    final items =
-        navigationSpec.items.map(NavigationSpec.itemToBottomNavItem).toList();
-    final builder = navigationSpec.bottomNavBuilder ??
-        ResponsiveScaffoldDefaults.bottomNavBuilder;
-    return builder(context, items: items, navigationSpec: navigationSpec);
-  }
-
-  Widget _buildNavDrawer(BuildContext context, bool isStandardDrawer) {
-    final header = navigationSpec.navHeaderBuilder(context);
-
-    final selected = navigationSpec.selectedIndex;
-    var items = <NavigationDrawerItem>[];
-    for (var i = 0; i < navigationSpec.items.length; i++) {
-      final isSelected = i == selected;
-      final item = navigationSpec.items[i];
-      final activeIcon = item.activeIcon ?? item.icon;
-      void onTap() => navigationSpec.onChanged?.call(i);
-      final widget = NavigationDrawerItem(
-        title: item.label,
-        icon: isSelected ? item.icon : activeIcon,
-        selected: isSelected,
-        onTap: onTap,
-      );
-      items.add(widget);
-    }
-    final builder = navigationSpec.navDrawerBuilder ??
-        ResponsiveScaffoldDefaults.navDrawerBuilder;
-    return NavigationDrawerTheme(
-        data: NavigationDrawerThemeData(isStandardDrawer: isStandardDrawer),
-        child: builder(context, items: items, header: header));
-  }
-
-  Widget _buildBody(BuildContext context,
-      {_ResponsiveScaffoldResolver resolver}) {
-    final appBar = resolver.bodyAppBar;
-    final drawer = resolver.standardOrPermanentDrawer;
-    final endDrawer = resolver.standardOrPermanentEndDrawer;
-    final navigationRail = resolver.navigationRail;
-
-    final appbarAndBody = Column(mainAxisSize: MainAxisSize.max, children: [
-      if (appBar != null)
-        SizedBox(
-          height: appBar.preferredSize.height,
-          width: appBar.preferredSize.width,
-          child: appBar,
-        ),
-      Expanded(
-          child: Row(mainAxisSize: MainAxisSize.max, children: [
-        if (drawer != null && !drawer.isFullHeight) drawer.child,
-        Expanded(child: body),
-        if (endDrawer != null && !endDrawer.isFullHeight) endDrawer.child
-      ]))
-    ]);
-    return Row(
-      mainAxisSize: MainAxisSize.max,
-      children: [
-        if (drawer != null && drawer.isFullHeight) drawer.child,
-        if (navigationRail != null) navigationRail,
-        Expanded(
-          child: appbarAndBody,
-        ),
-        if (endDrawer != null && endDrawer.isFullHeight) endDrawer.child,
-      ],
-    );
-  }
-
-  _ResponsiveScaffoldResolver _resolveLayout(BuildContext context) {
-    final layout = MaterialLayout.of(context);
-    final breakpoint = layout.breakpoint;
-    final scaffoldBreakpoint =
-        _getFromBreakpointMap(breakpoint, map: scaffoldBreakpoints);
-    final resolver = _ResponsiveScaffoldResolver(
-        breakpoint, scaffoldBreakpoint, navigationSpec);
-    // Resolve all NavSpecs other than NavigationDrawer
-    resolver._resolveNavRail(context, _buildNavRail);
-    resolver._resolveBottomNavbar(context, _buildBottomNav);
-
-    resolver._resolveEndDrawer(endDrawer);
-    resolver._resolveDrawer(drawer);
-    resolver._resolveNavigationDrawer(context, _buildNavDrawer);
-    resolver._resolveAppBar(appBar);
-
-    resolver.assertIsResolved();
-
-    return resolver;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final resolved = _resolveLayout(context);
-    final breakpoint = MaterialLayout.of(context).breakpoint;
-
-    return Scaffold(
-      body: _buildBody(context, resolver: resolved),
-      drawer: resolved.modalDrawer,
-      endDrawer: resolved.modalEndDrawer,
-      appBar: resolved.scaffoldAppbar,
-      bottomNavigationBar: resolved.bottomNavBar,
-      floatingActionButton: floatingActionButton,
-      floatingActionButtonAnimator: floatingActionButtonAnimator,
-      floatingActionButtonLocation: _getFromBreakpointMap(breakpoint,
-          map: floatingActionButtonLocations,
-          fallback: FloatingActionButtonLocation.endFloat),
-      persistentFooterButtons: persistentFooterButtons,
-      bottomSheet: bottomSheet,
-      backgroundColor: backgroundColor,
-      resizeToAvoidBottomInset: resizeToAvoidBottomInset,
-      primary: primary,
-      drawerDragStartBehavior: drawerDragStartBehavior,
-      extendBody: extendBody,
-      extendBodyBehindAppBar: extendBodyBehindAppBar,
-      drawerScrimColor: drawerScrimColor,
-      drawerEdgeDragWidth: drawerEdgeDragWidth,
-      drawerEnableOpenDragGesture: drawerEnableOpenDragGesture,
-      endDrawerEnableOpenDragGesture: endDrawerEnableOpenDragGesture,
-    );
-  }
-}
-
+@Deprecated(
+    'Use the newer MD3AdaptativeScaffold or MD3NavigationScaffold instead')
 class ResponsiveScaffold extends StatefulWidget implements Scaffold {
   ResponsiveScaffold({
     Key key,
@@ -368,6 +173,8 @@ class ResponsiveScaffold extends StatefulWidget implements Scaffold {
   final String restorationId;
 }
 
+@Deprecated(
+    'Use the newer MD3AdaptativeScaffold or MD3NavigationScaffold instead')
 class ResponsiveScaffoldState extends State<Scaffold>
     with TickerProviderStateMixin, RestorationMixin
     implements ScaffoldState {

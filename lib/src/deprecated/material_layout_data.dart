@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'material_breakpoint.dart';
 
+@Deprecated('Use the newer MD3DeviceType or MD3WindowSizeClass instead')
 class MaterialLayoutData with Diagnosticable {
   final int columnCount;
   final double margin;

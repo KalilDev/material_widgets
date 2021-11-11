@@ -43,16 +43,18 @@ class NavigationDrawerTheme extends InheritedWidget {
 class NavigationDrawerHeader extends StatelessWidget {
   final Widget title;
   final Widget subtitle;
+  final TextStyle textStyle;
   final double baseline;
   final bool isStandardDrawer;
 
-  const NavigationDrawerHeader(
-      {Key key,
-      this.title,
-      @Deprecated('Deprecated on MD3') this.subtitle,
-      this.isStandardDrawer,
-      this.baseline})
-      : super(key: key);
+  const NavigationDrawerHeader({
+    Key key,
+    this.title,
+    @Deprecated('Deprecated on MD3') this.subtitle,
+    this.textStyle,
+    this.isStandardDrawer,
+    this.baseline,
+  }) : super(key: key);
 
   static const double kStandardHeight = 64;
   static const double kModalHeight = 74;
@@ -86,8 +88,9 @@ class NavigationDrawerHeader extends StatelessWidget {
     final offset = _getIsStandardDrawer(context)
         ? kStandardTitleOffset
         : kModalTitleOffset;
+    final style = textStyle ?? context.textTheme.titleMedium;
     var widget = DefaultTextStyle(
-      style: context.textTheme.titleSmall.copyWith(
+      style: style.copyWith(
         color: context.colorScheme.onSurfaceVariant,
       ),
       child: title,
@@ -109,15 +112,16 @@ class NavigationDrawerHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-        height: 56,
-        width: double.infinity,
-        child: Padding(
-          padding: EdgeInsets.only(left: _getbaseline(context)),
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: buildTitle(context),
-          ),
-        ));
+      height: 56,
+      width: double.infinity,
+      child: Padding(
+        padding: EdgeInsets.only(left: _getbaseline(context)),
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: buildTitle(context),
+        ),
+      ),
+    );
   }
 }
 
@@ -158,6 +162,7 @@ class NavigationDrawerGroupHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => NavigationDrawerHeader(
+        textStyle: context.textTheme.titleSmall,
         title: subtitle,
         baseline: baseline,
       );
@@ -188,6 +193,7 @@ class NavigationDrawerItem extends StatelessWidget {
       : super(key: key);
 
   final double kHeight = 56.0;
+  bool get isDisabled => onTap == null;
 
   Color _getSelectedColorBackground(BuildContext context) {
     if (selectedColor != null) {
@@ -213,6 +219,10 @@ class NavigationDrawerItem extends StatelessWidget {
     }
     final defaultVal = context.colorScheme.onSecondaryContainer;
     return defaultVal;
+  }
+
+  Color _getDisabledBackground(BuildContext context) {
+    return context.colorScheme.onSecondaryContainer.withOpacity(0.24);
   }
 
   Color _getUnselectedForegroundColor(BuildContext context) {
@@ -257,6 +267,9 @@ class NavigationDrawerItem extends StatelessWidget {
     if (shape != null) {
       return shape;
     }
+    if (isDisabled) {
+      return RoundedRectangleBorder(borderRadius: BorderRadius.circular(8));
+    }
     const defaultVal = StadiumBorder();
     return NavigationDrawerTheme.of(context)?.itemShape ?? defaultVal;
   }
@@ -288,8 +301,11 @@ class NavigationDrawerItem extends StatelessWidget {
   Widget buildInner(BuildContext context) {
     final shape = _getShape(context);
     return Material(
-      color:
-          selected ? _getSelectedColorBackground(context) : Colors.transparent,
+      color: selected
+          ? _getSelectedColorBackground(context)
+          : isDisabled
+              ? _getDisabledBackground(context)
+              : Colors.transparent,
       shape: shape,
       child: InkWell(
         customBorder: shape,

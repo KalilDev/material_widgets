@@ -56,12 +56,14 @@ class MD3NavigationScaffold extends StatelessWidget {
     this.spec,
     this.delegate,
     this.surfaceTintBackground = true,
+    this.bodyMargin = true,
     this.body,
   }) : super(key: key);
   final GlobalKey<ScaffoldState> scaffoldKey;
   final MD3NavigationSpec spec;
   final MD3NavigationDelegate delegate;
   final bool surfaceTintBackground;
+  final bool bodyMargin;
   final Widget body;
 
   @override
@@ -89,6 +91,7 @@ class MD3NavigationScaffold extends StatelessWidget {
       startModalDrawer: widgets.startModalDrawer,
       endModalDrawer: widgets.endModalDrawer,
       surfaceTintBackground: surfaceTintBackground,
+      bodyMargin: bodyMargin,
     );
   }
 }

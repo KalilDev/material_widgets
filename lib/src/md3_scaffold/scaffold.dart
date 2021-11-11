@@ -18,6 +18,7 @@ class MD3AdaptativeScaffold extends StatelessWidget {
     this.endModalDrawer,
     this.floatingActionButton,
     this.surfaceTintBackground = true,
+    this.bodyMargin = true,
   }) : super(key: key);
 
   final GlobalKey<ScaffoldState> scaffoldKey;
@@ -30,12 +31,13 @@ class MD3AdaptativeScaffold extends StatelessWidget {
   final Widget endModalDrawer;
   final Widget floatingActionButton;
   final bool surfaceTintBackground;
+  final bool bodyMargin;
 
   Widget _buildBody(BuildContext context) {
     final sizeClass = context.sizeClass;
     final isExpanded = sizeClass == MD3WindowSizeClass.expanded;
-    var minMargin = context.sizeClass.minimumMargins,
-        maxMargin = isExpanded ? 200.0 : minMargin;
+    var minMargin = bodyMargin ? context.sizeClass.minimumMargins : 0.0,
+        maxMargin = bodyMargin ? (isExpanded ? 200.0 : minMargin) : 0.0;
     Color background;
     if (sizeClass == MD3WindowSizeClass.compact || !surfaceTintBackground) {
       background = context.colorScheme.background;
@@ -46,6 +48,7 @@ class MD3AdaptativeScaffold extends StatelessWidget {
       );
     }
     return _BodySection(
+      scaffoldKey: scaffoldKey,
       minMargin: minMargin,
       maxMargin: maxMargin,
       appBar: appBar,

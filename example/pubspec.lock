@@ -186,6 +186,13 @@ packages:
       url: "http://localhost:4000"
     source: hosted
     version: "3.0.1+1"
+  shape_theme_switcher:
+    dependency: transitive
+    description:
+      name: shape_theme_switcher
+      url: "http://localhost:4000"
+    source: hosted
+    version: "0.0.1"
   sky_engine:
     dependency: transitive
     description: flutter

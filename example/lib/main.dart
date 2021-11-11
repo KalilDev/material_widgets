@@ -24,19 +24,32 @@ void main() {
   );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  bool _isDark = false;
+  void _toggleDark() => setState(() => _isDark = !_isDark);
+
   @override
   Widget build(BuildContext context) {
     return MD3Themes(
       monetThemeForFallbackPalette: baseline_3p,
       builder: (context, lightTheme, darkTheme) => MaterialApp(
         title: 'Flutter Demo',
-        theme: lightTheme,
-        darkTheme: darkTheme,
         debugShowCheckedModeBanner: false,
-        themeMode: ThemeMode.light,
+        builder: (context, home) => ThemeSwitcher(
+          theme: lightTheme,
+          darkTheme: darkTheme,
+          themeMode: _isDark ? ThemeMode.dark : ThemeMode.light,
+          child: home,
+        ),
         home: FluidGridMaterialLayout(
-          child: Home(),
+          child: Home(
+            toggleDark: _toggleDark,
+          ),
         ),
       ),
     );
@@ -44,6 +57,9 @@ class MyApp extends StatelessWidget {
 }
 
 class Home extends StatefulWidget {
+  final VoidCallback toggleDark;
+
+  const Home({Key key, this.toggleDark}) : super(key: key);
   @override
   State<Home> createState() => _HomeState();
 }
@@ -66,6 +82,33 @@ class _HomeState extends State<Home> {
           ),
         ),
         onChanged: _onChanged,
+      );
+  Widget _body(BuildContext context) => GridView.builder(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: context.sizeClass.columns ~/ 2,
+          childAspectRatio: 1 / 1.3,
+          crossAxisSpacing: 8,
+          mainAxisSpacing: 8,
+        ),
+        itemBuilder: (c, i) {
+          switch (i % 3) {
+            case 0:
+              return OutlinedCard(
+                child: SizedBox.expand(),
+                onPressed: () {},
+              );
+            case 1:
+              return FilledCard(
+                child: SizedBox.expand(),
+                onPressed: () {},
+              );
+            case 2:
+              return ElevatedCard(
+                child: SizedBox.expand(),
+                onPressed: () {},
+              );
+          }
+        },
       );
   @override
   Widget build(BuildContext context) {
@@ -106,13 +149,7 @@ class _HomeState extends State<Home> {
     );
     final fab = MD3FloatingActionButton.expanded(
       fabColorScheme: MD3FABColorScheme.tertiary,
-      onPressed: () => showDialog(
-        context: context,
-        builder: (c) => AlertDialog(
-          title: Text('Hello'),
-          content: Text('World'),
-        ),
-      ),
+      onPressed: widget.toggleDark,
       isExpanded: true,
       label: Text('Home'),
       icon: Icon(Icons.home),
@@ -133,7 +170,7 @@ class _HomeState extends State<Home> {
       body: Stack(
         fit: StackFit.expand,
         children: [
-          SizedBox.expand(child: Placeholder()),
+          SizedBox.expand(child: _body(context)),
           Center(
             child: ElevatedButton(
               onPressed: _toggle,

@@ -54,7 +54,7 @@ class MD3AdaptativeScaffold extends StatelessWidget {
       background: background,
       startDrawer: startModalDrawer,
       endDrawer: endModalDrawer,
-      scaffoldKey: scaffoldKey,
+      floatingActionButton: floatingActionButton,
     );
   }
 

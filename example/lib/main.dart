@@ -138,13 +138,31 @@ class _HomeState extends State<Home> {
     );
     final appBar = ResponsiveAppbar(
       title: Text("Example"),
-      actions: [
+      buildActions: (context) => [
         for (var i = 0; i < 25; i++)
-          ResponsiveAppbarAction.create(
-              icon: Icon(Icons.title),
-              onPressed: () => null,
-              tooltip: "$i",
-              title: Text("$i")),
+          ResponsiveAppbarAction(
+            icon: Icon(Icons.title),
+            onPressed: () => showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: Text(
+                  'AlertDialog',
+                  textAlign: TextAlign.center,
+                ),
+                content: Text(
+                  'This is an alert dialog that was created at index $i',
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: Text('Okay'),
+                  )
+                ],
+              ),
+            ),
+            tooltip: "$i",
+            title: Text("$i"),
+          ),
       ],
     );
     return MD3NavigationScaffold(

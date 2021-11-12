@@ -4,18 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:material_you/material_you.dart';
 
-class _PreferredAppBarSize extends Size {
-  _PreferredAppBarSize(this.toolbarHeight, this.bottomHeight)
-      : super.fromHeight(
-            (toolbarHeight ?? kToolbarHeight) + (bottomHeight ?? 0));
-
-  final double toolbarHeight;
-  final double bottomHeight;
+Size _preferredAppBarSize(double toolbarHeight, double bottomHeight) {
+  toolbarHeight ??= kToolbarHeight;
+  bottomHeight ??= 0;
+  return Size.fromHeight(toolbarHeight + bottomHeight);
 }
 
-class MD3ScrollElevatedAppBar extends StatefulWidget
-    implements PreferredSizeWidget {
-  MD3ScrollElevatedAppBar({
+/// An [AppBar] class which is colored with surface+elevation.level0 tint, and
+/// when it is inside an scrollable body, and it is scrolled, animates the
+/// background color to the elevation level2.
+class MD3RawAppBar extends StatefulWidget implements PreferredSizeWidget {
+  MD3RawAppBar({
     Key key,
     this.leading,
     this.automaticallyImplyLeading = true,
@@ -23,7 +22,6 @@ class MD3ScrollElevatedAppBar extends StatefulWidget
     this.actions,
     this.flexibleSpace,
     this.bottom,
-    this.elevation,
     this.shadowColor,
     this.shape,
     this.iconTheme,
@@ -34,19 +32,21 @@ class MD3ScrollElevatedAppBar extends StatefulWidget
     this.titleSpacing,
     this.toolbarOpacity = 1.0,
     this.bottomOpacity = 1.0,
-    this.toolbarHeight,
+    this.appBarHeight,
     this.leadingWidth,
     this.toolbarTextStyle,
     this.titleTextStyle,
-    this.systemOverlayStyle,
+    this.elevationDuration = const Duration(milliseconds: 200),
   })  : assert(automaticallyImplyLeading != null),
-        assert(elevation == null || elevation >= 0.0),
         assert(primary != null),
         assert(toolbarOpacity != null),
         assert(bottomOpacity != null),
         preferredSize =
-            _PreferredAppBarSize(toolbarHeight, bottom?.preferredSize?.height),
+            _preferredAppBarSize(appBarHeight, bottom?.preferredSize?.height),
         super(key: key);
+
+  static Size prefferedAppBarSize(double appBarHeight, double bottomHeight) =>
+      _preferredAppBarSize(appBarHeight, bottomHeight);
 
   final Widget leading;
   final bool automaticallyImplyLeading;
@@ -54,7 +54,6 @@ class MD3ScrollElevatedAppBar extends StatefulWidget
   final List<Widget> actions;
   final Widget flexibleSpace;
   final PreferredSizeWidget bottom;
-  final double elevation;
   final Color shadowColor;
   final ShapeBorder shape;
   final IconThemeData iconTheme;
@@ -67,18 +66,17 @@ class MD3ScrollElevatedAppBar extends StatefulWidget
   final double bottomOpacity;
   @override
   final Size preferredSize;
-  final double toolbarHeight;
+  final double appBarHeight;
   final double leadingWidth;
   final TextStyle toolbarTextStyle;
   final TextStyle titleTextStyle;
-  final SystemUiOverlayStyle systemOverlayStyle;
+  final Duration elevationDuration;
 
   @override
-  _MD3ScrollElevatedAppBarState createState() =>
-      _MD3ScrollElevatedAppBarState();
+  _MD3RawAppBarState createState() => _MD3RawAppBarState();
 }
 
-class _MD3ScrollElevatedAppBarState extends State<MD3ScrollElevatedAppBar>
+class _MD3RawAppBarState extends State<MD3RawAppBar>
     with SingleTickerProviderStateMixin {
   ScrollController primaryScrollController;
   AnimationController backgroundController;
@@ -93,22 +91,33 @@ class _MD3ScrollElevatedAppBarState extends State<MD3ScrollElevatedAppBar>
         ),
       );
   Animation<double> backgroundColorAnimation;
+  @override
   void initState() {
     super.initState();
     backgroundController = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 200),
+      duration: widget.elevationDuration,
     );
-    backgroundColorAnimation =
-        CurvedAnimation(parent: backgroundController, curve: Curves.easeInOut);
+    backgroundColorAnimation = CurvedAnimation(
+      parent: backgroundController,
+      curve: Curves.easeInOut,
+    );
   }
 
+  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     final primaryScrollController = PrimaryScrollController.of(context);
     _updatePrimaryScrollController(primaryScrollController);
   }
 
+  @override
+  void didUpdateWidget(MD3RawAppBar oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    backgroundController.duration = widget.elevationDuration;
+  }
+
+  @override
   void dispose() {
     backgroundController.dispose();
     super.dispose();
@@ -160,7 +169,6 @@ class _MD3ScrollElevatedAppBarState extends State<MD3ScrollElevatedAppBar>
         actions: widget.actions,
         flexibleSpace: widget.flexibleSpace,
         bottom: widget.bottom,
-        elevation: widget.elevation,
         shadowColor: widget.shadowColor,
         shape: widget.shape,
         iconTheme: widget.iconTheme,
@@ -171,12 +179,27 @@ class _MD3ScrollElevatedAppBarState extends State<MD3ScrollElevatedAppBar>
         titleSpacing: widget.titleSpacing,
         toolbarOpacity: widget.toolbarOpacity,
         bottomOpacity: widget.bottomOpacity,
-        toolbarHeight: widget.toolbarHeight,
+        toolbarHeight: widget.appBarHeight,
         leadingWidth: widget.leadingWidth,
         toolbarTextStyle: widget.toolbarTextStyle,
         titleTextStyle: widget.titleTextStyle,
-        systemOverlayStyle: widget.systemOverlayStyle,
+        systemOverlayStyle: _systemUiOverlayStyle(context, backgroundColor),
       ),
     );
   }
+
+  SystemUiOverlayStyle _systemUiOverlayStyle(
+    BuildContext context,
+    Color backgroundColor,
+  ) =>
+      SystemUiOverlayStyle(
+        statusBarColor: backgroundColor,
+        statusBarBrightness: ThemeData.estimateBrightnessForColor(
+          backgroundColor,
+        ),
+        statusBarIconBrightness: ThemeData.estimateBrightnessForColor(
+          context.colorScheme.onSurface,
+        ),
+        systemNavigationBarContrastEnforced: false,
+      );
 }

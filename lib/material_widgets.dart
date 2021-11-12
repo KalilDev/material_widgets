@@ -1,6 +1,6 @@
 library material_widgets;
 
-export 'src/fab.dart';
+export 'src/md3_buttons/fab.dart';
 export 'src/deprecated/material_breakpoint.dart';
 export 'src/deprecated/material_layout.dart';
 export 'src/deprecated/material_layout_data.dart';

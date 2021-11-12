@@ -1,6 +1,8 @@
 library material_widgets;
 
 export 'src/md3_buttons/fab.dart';
+export 'src/md3_buttons/filled.dart';
+export 'src/md3_buttons/filled_tonal.dart';
 export 'src/deprecated/material_breakpoint.dart';
 export 'src/deprecated/material_layout.dart';
 export 'src/deprecated/material_layout_data.dart';

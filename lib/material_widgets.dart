@@ -22,3 +22,4 @@ export 'src/card/elevated_card.dart';
 export 'src/card/filled_card.dart';
 export 'src/card/outlined_card.dart';
 export 'src/system_edge_to_edge.dart';
+export 'package:flutter_monet_theme/flutter_monet_theme.dart';

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:material_widgets/src/scroll_elevated_appbar.dart';
+import 'package:material_widgets/src/md3_appBar/raw_appBar.dart';
 
 import '../material_widgets.dart';
 import 'deprecated/material_breakpoint.dart';
@@ -62,8 +62,10 @@ class ResponsiveAppbar extends StatelessWidget implements PreferredSizeWidget {
     this.title,
     @Deprecated('use buildActions') List<ResponsiveAppbarAction> actions,
     List<ResponsiveAppbarAction> Function(BuildContext) buildActions,
-  })  : preferredSize = Size.fromHeight(toolbarHeight ??
-            kToolbarHeight + (bottom?.preferredSize?.height ?? 0.0)),
+  })  : preferredSize = MD3RawAppBar.prefferedAppBarSize(
+          toolbarHeight ?? 0,
+          bottom.preferredSize.height,
+        ),
         buildActions = actions == null ? buildActions : ((_) => actions),
         super(key: key);
 
@@ -158,8 +160,8 @@ class ResponsiveAppbar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     final layout = MaterialLayout.of(context);
-    return MD3ScrollElevatedAppBar(
-      toolbarHeight: this.toolbarHeight,
+    return MD3RawAppBar(
+      appBarHeight: this.toolbarHeight,
       title: this.title,
       bottom: this.bottom,
       actions: _buildActions(context, layout),

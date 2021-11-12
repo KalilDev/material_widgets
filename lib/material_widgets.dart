@@ -9,6 +9,7 @@ export 'src/material_onboarding.dart';
 export 'src/navigation_drawer.dart';
 export 'src/responsive_appbar.dart';
 export 'src/theme_switcher.dart';
+export 'src/md3_appBar/appbar.dart';
 export 'src/deprecated/responsive_scaffold/navigation_spec.dart';
 export 'src/deprecated/responsive_scaffold/responsive_scaffold.dart';
 export 'src/deprecated/whiteframe.dart';

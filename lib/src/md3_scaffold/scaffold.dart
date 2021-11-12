@@ -39,7 +39,7 @@ class MD3AdaptativeScaffold extends StatelessWidget {
     var minMargin = bodyMargin ? context.sizeClass.minimumMargins : 0.0,
         maxMargin = bodyMargin ? (isExpanded ? 200.0 : minMargin) : 0.0;
     Color background;
-    if (sizeClass == MD3WindowSizeClass.compact || !surfaceTintBackground) {
+    if (!surfaceTintBackground) {
       background = context.colorScheme.background;
     } else {
       background = context.elevation.level0.overlaidColor(

@@ -3,7 +3,6 @@ import 'package:material_you/material_you.dart';
 
 import '../../material_widgets.dart';
 import '../shrinkable_drawer_controller.dart';
-import 'navigation_scaffold.dart';
 
 typedef FloatingActionButtonBuilder = Widget Function(BuildContext, bool);
 Widget _removeFabElevation(BuildContext context, Widget fab) =>
@@ -72,49 +71,6 @@ class MD3BottomNavigationDelegate extends MD3NavigationDelegate {
             )
             .toList(),
       );
-  Widget _buildNavigationRail(
-    BuildContext context,
-    MD3NavigationSpec spec,
-    Widget floatingActionButton,
-  ) =>
-      SizedBox(
-        width: 80,
-        child: _drawer(
-          context,
-          level0Elevation: true,
-          child: SafeArea(
-            child: Column(
-              children: [
-                const SizedBox.square(
-                  dimension: 56,
-                ),
-                Expanded(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        if (floatingActionButton != null)
-                          Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 12.0),
-                            child: _removeFabElevation(
-                                context, floatingActionButton),
-                          ),
-                        const Expanded(child: const SizedBox())
-                      ],
-                    ),
-                    flex: 4),
-                ..._navigationDrawerItems(
-                  context,
-                  spec,
-                  noLabel: true,
-                  tooltip: true,
-                ),
-                const Expanded(child: const SizedBox(), flex: 7),
-              ],
-            ),
-          ),
-        ),
-      );
 
   @override
   MD3AdaptativeScaffoldWidgets buildMedium(
@@ -122,25 +78,20 @@ class MD3BottomNavigationDelegate extends MD3NavigationDelegate {
     MD3NavigationSpec spec,
     Widget body,
   ) =>
-      MD3AdaptativeScaffoldWidgets(
-        body: body,
-        appBar: appBar,
-        endDrawer: endDrawer,
-        endModalDrawer: endModalDrawer,
-        floatingActionButton:
-            navigationFabBuilder == null ? floatingActionButton : null,
-        startDrawer: _buildNavigationRail(
-          context,
-          spec,
-          navigationFabBuilder?.call(context, false),
-        ),
-      );
+      _buildExpandableRail(spec, body, false);
 
   @override
   MD3AdaptativeScaffoldWidgets buildExpanded(
     BuildContext context,
     MD3NavigationSpec spec,
     Widget body,
+  ) =>
+      _buildExpandableRail(spec, body, true);
+
+  MD3AdaptativeScaffoldWidgets _buildExpandableRail(
+    MD3NavigationSpec spec,
+    Widget body,
+    bool canExpand,
   ) =>
       MD3AdaptativeScaffoldWidgets(
         body: body,
@@ -149,17 +100,12 @@ class MD3BottomNavigationDelegate extends MD3NavigationDelegate {
         endModalDrawer: endModalDrawer,
         floatingActionButton:
             navigationFabBuilder == null ? floatingActionButton : null,
-        startDrawer: _buildShrinkableDrawer(context, spec),
-      );
-
-  Widget _buildShrinkableDrawer(BuildContext context, MD3NavigationSpec spec) =>
-      _ShrinkableDrawer(
-        spec: spec,
-        floatingActionButtonBuilder: navigationFabBuilder,
-        header: drawerHeader ??
-            const NavigationDrawerHeader(
-              title: Text('Navegação'),
-            ),
+        startDrawer: _ExpandableRail(
+          spec: spec,
+          floatingActionButtonBuilder: navigationFabBuilder,
+          appBarHeight: appBar?.preferredSize?.height,
+          canExpand: canExpand,
+        ),
       );
 }
 
@@ -240,22 +186,26 @@ extension _<T> on Iterable<T> {
   }
 }
 
-class _ShrinkableDrawer extends StatefulWidget {
-  const _ShrinkableDrawer({
+class _ExpandableRail extends StatefulWidget {
+  const _ExpandableRail({
     Key key,
     this.spec,
     this.floatingActionButtonBuilder,
+    this.appBarHeight,
     this.header,
+    this.canExpand = true,
   }) : super(key: key);
   final MD3NavigationSpec spec;
   final FloatingActionButtonBuilder floatingActionButtonBuilder;
   final Widget header;
+  final double appBarHeight;
+  final bool canExpand;
 
   @override
-  _ShrinkableDrawerState createState() => _ShrinkableDrawerState();
+  _ExpandableRailState createState() => _ExpandableRailState();
 }
 
-class _ShrinkableDrawerState extends State<_ShrinkableDrawer>
+class _ExpandableRailState extends State<_ExpandableRail>
     with SingleTickerProviderStateMixin {
   final shrinkableDrawerController =
       GlobalKey<ShrinkableDrawerControllerState>();
@@ -269,6 +219,14 @@ class _ShrinkableDrawerState extends State<_ShrinkableDrawer>
   }
 
   bool _isOpen = false;
+
+  void didUpdateWidget(_ExpandableRail oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (!widget.canExpand && oldWidget.canExpand) {
+      // Close it if it was open
+      shrinkableDrawerController.currentState.close();
+    }
+  }
 
   void dispose() {
     iconAnimController.dispose();
@@ -289,8 +247,8 @@ class _ShrinkableDrawerState extends State<_ShrinkableDrawer>
       ? shrinkableDrawerController.currentState.close()
       : shrinkableDrawerController.currentState.open();
 
-  Widget _button(BuildContext context) => SizedBox(
-        height: 56,
+  Widget _menuButton(BuildContext context) => SizedBox(
+        height: 64,
         width: 80,
         child: Center(
           child: IconButton(
@@ -302,33 +260,35 @@ class _ShrinkableDrawerState extends State<_ShrinkableDrawer>
           ),
         ),
       );
-  Widget _shrinkable(BuildContext context, Widget child) => SizeTransition(
-        sizeFactor: iconAnimController,
-        axis: Axis.horizontal,
-        axisAlignment: -1,
-        child: Center(child: child),
-      );
-  Widget _header(BuildContext context) => Column(
+
+  Widget _fabHeader(BuildContext context) => Column(
         mainAxisSize: MainAxisSize.max,
         children: [
-          Row(
-            children: [
-              Expanded(child: _shrinkable(context, widget.header)),
-              _button(context),
-            ],
-          ),
           if (widget.floatingActionButtonBuilder != null)
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12),
               child: SizedBox(
                 child: _removeFabElevation(
                   context,
-                  widget.floatingActionButtonBuilder(context, _isOpen),
+                  Builder(
+                    builder: (context) => widget.floatingActionButtonBuilder(
+                      context,
+                      _isOpen,
+                    ),
+                  ),
                 ),
                 width: double.infinity,
               ),
             ),
+          const Expanded(child: const SizedBox())
         ],
+      );
+
+  Widget _shrinkable(BuildContext context, Widget child) => SizeTransition(
+        sizeFactor: iconAnimController,
+        axis: Axis.horizontal,
+        axisAlignment: -1,
+        child: Center(child: child),
       );
 
   Iterable<Widget> _navigationDrawerItems(
@@ -355,6 +315,19 @@ class _ShrinkableDrawerState extends State<_ShrinkableDrawer>
           );
         },
       );
+  Widget _appBarSizedHeader(BuildContext context) => ConstrainedBox(
+        constraints: BoxConstraints(
+          maxHeight: widget.appBarHeight ?? double.infinity,
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Expanded(child: _shrinkable(context, widget.header)),
+            if (widget.canExpand) _menuButton(context),
+          ],
+        ),
+      );
+
   @override
   Widget build(BuildContext context) {
     return ShrinkableDrawerController(
@@ -367,7 +340,12 @@ class _ShrinkableDrawerState extends State<_ShrinkableDrawer>
         level0Elevation: true,
         child: Column(
           children: [
-            Expanded(child: _header(context), flex: 4),
+            SizedBox(height: MediaQuery.of(context).viewPadding.top),
+            SizedBox(
+              height: widget.appBarHeight,
+              child: _appBarSizedHeader(context),
+            ),
+            Expanded(child: _fabHeader(context), flex: 4),
             ..._navigationDrawerItems(
               context,
               widget.spec,

@@ -13,38 +13,49 @@ int _getButtonCountForBreakpoint(MaterialBreakpoint bp) {
   return bpAndIndex.key + 1;
 }
 
+@Deprecated('Use MD3ResponsiveAppBarAction')
 abstract class ResponsiveAppbarAction {
+  @Deprecated('Use MD3ResponsiveAppBarAction')
   factory ResponsiveAppbarAction(
       {Widget icon,
       String tooltip,
       Widget title,
-      VoidCallback onPressed}) = _ResponsiveAppBarAction;
-  @Deprecated('Use ResponsiveAppbarAction()')
-  static _ResponsiveAppBarAction create(
+      VoidCallback onPressed}) = MD3ResponsiveAppBarAction;
+  @Deprecated('Use MD3ResponsiveAppBarAction')
+  static MD3ResponsiveAppBarAction create(
           {Widget icon,
           String tooltip,
           Widget title,
           VoidCallback onPressed}) =>
-      _ResponsiveAppBarAction(
-          icon: icon, tooltip: tooltip, title: title, onPressed: onPressed);
-  @Deprecated('Use ResponsiveAppbar.buildActions')
+      MD3ResponsiveAppBarAction(
+        icon: icon,
+        tooltip: tooltip,
+        title: title,
+        onPressed: onPressed,
+      );
+  @Deprecated(
+      'Use ResponsiveAppbar.buildActions with MD3ResponsiveAppBarAction')
   static _ResponsiveAppBarActionBuilder builder(
-          _ResponsiveAppBarAction Function(BuildContext) build) =>
+          MD3ResponsiveAppBarAction Function(BuildContext) build) =>
       _ResponsiveAppBarActionBuilder(build);
 }
 
-class _ResponsiveAppBarAction implements ResponsiveAppbarAction {
+class MD3ResponsiveAppBarAction implements ResponsiveAppbarAction {
   final Widget icon;
   final String tooltip;
   final Widget title;
   final VoidCallback onPressed;
 
-  const _ResponsiveAppBarAction(
-      {this.icon, this.tooltip, this.title, this.onPressed});
+  const MD3ResponsiveAppBarAction({
+    this.icon,
+    this.tooltip,
+    this.title,
+    this.onPressed,
+  });
 }
 
 class _ResponsiveAppBarActionBuilder implements ResponsiveAppbarAction {
-  final _ResponsiveAppBarAction Function(BuildContext) build;
+  final MD3ResponsiveAppBarAction Function(BuildContext) build;
 
   const _ResponsiveAppBarActionBuilder(this.build);
 }
@@ -71,7 +82,7 @@ class ResponsiveAppbar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   final Size preferredSize;
-  Widget _actionToActionWidget(_ResponsiveAppBarAction action) {
+  Widget _actionToActionWidget(MD3ResponsiveAppBarAction action) {
     return IconButton(
       icon: action.icon,
       onPressed: action.onPressed,
@@ -79,7 +90,7 @@ class ResponsiveAppbar extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 
-  Widget _actionToBottomSheetWidget(_ResponsiveAppBarAction action) {
+  Widget _actionToBottomSheetWidget(MD3ResponsiveAppBarAction action) {
     return ListTile(
       leading: action.icon,
       onTap: action.onPressed,
@@ -87,13 +98,13 @@ class ResponsiveAppbar extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 
-  PopupMenuItem<_ResponsiveAppBarAction> _actionToPopupMenuItem(
-      _ResponsiveAppBarAction action) {
+  PopupMenuItem<MD3ResponsiveAppBarAction> _actionToPopupMenuItem(
+      MD3ResponsiveAppBarAction action) {
     return PopupMenuItem(child: action.title, value: action);
   }
 
   WidgetBuilder _moreButtonBuilder(
-          List<_ResponsiveAppBarAction> hidden, bool isBottomSheet) =>
+          List<MD3ResponsiveAppBarAction> hidden, bool isBottomSheet) =>
       (context) {
         void open() {
           if (isBottomSheet) {
@@ -129,13 +140,13 @@ class ResponsiveAppbar extends StatelessWidget implements PreferredSizeWidget {
       };
 
   List<Widget> _buildActions(BuildContext context, MaterialLayoutData data) {
-    final builtActions = this.buildActions(context);
+    final builtActions = this.buildActions?.call(context) ?? [];
     if (builtActions == null || builtActions.isEmpty) {
       return null;
     }
     final limit = _getButtonCountForBreakpoint(data.breakpoint);
     final concreteActions = builtActions.map((e) {
-      if (e is _ResponsiveAppBarAction) {
+      if (e is MD3ResponsiveAppBarAction) {
         return e;
       }
       if (e is _ResponsiveAppBarActionBuilder) {

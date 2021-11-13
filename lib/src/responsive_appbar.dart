@@ -60,28 +60,81 @@ class _ResponsiveAppBarActionBuilder implements ResponsiveAppbarAction {
   const _ResponsiveAppBarActionBuilder(this.build);
 }
 
-class ResponsiveAppbar extends StatelessWidget implements PreferredSizeWidget {
-  final double toolbarHeight;
-  final PreferredSizeWidget bottom;
-  final Widget title;
-  final List<ResponsiveAppbarAction> Function(BuildContext) buildActions;
+enum _MD3AppBarType {
+  center,
+  small,
+  medium,
+  large,
+  mediumOrLarge,
+}
 
+class ResponsiveAppbar extends StatelessWidget implements PreferredSizeWidget {
+  @Deprecated('Use one of the named ResponsiveAppbar constructors')
   ResponsiveAppbar({
     Key key,
-    this.bottom,
-    this.toolbarHeight,
+    @Deprecated('Removed on MD3') PreferredSizeWidget bottom,
+    @Deprecated('Depends on the app bar type') double toolbarHeight,
     this.title,
+    this.leading,
     @Deprecated('use buildActions') List<ResponsiveAppbarAction> actions,
     List<ResponsiveAppbarAction> Function(BuildContext) buildActions,
-  })  : preferredSize = MD3RawAppBar.prefferedAppBarSize(
-          toolbarHeight ?? 0,
-          bottom.preferredSize.height,
-        ),
+  })  : _appBarType = _MD3AppBarType.small,
+        preferredSize = const Size.fromHeight(MD3SmallAppBar.kHeight),
         buildActions = actions == null ? buildActions : ((_) => actions),
         super(key: key);
 
+  const ResponsiveAppbar.center({
+    Key key,
+    this.title,
+    this.leading,
+    this.buildActions,
+  })  : _appBarType = _MD3AppBarType.center,
+        preferredSize = const Size.fromHeight(MD3SmallAppBar.kHeight),
+        super(key: key);
+
+  const ResponsiveAppbar.small({
+    Key key,
+    this.title,
+    this.leading,
+    this.buildActions,
+  })  : _appBarType = _MD3AppBarType.small,
+        preferredSize = const Size.fromHeight(MD3SmallAppBar.kHeight),
+        super(key: key);
+
+  const ResponsiveAppbar.medium({
+    Key key,
+    this.title,
+    this.leading,
+    this.buildActions,
+  })  : _appBarType = _MD3AppBarType.medium,
+        preferredSize = const Size.fromHeight(MD3MediumAppBar.kHeight),
+        super(key: key);
+
+  const ResponsiveAppbar.large({
+    Key key,
+    this.title,
+    this.leading,
+    this.buildActions,
+  })  : _appBarType = _MD3AppBarType.large,
+        preferredSize = const Size.fromHeight(MD3LargeAppBar.kHeight),
+        super(key: key);
+
+  const ResponsiveAppbar.mediumOrLarge({
+    Key key,
+    this.title,
+    this.leading,
+    this.buildActions,
+  })  : _appBarType = _MD3AppBarType.mediumOrLarge,
+        preferredSize = const Size.fromHeight(MD3LargeOrMediumAppBar.kHeight),
+        super(key: key);
+
+  final Widget title;
+  final Widget leading;
+  final List<ResponsiveAppbarAction> Function(BuildContext) buildActions;
+  final _MD3AppBarType _appBarType;
   @override
   final Size preferredSize;
+
   Widget _actionToActionWidget(MD3ResponsiveAppBarAction action) {
     return IconButton(
       icon: action.icon,
@@ -147,7 +200,11 @@ class ResponsiveAppbar extends StatelessWidget implements PreferredSizeWidget {
     if (builtActions == null || builtActions.isEmpty) {
       return null;
     }
-    final limit = _getButtonCountForBreakpoint(data.breakpoint);
+    var limit = _getButtonCountForBreakpoint(data.breakpoint);
+    if (_appBarType == _MD3AppBarType.center) {
+      // MD3CenterAppBar supports only a single icon
+      limit = 1;
+    }
     final concreteActions = builtActions.map((e) {
       if (e is MD3ResponsiveAppBarAction) {
         return e;
@@ -172,13 +229,44 @@ class ResponsiveAppbar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
+  // ignore: missing_return
   Widget build(BuildContext context) {
     final layout = MaterialLayout.of(context);
-    return MD3RawAppBar(
-      appBarHeight: this.toolbarHeight,
-      title: this.title,
-      bottom: this.bottom,
-      actions: _buildActions(context, layout),
-    );
+    final actionWidgets = _buildActions(context, layout);
+    switch (_appBarType) {
+      case _MD3AppBarType.center:
+        if (actionWidgets.length > 1) {
+          throw StateError('Invalid action count for center appbar');
+        }
+        return MD3CenterAlignedAppBar(
+          leading: leading,
+          title: title,
+          trailing: actionWidgets.isEmpty ? null : actionWidgets.single,
+        );
+      case _MD3AppBarType.small:
+        return MD3SmallAppBar(
+          leading: leading,
+          title: title,
+          actions: actionWidgets,
+        );
+      case _MD3AppBarType.medium:
+        return MD3MediumAppBar(
+          leading: leading,
+          title: title,
+          actions: actionWidgets,
+        );
+      case _MD3AppBarType.large:
+        return MD3LargeAppBar(
+          leading: leading,
+          title: title,
+          actions: actionWidgets,
+        );
+      case _MD3AppBarType.mediumOrLarge:
+        return MD3LargeOrMediumAppBar(
+          leading: leading,
+          title: title,
+          actions: actionWidgets,
+        );
+    }
   }
 }

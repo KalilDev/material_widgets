@@ -186,7 +186,9 @@ class MD3LargeOrMediumAppBar extends StatefulWidget
   final Widget leading;
   final List<Widget> actions;
   final Widget title;
-  final Size preferredSize = const Size.fromHeight(MD3LargeAppBar.kHeight);
+  final Size preferredSize = const Size.fromHeight(kHeight);
+
+  static const double kHeight = MD3LargeAppBar.kHeight;
 
   @override
   _MD3LargeOrMediumAppBarState createState() => _MD3LargeOrMediumAppBarState();

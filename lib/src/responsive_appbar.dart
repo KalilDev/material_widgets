@@ -128,8 +128,11 @@ class ResponsiveAppbar extends StatelessWidget implements PreferredSizeWidget {
             ),
             Offset.zero & overlay.size,
           );
-          showMenu<_ResponsiveAppBarAction>(
-              context: context, items: items.toList(), position: position);
+          showMenu<MD3ResponsiveAppBarAction>(
+            context: context,
+            items: items.toList(),
+            position: position,
+          ).then((e) => e?.onPressed?.call());
         }
 
         return IconButton(

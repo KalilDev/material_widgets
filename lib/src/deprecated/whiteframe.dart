@@ -21,15 +21,12 @@ class Whiteframe extends StatelessWidget {
     final padding = layout.margin - layout.gutter;
     final topPadding = (padding / 2).clamp(0.0, kMaxTopPadding).toDouble();
     final hasPadding = padding != 0;
-    return Card(
-      margin: EdgeInsets.only(
+    return Padding(
+      padding: EdgeInsets.only(
           left: padding,
           right: padding,
           top: topPadding,
           bottom: padding > 0 ? layout.gutter : 0),
-      elevation: hasPadding ? 2.0 : 0.0,
-      shape: hasPadding ? null : RoundedRectangleBorder(),
-      clipBehavior: clip,
       child: MaterialLayout.removeMargin(
         context: context,
         child: child,

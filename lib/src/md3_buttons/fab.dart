@@ -18,8 +18,7 @@ class MD3FloatingActionButton extends ButtonStyleButton {
   final CustomColorScheme colorScheme;
   const MD3FloatingActionButton({
     Key key,
-    @Deprecated(_kFabColorSchemeDeprecation)
-        this.fabColorScheme = MD3FABColorScheme.primaryContainer,
+    this.fabColorScheme = MD3FABColorScheme.primaryContainer,
     this.isLowered = false,
     @required VoidCallback onPressed,
     VoidCallback onLongPress,
@@ -46,7 +45,7 @@ class MD3FloatingActionButton extends ButtonStyleButton {
 
   factory MD3FloatingActionButton.expanded({
     Key key,
-    @Deprecated(_kFabColorSchemeDeprecation) MD3FABColorScheme fabColorScheme,
+    MD3FABColorScheme fabColorScheme,
     bool isLowered,
     bool isExpanded,
     @required VoidCallback onPressed,
@@ -64,7 +63,7 @@ class MD3FloatingActionButton extends ButtonStyleButton {
 
   factory MD3FloatingActionButton.small({
     Key key,
-    @Deprecated(_kFabColorSchemeDeprecation) MD3FABColorScheme fabColorScheme,
+    MD3FABColorScheme fabColorScheme,
     bool isLowered,
     @required VoidCallback onPressed,
     VoidCallback onLongPress,
@@ -80,7 +79,7 @@ class MD3FloatingActionButton extends ButtonStyleButton {
 
   factory MD3FloatingActionButton.large({
     Key key,
-    @Deprecated(_kFabColorSchemeDeprecation) MD3FABColorScheme fabColorScheme,
+    MD3FABColorScheme fabColorScheme,
     bool isLowered,
     @required VoidCallback onPressed,
     VoidCallback onLongPress,
@@ -289,6 +288,11 @@ class MD3FloatingActionButton extends ButtonStyleButton {
 
   @override
   ButtonStyle defaultStyleOf(BuildContext context) {
+    if (colorScheme != null &&
+        fabColorScheme != MD3FABColorScheme.primaryContainer) {
+      throw StateError('You can only use one of MD3FABColorScheme or'
+          ' MD3FloatingActionButton.colorScheme to theme yor FAB!');
+    }
     final color = colorScheme ?? _customColorFromFABScheme(context);
     final elevationTheme = context.elevation;
 

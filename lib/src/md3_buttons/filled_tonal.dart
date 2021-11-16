@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:material_widgets/material_widgets.dart';
 import 'package:material_you/material_you.dart';
+import 'util.dart';
 
 @immutable
 class FilledTonalButtonThemeData with Diagnosticable {
@@ -108,10 +109,63 @@ class FilledTonalButton extends ButtonStyleButton {
   }) = _FilledTonalButtonWithIcon;
 
   @override
+  static ButtonStyle styleFrom({
+    @required Color backgroundColor,
+    @required Color foregroundColor,
+    @required Color disabledColor,
+    @required MD3StateLayerOpacityTheme stateLayerOpacityTheme,
+    Color shadowColor,
+    MaterialStateProperty<MD3ElevationLevel> md3Elevation,
+    TextStyle labelStyle,
+    MouseCursor disabledCursor,
+    MouseCursor enabledCursor,
+    VisualDensity visualDensity,
+    MaterialTapTargetSize tapTargetSize,
+    InteractiveInkFeatureFactory splashFactory,
+    OutlinedBorder shape,
+  }) {
+    ArgumentError.checkNotNull(backgroundColor);
+    ArgumentError.checkNotNull(foregroundColor);
+    ArgumentError.checkNotNull(disabledColor);
+    ArgumentError.checkNotNull(stateLayerOpacityTheme);
+
+    return ButtonStyle(
+      backgroundColor: MD3DisablableColor(
+        backgroundColor,
+        disabledColor: disabledColor,
+        disabledOpacity: 0.12,
+      ),
+      foregroundColor: MD3DisablableColor(
+        foregroundColor,
+        disabledColor: disabledColor,
+      ),
+      shadowColor: ButtonStyleButton.allOrNull(shadowColor),
+      elevation: md3Elevation?.value,
+      textStyle: ButtonStyleButton.allOrNull(labelStyle),
+      minimumSize: MaterialStateProperty.all(const Size(0, 40)),
+      fixedSize: MaterialStateProperty.all(const Size.fromHeight(40)),
+      maximumSize: MaterialStateProperty.all(Size.infinite),
+      overlayColor: MD3StateOverlayColor(
+        foregroundColor,
+        stateLayerOpacityTheme,
+      ),
+      shape: ButtonStyleButton.allOrNull(shape),
+      mouseCursor: MD3DisablableCursor(
+        enabledCursor ?? SystemMouseCursors.click,
+        disabledCursor ?? SystemMouseCursors.forbidden,
+      ),
+      visualDensity: visualDensity,
+      tapTargetSize: tapTargetSize,
+      animationDuration: kThemeChangeDuration,
+      enableFeedback: true,
+      alignment: Alignment.center,
+      splashFactory: splashFactory,
+    );
+  }
+
+  @override
   ButtonStyle defaultStyleOf(BuildContext context) {
     final ThemeData theme = Theme.of(context);
-    final ColorScheme colorScheme = theme.colorScheme;
-
     final EdgeInsetsGeometry scaledPadding = ButtonStyleButton.scaledPadding(
       const EdgeInsets.symmetric(horizontal: 24),
       const EdgeInsets.symmetric(horizontal: 16),
@@ -121,121 +175,29 @@ class FilledTonalButton extends ButtonStyleButton {
 
     final scheme = context.colorScheme;
     final elevation = context.elevation;
+    final md3Elevation =
+        MD3HoverableElevation(elevation.level0, elevation.level1);
 
-    return ButtonStyle(
-      backgroundColor: _FilledTonalButtonDefaultBackground(scheme),
-      foregroundColor: _FilledTonalButtonDefaultForeground(scheme),
-      shadowColor: MaterialStateProperty.all(theme.shadowColor),
-      elevation: _FilledTonalButtonDefaultElevation(elevation),
-      textStyle: MaterialStateProperty.all(theme.textTheme.button),
-      padding: MaterialStateProperty.all(scaledPadding),
-      minimumSize: MaterialStateProperty.all(const Size(0, 40)),
-      fixedSize: MaterialStateProperty.all(const Size.fromHeight(40)),
-      maximumSize: MaterialStateProperty.all(Size.infinite),
-      overlayColor: _FilledTonalButtonDefaultOverlay(scheme),
-      shape: MaterialStateProperty.all(const StadiumBorder()),
-      mouseCursor: _FilledTonalButtonDefaultMouseCursor(
-          SystemMouseCursors.click, SystemMouseCursors.forbidden),
+    return styleFrom(
+      backgroundColor: scheme.secondaryContainer,
+      foregroundColor: scheme.onSecondaryContainer,
+      disabledColor: scheme.onSurface,
+      shadowColor: theme.shadowColor,
+      md3Elevation: md3Elevation,
+      labelStyle: context.textTheme.labelLarge,
+      stateLayerOpacityTheme: context.stateOverlayOpacity,
       visualDensity: theme.visualDensity,
       tapTargetSize: theme.materialTapTargetSize,
-      animationDuration: kThemeChangeDuration,
-      enableFeedback: true,
-      alignment: Alignment.center,
-      splashFactory: InkRipple.splashFactory,
+      splashFactory: theme.splashFactory,
+      shape: const StadiumBorder(),
+    ).copyWith(
+      padding: MaterialStateProperty.all(scaledPadding),
     );
   }
 
   @override
   ButtonStyle themeStyleOf(BuildContext context) {
     return FilledTonalButtonTheme.of(context).style;
-  }
-}
-
-@immutable
-class _FilledTonalButtonDefaultElevation extends MaterialStateProperty<double>
-    with Diagnosticable {
-  _FilledTonalButtonDefaultElevation(this.elevation);
-
-  final MD3ElevationTheme elevation;
-
-  @override
-  double resolve(Set<MaterialState> states) {
-    if (states.contains(MaterialState.hovered)) {
-      return elevation.level1.value;
-    }
-    return elevation.level0.value;
-  }
-}
-
-@immutable
-class _FilledTonalButtonDefaultBackground extends MaterialStateProperty<Color>
-    with Diagnosticable {
-  _FilledTonalButtonDefaultBackground(this.scheme);
-
-  final MonetColorScheme scheme;
-
-  @override
-  Color resolve(Set<MaterialState> states) {
-    if (states.contains(MaterialState.disabled)) {
-      return scheme.onSurface.withOpacity(0.12);
-    }
-
-    return scheme.secondaryContainer;
-  }
-}
-
-@immutable
-class _FilledTonalButtonDefaultForeground extends MaterialStateProperty<Color>
-    with Diagnosticable {
-  _FilledTonalButtonDefaultForeground(this.scheme);
-
-  final MonetColorScheme scheme;
-
-  @override
-  Color resolve(Set<MaterialState> states) {
-    if (states.contains(MaterialState.disabled)) {
-      return scheme.onSurface.withOpacity(0.38);
-    }
-    return scheme.onSecondaryContainer;
-  }
-}
-
-@immutable
-class _FilledTonalButtonDefaultOverlay extends MaterialStateProperty<Color>
-    with Diagnosticable {
-  _FilledTonalButtonDefaultOverlay(this.scheme);
-
-  final MonetColorScheme scheme;
-
-  @override
-  Color resolve(Set<MaterialState> states) {
-    final color = scheme.onSecondaryContainer;
-    if (states.contains(MaterialState.hovered)) {
-      return color.withOpacity(0.08);
-    }
-    if (states.contains(MaterialState.focused)) {
-      return color.withOpacity(0.24);
-    }
-    if (states.contains(MaterialState.pressed)) {
-      return color.withOpacity(0.24);
-    }
-
-    return Colors.transparent;
-  }
-}
-
-@immutable
-class _FilledTonalButtonDefaultMouseCursor
-    extends MaterialStateProperty<MouseCursor> with Diagnosticable {
-  _FilledTonalButtonDefaultMouseCursor(this.enabledCursor, this.disabledCursor);
-
-  final MouseCursor enabledCursor;
-  final MouseCursor disabledCursor;
-
-  @override
-  MouseCursor resolve(Set<MaterialState> states) {
-    if (states.contains(MaterialState.disabled)) return disabledCursor;
-    return enabledCursor;
   }
 }
 

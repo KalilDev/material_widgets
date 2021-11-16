@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 import 'package:material_you/material_you.dart';
+import 'util.dart';
 
 enum MD3FABColorScheme {
   primaryContainer,
@@ -15,6 +16,7 @@ enum MD3FABColorScheme {
 class MD3FloatingActionButton extends ButtonStyleButton {
   final MD3FABColorScheme fabColorScheme;
   final bool isLowered;
+  final CustomColorScheme colorScheme;
   const MD3FloatingActionButton({
     Key key,
     this.fabColorScheme = MD3FABColorScheme.primaryContainer,
@@ -27,6 +29,7 @@ class MD3FloatingActionButton extends ButtonStyleButton {
     FocusNode focusNode,
     bool autofocus = false,
     Clip clipBehavior = Clip.none,
+    this.colorScheme,
     @required Widget child,
   }) : super(
           key: key,
@@ -54,6 +57,7 @@ class MD3FloatingActionButton extends ButtonStyleButton {
     FocusNode focusNode,
     bool autofocus,
     Clip clipBehavior,
+    CustomColorScheme colorScheme,
     @required Widget icon,
     @required Widget label,
   }) = _ExpandedFAB;
@@ -70,6 +74,7 @@ class MD3FloatingActionButton extends ButtonStyleButton {
     FocusNode focusNode,
     bool autofocus,
     Clip clipBehavior,
+    CustomColorScheme colorScheme,
     Widget child,
   }) = _SmallFAB;
 
@@ -85,59 +90,107 @@ class MD3FloatingActionButton extends ButtonStyleButton {
     FocusNode focusNode,
     bool autofocus,
     Clip clipBehavior,
+    CustomColorScheme colorScheme,
     Widget child,
   }) = _LargeFAB;
 
-  @override
-  ButtonStyle defaultStyleOf(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    final ColorScheme colorScheme = theme.colorScheme;
-
-    final EdgeInsetsGeometry scaledPadding = ButtonStyleButton.scaledPadding(
-      const EdgeInsets.all(8),
-      const EdgeInsets.symmetric(horizontal: 8),
-      const EdgeInsets.symmetric(horizontal: 4),
-      MediaQuery.maybeOf(context)?.textScaleFactor ?? 1,
-    );
-
-    final mouseCursor = _FabDefaultMouseCursor(
-      SystemMouseCursors.click,
-      SystemMouseCursors.forbidden,
-    );
-
-    final textTheme = context.textTheme;
+  CustomColorScheme _customColorFromFABScheme(BuildContext context) {
     final scheme = context.colorScheme;
-    final elevationTheme = context.elevation;
-    final md3Elevation = _FabDefaultMD3Elevation(elevationTheme, isLowered);
+    switch (this.fabColorScheme) {
+      case MD3FABColorScheme.primaryContainer:
+        return scheme.primaryScheme;
+      case MD3FABColorScheme.surface:
+        return customColorsForPrimary(scheme);
+      case MD3FABColorScheme.tertiary:
+        return scheme.tertiaryScheme;
+      case MD3FABColorScheme.secondary:
+        return scheme.secondaryScheme;
+      default:
+        throw StateError('err');
+    }
+  }
+
+  static ButtonStyle styleFrom({
+    @required Color backgroundColor,
+    @required Color foregroundColor,
+    @required MD3StateLayerOpacityTheme stateLayerOpacityTheme,
+    Color tintColor,
+    Color shadowColor,
+    TextStyle labelStyle,
+    MouseCursor enabledCursor,
+    MouseCursor disabledCursor,
+    MaterialStateProperty<MD3ElevationLevel> md3Elevation,
+    bool enableFeedback,
+    VisualDensity visualDensity,
+    MaterialTapTargetSize tapTargetSize,
+    InteractiveInkFeatureFactory splashFactory,
+    OutlinedBorder shape,
+  }) {
+    ArgumentError.checkNotNull(backgroundColor);
+    ArgumentError.checkNotNull(foregroundColor);
+    ArgumentError.checkNotNull(stateLayerOpacityTheme);
+    if (tintColor != null) {
+      ArgumentError.checkNotNull(md3Elevation, 'md3Elevation');
+    }
 
     return ButtonStyle(
-      textStyle: _FabDefaultTextStyle(textTheme),
+      textStyle: ButtonStyleButton.allOrNull(labelStyle),
       minimumSize: MaterialStateProperty.all(Size.zero),
       maximumSize: MaterialStateProperty.all(Size.infinite),
-      backgroundColor:
-          _FabDefaultBackground(scheme, fabColorScheme, md3Elevation),
-      foregroundColor:
-          _FabDefaultForeground(scheme, fabColorScheme, md3Elevation),
-      overlayColor: _FabDefaultOverlay(scheme, fabColorScheme, md3Elevation),
-      shadowColor:
-          ButtonStyleButton.allOrNull<Color>(context.monetTheme.neutral[0]),
-      elevation: MaterialStateProperty.resolveWith(
-        (states) => md3Elevation.resolve(states).value,
+      backgroundColor: MD3ElevationTintableColor(
+        backgroundColor,
+        tintColor,
+        md3Elevation,
       ),
-      padding:
-          MaterialStateProperty.all<EdgeInsetsGeometry>(EdgeInsets.all(16)),
-      fixedSize: MaterialStateProperty.all<Size>(Size.square(56)),
-      side: ButtonStyleButton.allOrNull<BorderSide>(null),
-      shape: MaterialStateProperty.all<OutlinedBorder>(
-          const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(16)))),
-      mouseCursor: mouseCursor,
+      foregroundColor: MaterialStateProperty.all(foregroundColor),
+      overlayColor: MD3StateOverlayColor(
+        foregroundColor,
+        stateLayerOpacityTheme,
+      ),
+      shadowColor: ButtonStyleButton.allOrNull(shadowColor),
+      elevation: md3Elevation?.value,
+      padding: MaterialStateProperty.all(const EdgeInsets.all(16)),
+      fixedSize: MaterialStateProperty.all(const Size.square(56)),
+      shape: ButtonStyleButton.allOrNull(shape),
+      mouseCursor: MD3DisablableCursor(
+        enabledCursor ?? SystemMouseCursors.click,
+        disabledCursor ?? SystemMouseCursors.forbidden,
+      ),
+      visualDensity: visualDensity,
+      tapTargetSize: tapTargetSize,
+      animationDuration: kThemeChangeDuration,
+      enableFeedback: enableFeedback ?? true,
+      splashFactory: splashFactory,
+      alignment: Alignment.center,
+    );
+  }
+
+  @override
+  ButtonStyle defaultStyleOf(BuildContext context) {
+    final color = colorScheme ?? _customColorFromFABScheme(context);
+    final elevationTheme = context.elevation;
+
+    final ThemeData theme = Theme.of(context);
+
+    return styleFrom(
+      backgroundColor: color.colorContainer,
+      foregroundColor: color.onColorContainer,
+      labelStyle: context.textTheme.labelLarge,
+      tintColor: fabColorScheme == MD3FABColorScheme.surface
+          ? MD3ElevationLevel.surfaceTint(context.colorScheme)
+          : null,
+      stateLayerOpacityTheme: context.stateOverlayOpacity,
+      md3Elevation: MD3HoverableElevation(
+        isLowered ? elevationTheme.level1 : elevationTheme.level2,
+        isLowered ? elevationTheme.level3 : elevationTheme.level4,
+      ),
+      shadowColor: Colors.black,
       visualDensity: theme.visualDensity,
       tapTargetSize: theme.materialTapTargetSize,
-      animationDuration: kThemeChangeDuration,
-      enableFeedback: true,
-      alignment: Alignment.center,
       splashFactory: theme.splashFactory,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(16)),
+      ),
     );
   }
 
@@ -210,189 +263,13 @@ class MD3FloatingActionButtonTheme extends InheritedTheme {
       data != oldWidget.data;
 }
 
-@immutable
-class _FabDefaultBackground extends MaterialStateProperty<Color> {
-  _FabDefaultBackground(this.scheme, this.fabColorScheme, this.elevation);
-
-  final MonetColorScheme scheme;
-  final MD3FABColorScheme fabColorScheme;
-  final MaterialStateProperty<MD3ElevationLevel> elevation;
-
-  Color _resolvePrimaryContainer(Set<MaterialState> states) {
-    return scheme.primaryContainer;
-  }
-
-  Color _resolveSurface(Set<MaterialState> states) {
-    return elevation.resolve(states).overlaidColor(
-          scheme.surface,
-          MD3ElevationLevel.surfaceTint(scheme),
-        );
-  }
-
-  Color _resolveSecondary(Set<MaterialState> states) {
-    return scheme.secondaryContainer;
-  }
-
-  Color _resolveTertiary(Set<MaterialState> states) {
-    return scheme.tertiaryContainer;
-  }
-
-  @override
-  Color resolve(Set<MaterialState> states) {
-    switch (fabColorScheme) {
-      case MD3FABColorScheme.primaryContainer:
-        return _resolvePrimaryContainer(states);
-      case MD3FABColorScheme.surface:
-        return _resolveSurface(states);
-      case MD3FABColorScheme.secondary:
-        return _resolveSecondary(states);
-      case MD3FABColorScheme.tertiary:
-        return _resolveTertiary(states);
-      default:
-        throw StateError('unreachable');
-    }
-  }
-}
-
-@immutable
-class _FabDefaultForeground extends MaterialStateProperty<Color> {
-  _FabDefaultForeground(this.scheme, this.fabColorScheme, this.elevation);
-
-  final MonetColorScheme scheme;
-  final MD3FABColorScheme fabColorScheme;
-  final MaterialStateProperty<MD3ElevationLevel> elevation;
-
-  Color _resolvePrimaryContainer(Set<MaterialState> states) {
-    return scheme.onPrimaryContainer;
-  }
-
-  Color _resolveSurface(Set<MaterialState> states) {
-    return scheme.primary;
-  }
-
-  Color _resolveSecondary(Set<MaterialState> states) {
-    return scheme.onSecondaryContainer;
-  }
-
-  Color _resolveTertiary(Set<MaterialState> states) {
-    return scheme.onTertiaryContainer;
-  }
-
-  @override
-  Color resolve(Set<MaterialState> states) {
-    switch (fabColorScheme) {
-      case MD3FABColorScheme.primaryContainer:
-        return _resolvePrimaryContainer(states);
-      case MD3FABColorScheme.surface:
-        return _resolveSurface(states);
-      case MD3FABColorScheme.secondary:
-        return _resolveSecondary(states);
-      case MD3FABColorScheme.tertiary:
-        return _resolveTertiary(states);
-      default:
-        throw StateError('unreachable');
-    }
-  }
-}
-
-@immutable
-class _FabDefaultMD3Elevation extends MaterialStateProperty<MD3ElevationLevel> {
-  _FabDefaultMD3Elevation(this.theme, this.lowered);
-
-  final MD3ElevationTheme theme;
-  final bool lowered;
-
-  @override
-  MD3ElevationLevel resolve(Set<MaterialState> states) {
-    if (states.contains(MaterialState.hovered)) {
-      return lowered ? theme.level2 : theme.level4;
-    }
-    return lowered ? theme.level1 : theme.level3;
-  }
-}
-
-@immutable
-class _FabDefaultTextStyle extends MaterialStateProperty<TextStyle> {
-  _FabDefaultTextStyle(this.textTheme);
-
-  final MD3TextTheme textTheme;
-
-  @override
-  TextStyle resolve(Set<MaterialState> states) {
-    return textTheme.labelLarge;
-  }
-}
-
-@immutable
-class _FabDefaultOverlay extends MaterialStateProperty<Color> {
-  _FabDefaultOverlay(this.scheme, this.fabColorScheme, this.elevation);
-
-  final MonetColorScheme scheme;
-  final MD3FABColorScheme fabColorScheme;
-  final MaterialStateProperty<MD3ElevationLevel> elevation;
-
-  Color _resolvePrimaryContainer(Set<MaterialState> states) {
-    return scheme.onPrimaryContainer;
-  }
-
-  Color _resolveSurface(Set<MaterialState> states) {
-    return scheme.primary;
-  }
-
-  Color _resolveSecondary(Set<MaterialState> states) {
-    return scheme.onSecondaryContainer;
-  }
-
-  Color _resolveTertiary(Set<MaterialState> states) {
-    return scheme.onTertiaryContainer;
-  }
-
-  Color _resolveColor(Set<MaterialState> states) {
-    switch (fabColorScheme) {
-      case MD3FABColorScheme.primaryContainer:
-        return _resolvePrimaryContainer(states);
-      case MD3FABColorScheme.surface:
-        return _resolveSurface(states);
-      case MD3FABColorScheme.secondary:
-        return _resolveSecondary(states);
-      case MD3FABColorScheme.tertiary:
-        return _resolveTertiary(states);
-      default:
-        throw StateError('unreachable');
-    }
-  }
-
-  @override
-  Color resolve(Set<MaterialState> states) {
-    final color = _resolveColor(states);
-    double opacity = 0.0;
-    if (states.contains(MaterialState.hovered)) {
-      opacity = 0.08;
-    }
-    if (states.contains(MaterialState.focused)) {
-      opacity = 0.24;
-    }
-    if (states.contains(MaterialState.pressed)) {
-      opacity = 0.24;
-    }
-    return color.withOpacity(opacity);
-  }
-}
-
-@immutable
-class _FabDefaultMouseCursor extends MaterialStateProperty<MouseCursor>
-    with Diagnosticable {
-  _FabDefaultMouseCursor(this.enabledCursor, this.disabledCursor);
-
-  final MouseCursor enabledCursor;
-  final MouseCursor disabledCursor;
-
-  @override
-  MouseCursor resolve(Set<MaterialState> states) {
-    if (states.contains(MaterialState.disabled)) return disabledCursor;
-    return enabledCursor;
-  }
-}
+CustomColorScheme customColorsForPrimary(MonetColorScheme scheme) =>
+    CustomColorScheme(
+      color: scheme.surface,
+      onColor: scheme.primary,
+      onColorContainer: scheme.primary,
+      colorContainer: scheme.surface,
+    );
 
 class _SmallFAB extends MD3FloatingActionButton {
   _SmallFAB({
@@ -407,6 +284,7 @@ class _SmallFAB extends MD3FloatingActionButton {
     FocusNode focusNode,
     bool autofocus,
     Clip clipBehavior,
+    CustomColorScheme colorScheme,
     Widget child,
   }) : super(
           key: key,
@@ -420,6 +298,7 @@ class _SmallFAB extends MD3FloatingActionButton {
           focusNode: focusNode,
           autofocus: autofocus ?? false,
           clipBehavior: clipBehavior ?? Clip.none,
+          colorScheme: colorScheme,
           child: child,
         );
 
@@ -448,6 +327,7 @@ class _LargeFAB extends MD3FloatingActionButton {
     FocusNode focusNode,
     bool autofocus,
     Clip clipBehavior,
+    CustomColorScheme colorScheme,
     Widget child,
   }) : super(
           key: key,
@@ -461,6 +341,7 @@ class _LargeFAB extends MD3FloatingActionButton {
           focusNode: focusNode,
           autofocus: autofocus ?? false,
           clipBehavior: clipBehavior ?? Clip.none,
+          colorScheme: colorScheme,
           child: IconTheme.merge(
             data: IconThemeData(size: 36),
             child: child,
@@ -493,6 +374,7 @@ class _ExpandedFAB extends MD3FloatingActionButton {
     FocusNode focusNode,
     bool autofocus,
     Clip clipBehavior,
+    CustomColorScheme colorScheme,
     Widget icon,
     @required Widget label,
   })  : assert(label != null),
@@ -509,6 +391,7 @@ class _ExpandedFAB extends MD3FloatingActionButton {
           focusNode: focusNode,
           autofocus: autofocus ?? false,
           clipBehavior: clipBehavior ?? Clip.none,
+          colorScheme: colorScheme,
           child: _ExpandedFabChild(
             isExpanded: isExpanded,
             icon: icon,

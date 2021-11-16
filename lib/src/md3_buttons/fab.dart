@@ -6,6 +6,10 @@ import 'dart:math' as math;
 import 'package:material_you/material_you.dart';
 import 'util.dart';
 
+const _kFabColorSchemeDeprecation =
+    'Use one of MD3FloatingActionButton.{primaryStyle, '
+    'secondaryStyle, tertiaryStyle, surfaceStyle}';
+@Deprecated(_kFabColorSchemeDeprecation)
 enum MD3FABColorScheme {
   primaryContainer,
   surface,
@@ -19,7 +23,8 @@ class MD3FloatingActionButton extends ButtonStyleButton {
   final CustomColorScheme colorScheme;
   const MD3FloatingActionButton({
     Key key,
-    this.fabColorScheme = MD3FABColorScheme.primaryContainer,
+    @Deprecated(_kFabColorSchemeDeprecation)
+        this.fabColorScheme = MD3FABColorScheme.primaryContainer,
     this.isLowered = false,
     @required VoidCallback onPressed,
     VoidCallback onLongPress,
@@ -46,7 +51,7 @@ class MD3FloatingActionButton extends ButtonStyleButton {
 
   factory MD3FloatingActionButton.expanded({
     Key key,
-    MD3FABColorScheme fabColorScheme,
+    @Deprecated(_kFabColorSchemeDeprecation) MD3FABColorScheme fabColorScheme,
     bool isLowered,
     bool isExpanded,
     @required VoidCallback onPressed,
@@ -64,7 +69,7 @@ class MD3FloatingActionButton extends ButtonStyleButton {
 
   factory MD3FloatingActionButton.small({
     Key key,
-    MD3FABColorScheme fabColorScheme,
+    @Deprecated(_kFabColorSchemeDeprecation) MD3FABColorScheme fabColorScheme,
     bool isLowered,
     @required VoidCallback onPressed,
     VoidCallback onLongPress,
@@ -80,7 +85,7 @@ class MD3FloatingActionButton extends ButtonStyleButton {
 
   factory MD3FloatingActionButton.large({
     Key key,
-    MD3FABColorScheme fabColorScheme,
+    @Deprecated(_kFabColorSchemeDeprecation) MD3FABColorScheme fabColorScheme,
     bool isLowered,
     @required VoidCallback onPressed,
     VoidCallback onLongPress,
@@ -100,7 +105,12 @@ class MD3FloatingActionButton extends ButtonStyleButton {
       case MD3FABColorScheme.primaryContainer:
         return scheme.primaryScheme;
       case MD3FABColorScheme.surface:
-        return customColorsForPrimary(scheme);
+        return CustomColorScheme(
+          color: scheme.surface,
+          onColor: scheme.primary,
+          colorContainer: scheme.surface,
+          onColorContainer: scheme.primary,
+        );
       case MD3FABColorScheme.tertiary:
         return scheme.tertiaryScheme;
       case MD3FABColorScheme.secondary:
@@ -109,6 +119,123 @@ class MD3FloatingActionButton extends ButtonStyleButton {
         throw StateError('err');
     }
   }
+
+  static ButtonStyle primaryStyle(
+    BuildContext context, {
+    Color shadowColor,
+    TextStyle labelStyle,
+    MouseCursor enabledCursor,
+    MouseCursor disabledCursor,
+    MaterialStateProperty<MD3ElevationLevel> md3Elevation,
+    bool enableFeedback,
+    VisualDensity visualDensity,
+    MaterialTapTargetSize tapTargetSize,
+    InteractiveInkFeatureFactory splashFactory,
+    OutlinedBorder shape,
+  }) =>
+      styleFrom(
+        backgroundColor: context.colorScheme.primaryContainer,
+        foregroundColor: context.colorScheme.onPrimaryContainer,
+        stateLayerOpacityTheme: context.stateOverlayOpacity,
+        shadowColor: shadowColor,
+        labelStyle: labelStyle,
+        enabledCursor: enabledCursor,
+        disabledCursor: disabledCursor,
+        md3Elevation: md3Elevation,
+        enableFeedback: enableFeedback,
+        visualDensity: visualDensity,
+        tapTargetSize: tapTargetSize,
+        splashFactory: splashFactory,
+        shape: shape,
+      );
+
+  static ButtonStyle secondaryStyle(
+    BuildContext context, {
+    Color shadowColor,
+    TextStyle labelStyle,
+    MouseCursor enabledCursor,
+    MouseCursor disabledCursor,
+    MaterialStateProperty<MD3ElevationLevel> md3Elevation,
+    bool enableFeedback,
+    VisualDensity visualDensity,
+    MaterialTapTargetSize tapTargetSize,
+    InteractiveInkFeatureFactory splashFactory,
+    OutlinedBorder shape,
+  }) =>
+      styleFrom(
+        backgroundColor: context.colorScheme.secondaryContainer,
+        foregroundColor: context.colorScheme.onSecondaryContainer,
+        stateLayerOpacityTheme: context.stateOverlayOpacity,
+        shadowColor: shadowColor,
+        labelStyle: labelStyle,
+        enabledCursor: enabledCursor,
+        disabledCursor: disabledCursor,
+        md3Elevation: md3Elevation,
+        enableFeedback: enableFeedback,
+        visualDensity: visualDensity,
+        tapTargetSize: tapTargetSize,
+        splashFactory: splashFactory,
+        shape: shape,
+      );
+
+  static ButtonStyle tertiaryStyle(
+    BuildContext context, {
+    Color shadowColor,
+    TextStyle labelStyle,
+    MouseCursor enabledCursor,
+    MouseCursor disabledCursor,
+    MaterialStateProperty<MD3ElevationLevel> md3Elevation,
+    bool enableFeedback,
+    VisualDensity visualDensity,
+    MaterialTapTargetSize tapTargetSize,
+    InteractiveInkFeatureFactory splashFactory,
+    OutlinedBorder shape,
+  }) =>
+      styleFrom(
+        backgroundColor: context.colorScheme.tertiaryContainer,
+        foregroundColor: context.colorScheme.onTertiaryContainer,
+        stateLayerOpacityTheme: context.stateOverlayOpacity,
+        shadowColor: shadowColor,
+        labelStyle: labelStyle,
+        enabledCursor: enabledCursor,
+        disabledCursor: disabledCursor,
+        md3Elevation: md3Elevation,
+        enableFeedback: enableFeedback,
+        visualDensity: visualDensity,
+        tapTargetSize: tapTargetSize,
+        splashFactory: splashFactory,
+        shape: shape,
+      );
+
+  static ButtonStyle surfaceStyle(
+    BuildContext context, {
+    Color shadowColor,
+    TextStyle labelStyle,
+    MouseCursor enabledCursor,
+    MouseCursor disabledCursor,
+    MaterialStateProperty<MD3ElevationLevel> md3Elevation,
+    bool enableFeedback,
+    VisualDensity visualDensity,
+    MaterialTapTargetSize tapTargetSize,
+    InteractiveInkFeatureFactory splashFactory,
+    OutlinedBorder shape,
+  }) =>
+      styleFrom(
+        backgroundColor: context.colorScheme.surface,
+        foregroundColor: context.colorScheme.primary,
+        tintColor: MD3ElevationLevel.surfaceTint(context.colorScheme),
+        stateLayerOpacityTheme: context.stateOverlayOpacity,
+        shadowColor: shadowColor,
+        labelStyle: labelStyle,
+        enabledCursor: enabledCursor,
+        disabledCursor: disabledCursor,
+        md3Elevation: md3Elevation,
+        enableFeedback: enableFeedback,
+        visualDensity: visualDensity,
+        tapTargetSize: tapTargetSize,
+        splashFactory: splashFactory,
+        shape: shape,
+      );
 
   static ButtonStyle styleFrom({
     @required Color backgroundColor,
@@ -159,7 +286,7 @@ class MD3FloatingActionButton extends ButtonStyleButton {
       visualDensity: visualDensity,
       tapTargetSize: tapTargetSize,
       animationDuration: kThemeChangeDuration,
-      enableFeedback: enableFeedback ?? true,
+      enableFeedback: enableFeedback,
       splashFactory: splashFactory,
       alignment: Alignment.center,
     );
@@ -188,6 +315,7 @@ class MD3FloatingActionButton extends ButtonStyleButton {
       visualDensity: theme.visualDensity,
       tapTargetSize: theme.materialTapTargetSize,
       splashFactory: theme.splashFactory,
+      enableFeedback: true,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(16)),
       ),
@@ -262,14 +390,6 @@ class MD3FloatingActionButtonTheme extends InheritedTheme {
   bool updateShouldNotify(MD3FloatingActionButtonTheme oldWidget) =>
       data != oldWidget.data;
 }
-
-CustomColorScheme customColorsForPrimary(MonetColorScheme scheme) =>
-    CustomColorScheme(
-      color: scheme.surface,
-      onColor: scheme.primary,
-      onColorContainer: scheme.primary,
-      colorContainer: scheme.surface,
-    );
 
 class _SmallFAB extends MD3FloatingActionButton {
   _SmallFAB({

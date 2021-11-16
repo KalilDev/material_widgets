@@ -5,7 +5,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:material_widgets/material_widgets.dart';
 import 'package:material_you/material_you.dart';
-import 'util.dart';
 
 @immutable
 class FilledButtonThemeData with Diagnosticable {
@@ -175,7 +174,7 @@ class FilledButton extends ButtonStyleButton {
     final scheme = context.colorScheme;
     final elevation = context.elevation;
     final md3Elevation =
-        MD3HoverableElevation(elevation.level0, elevation.level1);
+        MD3MaterialStateElevation(elevation.level0, elevation.level1);
 
     return styleFrom(
       backgroundColor: scheme.primary,

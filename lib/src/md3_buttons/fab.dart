@@ -4,12 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 import 'package:material_you/material_you.dart';
-import 'util.dart';
 
-const _kFabColorSchemeDeprecation =
-    'Use one of MD3FloatingActionButton.{primaryStyle, '
-    'secondaryStyle, tertiaryStyle, surfaceStyle}';
-@Deprecated(_kFabColorSchemeDeprecation)
 enum MD3FABColorScheme {
   primaryContainer,
   surface,
@@ -307,7 +302,7 @@ class MD3FloatingActionButton extends ButtonStyleButton {
           ? MD3ElevationLevel.surfaceTint(context.colorScheme)
           : null,
       stateLayerOpacityTheme: context.stateOverlayOpacity,
-      md3Elevation: MD3HoverableElevation(
+      md3Elevation: MD3MaterialStateElevation(
         isLowered ? elevationTheme.level1 : elevationTheme.level2,
         isLowered ? elevationTheme.level3 : elevationTheme.level4,
       ),

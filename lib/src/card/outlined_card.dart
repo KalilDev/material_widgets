@@ -24,28 +24,64 @@ class OutlinedCard extends CardStyleCard {
           child: child,
         );
 
+  static CardStyle styleFrom({
+    Color backgroundColor,
+    Color backgroundTintColor,
+    Color foregroundColor,
+    BorderSide borderSide,
+    MaterialStateProperty<MD3ElevationLevel> elevation,
+    MD3StateLayerOpacityTheme stateLayerOpacity,
+    Color shadowColor,
+    EdgeInsetsGeometry padding,
+    OutlinedBorder shape,
+  }) {
+    if (stateLayerOpacity != null) {
+      ArgumentError.checkNotNull(foregroundColor, 'foregroundColor');
+    }
+    return CardStyle(
+      backgroundColor: ButtonStyleButton.allOrNull(backgroundColor),
+      elevation: elevation,
+      mouseCursor: MaterialStateProperty.all(MouseCursor.defer),
+      shadowColor: ButtonStyleButton.allOrNull(shadowColor),
+      stateLayerColor: stateLayerOpacity == null
+          ? null
+          : MD3StateOverlayColor(
+              foregroundColor,
+              stateLayerOpacity,
+            ),
+      elevationTintColor: ButtonStyleButton.allOrNull(backgroundTintColor),
+      foregroundColor: ButtonStyleButton.allOrNull(foregroundColor),
+      shape: ButtonStyleButton.allOrNull(shape),
+      borderSide: ButtonStyleButton.allOrNull(borderSide),
+      padding: ButtonStyleButton.allOrNull(padding),
+    );
+  }
+
   @override
   CardStyle defaultStyleOf(BuildContext context) {
+    final theme = context.theme;
     final scheme = context.colorScheme;
-    return CardStyle(
-      backgroundColor: MaterialStateProperty.all(scheme.surface),
-      elevation: _OutlinedCardDefaultElevation(context.elevation),
-      mouseCursor: MaterialStateProperty.all(MouseCursor.defer),
-      shadowColor: MaterialStateProperty.all(context.monetTheme.neutral[0]),
-      stateLayerColor: _OutlinedCardDefaultStateLayerColor(scheme),
-      elevationTintColor:
-          MaterialStateProperty.all(MD3ElevationLevel.surfaceTint(scheme)),
-      shape: MaterialStateProperty.all(
-        RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-          side: BorderSide(
-            width: 1,
-            color: scheme.outline,
-          ),
-        ),
+    final elevation = context.elevation;
+    return styleFrom(
+      backgroundColor: scheme.surface,
+      backgroundTintColor: MD3ElevationLevel.surfaceTint(scheme),
+      foregroundColor: scheme.onSurface,
+      borderSide: BorderSide(
+        width: 1.0,
+        color: scheme.outline,
       ),
-      padding:
-          MaterialStateProperty.all(EdgeInsets.symmetric(horizontal: 16.0)),
+      elevation: MD3MaterialStateElevation(
+        elevation.level0,
+        elevation.level1,
+        focused: elevation.level1,
+        dragged: elevation.level3,
+      ),
+      stateLayerOpacity: context.stateOverlayOpacity,
+      shadowColor: theme.shadowColor,
+      padding: EdgeInsets.zero,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
     );
   }
 
@@ -113,57 +149,4 @@ class OutlinedCardTheme extends InheritedTheme {
   @override
   bool updateShouldNotify(OutlinedCardTheme oldWidget) =>
       data != oldWidget.data;
-}
-
-@immutable
-class _OutlinedCardDefaultStateLayerColor extends MaterialStateProperty<Color> {
-  _OutlinedCardDefaultStateLayerColor(this.scheme);
-
-  final MonetColorScheme scheme;
-
-  @override
-  Color resolve(Set<MaterialState> states) {
-    final color = scheme.onSurface;
-    double opacity = 0.0;
-    if (states.contains(MaterialState.pressed)) {
-      opacity = 0.24;
-    }
-    if (states.contains(MaterialState.hovered)) {
-      opacity = 0.08;
-    }
-    if (states.contains(MaterialState.dragged)) {
-      // ??
-    }
-    return color.withOpacity(opacity);
-  }
-}
-
-@immutable
-class _OutlinedCardDefaultElevation
-    extends MaterialStateProperty<MD3ElevationLevel> {
-  _OutlinedCardDefaultElevation(this.theme);
-
-  final MD3ElevationTheme theme;
-
-  @override
-  MD3ElevationLevel resolve(Set<MaterialState> states) {
-    if (states.contains(MaterialState.hovered) ||
-        states.contains(MaterialState.focused)) {
-      return theme.level1;
-    }
-    if (states.contains(MaterialState.dragged)) {
-      return theme.level3;
-    }
-    return theme.level0;
-  }
-}
-
-@immutable
-class _OutlinedCardDefaultCursor extends MaterialStateProperty<MouseCursor> {
-  _OutlinedCardDefaultCursor();
-
-  @override
-  MouseCursor resolve(Set<MaterialState> states) {
-    return MouseCursor.defer;
-  }
 }

@@ -24,21 +24,55 @@ class ElevatedCard extends CardStyleCard {
           child: child,
         );
 
+  static CardStyle styleFrom({
+    Color backgroundColor,
+    Color backgroundTintColor,
+    Color foregroundColor,
+    MaterialStateProperty<MD3ElevationLevel> elevation,
+    MD3StateLayerOpacityTheme stateLayerOpacity,
+    Color shadowColor,
+    EdgeInsetsGeometry padding,
+    OutlinedBorder shape,
+  }) {
+    if (stateLayerOpacity != null) {
+      ArgumentError.checkNotNull(foregroundColor, 'foregroundColor');
+    }
+    return CardStyle(
+      backgroundColor: ButtonStyleButton.allOrNull(backgroundColor),
+      elevation: elevation,
+      mouseCursor: MaterialStateProperty.all(MouseCursor.defer),
+      shadowColor: ButtonStyleButton.allOrNull(shadowColor),
+      stateLayerColor: stateLayerOpacity == null
+          ? null
+          : MD3StateOverlayColor(
+              foregroundColor,
+              stateLayerOpacity,
+            ),
+      elevationTintColor: ButtonStyleButton.allOrNull(backgroundTintColor),
+      foregroundColor: ButtonStyleButton.allOrNull(foregroundColor),
+      shape: ButtonStyleButton.allOrNull(shape),
+      padding: ButtonStyleButton.allOrNull(padding),
+    );
+  }
+
   @override
   CardStyle defaultStyleOf(BuildContext context) {
+    final theme = context.theme;
     final scheme = context.colorScheme;
-    return CardStyle(
-      backgroundColor: MaterialStateProperty.all(scheme.surface),
-      elevation: _ElevatedCardDefaultElevation(context.elevation),
-      mouseCursor: MaterialStateProperty.all(MouseCursor.defer),
-      shadowColor: MaterialStateProperty.all(context.monetTheme.neutral[0]),
-      stateLayerColor: _ElevatedCardDefaultStateLayerColor(scheme),
-      elevationTintColor:
-          MaterialStateProperty.all(MD3ElevationLevel.surfaceTint(scheme)),
-      shape: MaterialStateProperty.all(
-          RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
-      padding:
-          MaterialStateProperty.all(EdgeInsets.symmetric(horizontal: 16.0)),
+    final elevation = context.elevation;
+    return styleFrom(
+      backgroundColor: scheme.surface,
+      backgroundTintColor: scheme.primary,
+      foregroundColor: scheme.onSurface,
+      elevation: MD3MaterialStateElevation(
+        elevation.level1,
+        elevation.level2,
+        dragged: elevation.level3,
+      ),
+      stateLayerOpacity: context.stateOverlayOpacity,
+      shadowColor: theme.shadowColor,
+      padding: EdgeInsets.zero,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
     );
   }
 
@@ -106,59 +140,4 @@ class ElevatedCardTheme extends InheritedTheme {
   @override
   bool updateShouldNotify(ElevatedCardTheme oldWidget) =>
       data != oldWidget.data;
-}
-
-@immutable
-class _ElevatedCardDefaultStateLayerColor extends MaterialStateProperty<Color> {
-  _ElevatedCardDefaultStateLayerColor(this.scheme);
-
-  final MonetColorScheme scheme;
-
-  @override
-  Color resolve(Set<MaterialState> states) {
-    final color = scheme.onSurface;
-    double opacity = 0.0;
-    if (states.contains(MaterialState.pressed)) {
-      opacity = 0.24;
-    }
-    if (states.contains(MaterialState.hovered)) {
-      opacity = 0.08;
-    }
-    if (states.contains(MaterialState.focused)) {
-      opacity = 0.24;
-    }
-    if (states.contains(MaterialState.dragged)) {
-      // ??
-    }
-    return color.withOpacity(opacity);
-  }
-}
-
-@immutable
-class _ElevatedCardDefaultElevation
-    extends MaterialStateProperty<MD3ElevationLevel> {
-  _ElevatedCardDefaultElevation(this.theme);
-
-  final MD3ElevationTheme theme;
-
-  @override
-  MD3ElevationLevel resolve(Set<MaterialState> states) {
-    if (states.contains(MaterialState.hovered)) {
-      return theme.level2;
-    }
-    if (states.contains(MaterialState.dragged)) {
-      return theme.level3;
-    }
-    return theme.level1;
-  }
-}
-
-@immutable
-class _ElevatedCardDefaultCursor extends MaterialStateProperty<MouseCursor> {
-  _ElevatedCardDefaultCursor();
-
-  @override
-  MouseCursor resolve(Set<MaterialState> states) {
-    return MouseCursor.defer;
-  }
 }

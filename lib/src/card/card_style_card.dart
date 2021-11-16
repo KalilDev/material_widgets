@@ -1,5 +1,11 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:material_you/material_you.dart';
+
+import 'draggable_card.dart';
+import 'outlined_card.dart';
 
 class CardStyle {
   CardStyle({
@@ -9,8 +15,10 @@ class CardStyle {
     this.backgroundColor,
     this.shadowColor,
     this.elevationTintColor,
+    this.foregroundColor,
     this.padding,
     this.mouseCursor,
+    this.borderSide,
   });
 
   final MaterialStateProperty<MD3ElevationLevel> elevation;
@@ -19,8 +27,10 @@ class CardStyle {
   final MaterialStateProperty<Color> backgroundColor;
   final MaterialStateProperty<Color> shadowColor;
   final MaterialStateProperty<Color> elevationTintColor;
+  final MaterialStateProperty<Color> foregroundColor;
   final MaterialStateProperty<EdgeInsetsGeometry> padding;
   final MaterialStateProperty<MouseCursor> mouseCursor;
+  final MaterialStateProperty<BorderSide> borderSide;
 
   CardStyle merge(CardStyle other) => CardStyle(
         elevation: other.elevation ?? elevation,
@@ -29,9 +39,14 @@ class CardStyle {
         backgroundColor: other.backgroundColor ?? backgroundColor,
         shadowColor: other.shadowColor ?? shadowColor,
         elevationTintColor: other.elevationTintColor ?? elevationTintColor,
+        foregroundColor: other.foregroundColor ?? foregroundColor,
         padding: other.padding ?? padding,
         mouseCursor: other.mouseCursor ?? mouseCursor,
+        borderSide: other.borderSide ?? borderSide,
       );
+
+  static const double kHorizontalPadding = 16;
+  static const double kMaxCardSpacing = 8;
 
   CardStyle copyWith({
     MaterialStateProperty<MD3ElevationLevel> elevation,
@@ -40,8 +55,10 @@ class CardStyle {
     MaterialStateProperty<Color> backgroundColor,
     MaterialStateProperty<Color> shadowColor,
     MaterialStateProperty<Color> elevationTintColor,
+    MaterialStateProperty<Color> foregroundColor,
     MaterialStateProperty<EdgeInsetsGeometry> padding,
     MaterialStateProperty<MouseCursor> mouseCursor,
+    MaterialStateProperty<BorderSide> borderSide,
   }) =>
       CardStyle(
         elevation: elevation ?? this.elevation,
@@ -50,8 +67,10 @@ class CardStyle {
         backgroundColor: backgroundColor ?? this.backgroundColor,
         shadowColor: shadowColor ?? this.shadowColor,
         elevationTintColor: elevationTintColor ?? this.elevationTintColor,
+        foregroundColor: foregroundColor ?? this.foregroundColor,
         padding: padding ?? this.padding,
         mouseCursor: mouseCursor ?? this.mouseCursor,
+        borderSide: borderSide ?? this.borderSide,
       );
 }
 
@@ -168,8 +187,10 @@ class _CardStyleCardState extends State<CardStyleCard> with MaterialStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final style =
-        widget.defaultStyleOf(context).merge(widget.themeStyleOf(context));
+    final style = widget
+        .defaultStyleOf(context)
+        .merge(widget.themeStyleOf(context))
+        .merge(widget.style ?? CardStyle());
     return GestureDetector(
       onLongPressStart: _onLongPressDown,
       onLongPressEnd: _onLongPressUp,
@@ -177,7 +198,7 @@ class _CardStyleCardState extends State<CardStyleCard> with MaterialStateMixin {
       child: MouseRegion(
         onEnter: _onMouseEnter,
         onExit: _onMouseExit,
-        cursor: style.mouseCursor.resolve(materialStates),
+        cursor: style.mouseCursor?.resolve(materialStates) ?? MouseCursor.defer,
         child: Focus(
           focusNode: focus,
           onFocusChange: _onFocusChange,
@@ -187,17 +208,33 @@ class _CardStyleCardState extends State<CardStyleCard> with MaterialStateMixin {
     );
   }
 
+  Widget _foreground(Color color, {Widget child}) => DefaultTextStyle.merge(
+        style: TextStyle(color: color),
+        child: IconTheme.merge(
+          data: IconThemeData(
+            color: color,
+          ),
+          child: child,
+        ),
+      );
+
   Card _buildCard(CardStyle style) {
     final shape = style.shape.resolve(materialStates);
     final elevation = style.elevation.resolve(materialStates);
+    final foreground = style.foregroundColor.resolve(materialStates);
+    final backgroundColor = style.backgroundColor.resolve(materialStates);
+    final tintColor = style.elevationTintColor?.resolve(materialStates);
+    final borderSide = style.borderSide?.resolve(materialStates);
 
     return Card(
-      color: elevation.overlaidColor(
-        style.backgroundColor.resolve(materialStates),
-        style.elevationTintColor.resolve(materialStates),
-      ),
+      color: tintColor == null
+          ? backgroundColor
+          : elevation.overlaidColor(
+              backgroundColor,
+              tintColor,
+            ),
       elevation: elevation.value,
-      shape: shape,
+      shape: shape?.copyWith(side: borderSide),
       shadowColor: style.shadowColor.resolve(materialStates),
       margin: EdgeInsets.zero,
       child: InkWell(
@@ -207,8 +244,13 @@ class _CardStyleCardState extends State<CardStyleCard> with MaterialStateMixin {
         highlightColor: Colors.transparent,
         customBorder: shape,
         child: Padding(
-          padding: style.padding.resolve(materialStates),
-          child: widget.child,
+          padding: style.padding?.resolve(materialStates) ?? EdgeInsets.zero,
+          child: _foreground(
+            foreground,
+            child: InheritedDraggableCardInformation.shadow(
+              child: widget.child,
+            ),
+          ),
         ),
       ),
     );

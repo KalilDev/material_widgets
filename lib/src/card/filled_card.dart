@@ -24,20 +24,54 @@ class FilledCard extends CardStyleCard {
           child: child,
         );
 
+  static CardStyle styleFrom({
+    Color backgroundColor,
+    Color foregroundColor,
+    MaterialStateProperty<MD3ElevationLevel> elevation,
+    MD3StateLayerOpacityTheme stateLayerOpacity,
+    Color shadowColor,
+    EdgeInsetsGeometry padding,
+    OutlinedBorder shape,
+  }) {
+    if (stateLayerOpacity != null) {
+      ArgumentError.checkNotNull(foregroundColor, 'foregroundColor');
+    }
+    return CardStyle(
+      backgroundColor: ButtonStyleButton.allOrNull(backgroundColor),
+      elevation: elevation,
+      mouseCursor: MaterialStateProperty.all(MouseCursor.defer),
+      shadowColor: ButtonStyleButton.allOrNull(shadowColor),
+      stateLayerColor: stateLayerOpacity == null
+          ? null
+          : MD3StateOverlayColor(
+              foregroundColor,
+              stateLayerOpacity,
+            ),
+      elevationTintColor: null,
+      foregroundColor: ButtonStyleButton.allOrNull(foregroundColor),
+      shape: ButtonStyleButton.allOrNull(shape),
+      padding: ButtonStyleButton.allOrNull(padding),
+    );
+  }
+
   @override
   CardStyle defaultStyleOf(BuildContext context) {
+    final theme = context.theme;
     final scheme = context.colorScheme;
-    return CardStyle(
-      backgroundColor: MaterialStateProperty.all(scheme.surfaceVariant),
-      elevation: _FilledCardDefaultElevation(context.elevation),
-      mouseCursor: MaterialStateProperty.all(MouseCursor.defer),
-      shadowColor: MaterialStateProperty.all(context.monetTheme.neutral[0]),
-      stateLayerColor: _FilledCardDefaultStateLayerColor(scheme),
-      elevationTintColor: MaterialStateProperty.all(null),
-      shape: MaterialStateProperty.all(
-          RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
-      padding:
-          MaterialStateProperty.all(EdgeInsets.symmetric(horizontal: 16.0)),
+    final elevation = context.elevation;
+    return styleFrom(
+      backgroundColor: scheme.surfaceVariant,
+      foregroundColor: scheme.onSurface,
+      elevation: MD3MaterialStateElevation(
+        elevation.level0,
+        elevation.level1,
+        focused: elevation.level1,
+        dragged: elevation.level3,
+      ),
+      stateLayerOpacity: context.stateOverlayOpacity,
+      shadowColor: theme.shadowColor,
+      padding: EdgeInsets.zero,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
     );
   }
 
@@ -104,60 +138,4 @@ class FilledCardTheme extends InheritedTheme {
 
   @override
   bool updateShouldNotify(FilledCardTheme oldWidget) => data != oldWidget.data;
-}
-
-@immutable
-class _FilledCardDefaultStateLayerColor extends MaterialStateProperty<Color> {
-  _FilledCardDefaultStateLayerColor(this.scheme);
-
-  final MonetColorScheme scheme;
-
-  @override
-  Color resolve(Set<MaterialState> states) {
-    final color = scheme.onSurface;
-    double opacity = 0.0;
-    if (states.contains(MaterialState.pressed)) {
-      opacity = 0.24;
-    }
-    if (states.contains(MaterialState.hovered)) {
-      opacity = 0.08;
-    }
-    if (states.contains(MaterialState.focused)) {
-      opacity = 0.24;
-    }
-    if (states.contains(MaterialState.dragged)) {
-      // ??
-    }
-    return color.withOpacity(opacity);
-  }
-}
-
-@immutable
-class _FilledCardDefaultElevation
-    extends MaterialStateProperty<MD3ElevationLevel> {
-  _FilledCardDefaultElevation(this.theme);
-
-  final MD3ElevationTheme theme;
-
-  @override
-  MD3ElevationLevel resolve(Set<MaterialState> states) {
-    if (states.contains(MaterialState.hovered) ||
-        states.contains(MaterialState.focused)) {
-      return theme.level1;
-    }
-    if (states.contains(MaterialState.dragged)) {
-      return theme.level3;
-    }
-    return theme.level0;
-  }
-}
-
-@immutable
-class _FilledCardDefaultCursor extends MaterialStateProperty<MouseCursor> {
-  _FilledCardDefaultCursor();
-
-  @override
-  MouseCursor resolve(Set<MaterialState> states) {
-    return MouseCursor.defer;
-  }
 }

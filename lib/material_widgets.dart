@@ -20,6 +20,7 @@ export 'src/md3_appBar/raw_appBar.dart';
 export 'src/md3_scaffold/delegates.dart';
 export 'src/md3_scaffold/navigation_scaffold.dart';
 export 'src/card/card_style_card.dart';
+export 'src/card/colored_card.dart';
 export 'src/card/elevated_card.dart';
 export 'src/card/filled_card.dart';
 export 'src/card/outlined_card.dart';

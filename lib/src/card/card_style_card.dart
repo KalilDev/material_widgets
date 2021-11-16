@@ -99,6 +99,18 @@ class _CardStyleCardState extends State<CardStyleCard> with MaterialStateMixin {
     focus = widget.focusNode ?? FocusNode();
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final isBeingDragged =
+        InheritedDraggableCardInformation.maybeOf(context) ?? false;
+    if (isBeingDragged) {
+      materialStates.add(MaterialState.dragged);
+    } else {
+      materialStates.remove(MaterialState.dragged);
+    }
+  }
+
   int _activeMouses = 0;
   bool _wasHovering = false;
   bool get _isHovering => _activeMouses > 0;

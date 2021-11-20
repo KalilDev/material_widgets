@@ -47,6 +47,7 @@ class ThemeSwitcher extends StatelessWidget {
         end: const WobblyBorder(initialAngle: pi / 4).toOutlinedBorder(),
       ),
       child: child,
+      duration: Duration(milliseconds: 800),
     );
   }
 }

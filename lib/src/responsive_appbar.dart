@@ -235,13 +235,14 @@ class ResponsiveAppbar extends StatelessWidget implements PreferredSizeWidget {
     final actionWidgets = _buildActions(context, layout);
     switch (_appBarType) {
       case _MD3AppBarType.center:
-        if (actionWidgets.length > 1) {
+        if ((actionWidgets?.length ?? 0) > 1) {
           throw StateError('Invalid action count for center appbar');
         }
         return MD3CenterAlignedAppBar(
           leading: leading,
           title: title,
-          trailing: actionWidgets.isEmpty ? null : actionWidgets.single,
+          trailing:
+              (actionWidgets?.isEmpty ?? true) ? null : actionWidgets.single,
         );
       case _MD3AppBarType.small:
         return MD3SmallAppBar(

@@ -332,8 +332,7 @@ abstract class MD3ChipStyleChip extends ButtonStyleButton {
       animationDuration: kThemeChangeDuration,
       enableFeedback: true,
       alignment: Alignment.center,
-      // TODO
-      splashFactory: InkRipple.splashFactory,
+      splashFactory: splashFactory,
     ).merge(chipButtonStyle);
   }
 

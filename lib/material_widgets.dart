@@ -24,6 +24,7 @@ export 'src/md3_chips/assist.dart';
 export 'src/md3_chips/input.dart';
 export 'src/md3_chips/filter.dart';
 export 'src/md3_chips/suggestion.dart';
+export 'src/md3_dialogs/basic.dart';
 export 'src/card/card_style_card.dart';
 export 'src/card/colored_card.dart';
 export 'src/card/elevated_card.dart';

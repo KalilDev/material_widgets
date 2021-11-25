@@ -1,8 +1,11 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:material_widgets/src/md3_appBar/appbar.dart';
 import 'package:material_widgets/src/md3_appBar/raw_appBar.dart';
 import 'package:material_you/material_you.dart';
+
+import 'size_scope.dart';
 
 class MD3SliverAppBar extends StatefulWidget {
   const MD3SliverAppBar({
@@ -29,15 +32,46 @@ class MD3SliverAppBar extends StatefulWidget {
 }
 
 class _MD3SliverAppBarState extends State<MD3SliverAppBar> {
+  Handle<MD3AppBarSizeScopeState> _sizeScopeHandle;
+
+  static bool _shouldNotifySize(MD3RawAppBar widget) =>
+      widget.primary && widget.notifySize;
+
   double get _bottomPadding => 28;
 
   double get _bottomHeight => widget.expandable ? 88 : 0;
+  double _height;
+
+  void initState() {
+    super.initState();
+    _sizeScopeHandle = Handle(
+      (scope) => scope.registerAppBar(
+        this,
+        Size.fromHeight(_height ?? _bottomHeight + 64),
+      ),
+      (scope) => scope.unregisterAppBar(this),
+    );
+  }
+
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _sizeScopeHandle.update(MD3AppBarSizeScopeState.maybeOf(context));
+  }
+
+  void deactivate() {
+    _sizeScopeHandle.detach();
+    super.deactivate();
+  }
 
   void dispose() {
+    _sizeScopeHandle.dispose();
     super.dispose();
   }
 
-  void _notifySize(double height) => null;
+  void _notifySize(double height) {
+    _height = height;
+    _sizeScopeHandle.value?.updateAppBarSize(this, Size.fromHeight(height));
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:material_widgets/material_widgets.dart';
 import 'package:material_widgets/src/monadic_value_listenable.dart';
 import 'package:material_you/material_you.dart';
-import '../responsive_appbar.dart';
+import 'responsive_appbar.dart';
 import '../monadic_value_listenable.dart';
 
 class _MD3AppBarTrailingIconContainer extends StatelessWidget {
@@ -35,10 +35,16 @@ class MD3CenterAlignedAppBar extends StatelessWidget
     this.leading,
     this.trailing,
     this.title,
+    this.primary = true,
+    this.notifySize = true,
+    this.isElevated,
   }) : super(key: key);
   final Widget leading;
   final Widget trailing;
   final Widget title;
+  final bool primary;
+  final bool notifySize;
+  final bool isElevated;
 
   @override
   Widget build(BuildContext context) {
@@ -54,6 +60,9 @@ class MD3CenterAlignedAppBar extends StatelessWidget
         ),
         SizedBox(width: 4),
       ],
+      primary: primary,
+      notifySize: notifySize,
+      isElevated: isElevated,
     );
   }
 
@@ -81,10 +90,16 @@ class MD3SmallAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.leading,
     this.actions,
     this.title,
+    this.primary = true,
+    this.notifySize = true,
+    this.isElevated,
   }) : super(key: key);
   final Widget leading;
   final List<Widget> actions;
   final Widget title;
+  final bool primary;
+  final bool notifySize;
+  final bool isElevated;
 
   @override
   Widget build(BuildContext context) {
@@ -103,6 +118,9 @@ class MD3SmallAppBar extends StatelessWidget implements PreferredSizeWidget {
             []),
         SizedBox(width: 4),
       ],
+      primary: primary,
+      notifySize: notifySize,
+      isElevated: isElevated,
     );
   }
 
@@ -120,6 +138,9 @@ class MD3MediumAppBar extends _MD3LargeOrMediumAppBar {
     Widget leading,
     List<Widget> actions,
     Widget title,
+    bool primary = true,
+    bool notifySize = true,
+    bool isElevated,
   }) : super(
           key: key,
           titleStyleBuilder: titleStyle,
@@ -128,6 +149,9 @@ class MD3MediumAppBar extends _MD3LargeOrMediumAppBar {
           leading: leading,
           actions: actions,
           title: title,
+          primary: primary,
+          notifySize: notifySize,
+          isElevated: isElevated,
         );
   static TextStyle titleStyle(BuildContext context) =>
       context.textTheme.headlineSmall.copyWith(
@@ -153,6 +177,9 @@ class MD3LargeAppBar extends _MD3LargeOrMediumAppBar {
     Widget leading,
     List<Widget> actions,
     Widget title,
+    bool primary = true,
+    bool notifySize = true,
+    bool isElevated,
   }) : super(
           key: key,
           titleStyleBuilder: titleStyle,
@@ -161,6 +188,9 @@ class MD3LargeAppBar extends _MD3LargeOrMediumAppBar {
           leading: leading,
           actions: actions,
           title: title,
+          primary: primary,
+          notifySize: notifySize,
+          isElevated: isElevated,
         );
   static TextStyle titleStyle(BuildContext context) =>
       context.textTheme.headlineMedium.copyWith(
@@ -182,10 +212,19 @@ class MD3LargeOrMediumAppBar extends StatefulWidget
     this.leading,
     this.actions,
     this.title,
+    this.primary = true,
+    this.notifySize = true,
+    this.isElevated,
   }) : super(key: key);
   final Widget leading;
   final List<Widget> actions;
   final Widget title;
+  final bool primary;
+  final bool notifySize;
+  final bool isElevated;
+
+  @override
+  // ignore: avoid_field_initializers_in_const_classes
   final Size preferredSize = const Size.fromHeight(kHeight);
 
   static const double kHeight = MD3LargeAppBar.kHeight;
@@ -314,6 +353,7 @@ class _MD3LargeOrMediumAppBarState extends State<MD3LargeOrMediumAppBar>
         begin: MD3MediumAppBar.titleStyle(context),
         end: MD3LargeAppBar.titleStyle(context),
       );
+
   Widget buildAppBar(
     BuildContext context,
     double height,
@@ -332,6 +372,9 @@ class _MD3LargeOrMediumAppBarState extends State<MD3LargeOrMediumAppBar>
           titleStyleBuilder: (_) => titleStyle,
           bottomHeight: bottomHeight,
           bottomPadding: bottomPadding,
+          primary: widget.primary,
+          notifySize: widget.notifySize,
+          isElevated: widget.isElevated,
         ),
       );
   @override
@@ -372,6 +415,9 @@ class _MD3LargeOrMediumAppBar extends StatelessWidget
     @required this.bottomHeight,
     @required this.bottomPadding,
     this.topAdditionalPaddding = 4.0,
+    this.primary = true,
+    this.notifySize = true,
+    this.isElevated,
   }) : super(key: key);
   final Widget leading;
   final List<Widget> actions;
@@ -380,6 +426,9 @@ class _MD3LargeOrMediumAppBar extends StatelessWidget
   final double bottomHeight;
   final double bottomPadding;
   final double topAdditionalPaddding;
+  final bool primary;
+  final bool notifySize;
+  final bool isElevated;
 
   @override
   Widget build(BuildContext context) {
@@ -404,6 +453,9 @@ class _MD3LargeOrMediumAppBar extends StatelessWidget
           bottom: _MD3LargerAppBarBottom(
             height: bottomHeight - topAdditionalPaddding,
           ),
+          primary: primary,
+          notifySize: notifySize,
+          isElevated: isElevated,
         ),
         Positioned(
           bottom: bottomPadding,

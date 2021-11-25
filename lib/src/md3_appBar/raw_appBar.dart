@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:material_widgets/src/md3_appBar/size_scope.dart';
 import 'package:material_you/material_you.dart';
 
 Size _preferredAppBarSize(double toolbarHeight, double bottomHeight) {
@@ -36,7 +37,9 @@ class MD3RawAppBar extends StatefulWidget implements PreferredSizeWidget {
     this.leadingWidth,
     this.toolbarTextStyle,
     this.titleTextStyle,
+    this.isElevated,
     this.elevationDuration = const Duration(milliseconds: 200),
+    this.notifySize = true,
   })  : assert(automaticallyImplyLeading != null),
         assert(primary != null),
         assert(toolbarOpacity != null),
@@ -70,7 +73,12 @@ class MD3RawAppBar extends StatefulWidget implements PreferredSizeWidget {
   final double leadingWidth;
   final TextStyle toolbarTextStyle;
   final TextStyle titleTextStyle;
+
+  /// Whether or not the AppBar is elevated. When it is null, the
+  /// [PrimaryScrollController] is checked. Otherwise this value is used.
+  final bool isElevated;
   final Duration elevationDuration;
+  final bool notifySize;
 
   @override
   _MD3RawAppBarState createState() => _MD3RawAppBarState();
@@ -78,6 +86,11 @@ class MD3RawAppBar extends StatefulWidget implements PreferredSizeWidget {
 
 class _MD3RawAppBarState extends State<MD3RawAppBar>
     with SingleTickerProviderStateMixin {
+  Handle<MD3AppBarSizeScopeState> _sizeScopeHandle;
+
+  static bool _shouldNotifySize(MD3RawAppBar widget) =>
+      widget.primary && widget.notifySize;
+
   ScrollController primaryScrollController;
   AnimationController backgroundController;
   Tween<Color> get backgroundColorTween => ColorTween(
@@ -90,7 +103,9 @@ class _MD3RawAppBarState extends State<MD3RawAppBar>
           MD3ElevationLevel.surfaceTint(context.colorScheme),
         ),
       );
+
   Animation<double> backgroundColorAnimation;
+
   @override
   void initState() {
     super.initState();
@@ -102,6 +117,13 @@ class _MD3RawAppBarState extends State<MD3RawAppBar>
       parent: backgroundController,
       curve: Curves.easeInOut,
     );
+    if (widget.isElevated != null || !widget.primary) {
+      backgroundController.value = (widget.isElevated ?? false) ? 1.0 : 0.0;
+    }
+    _sizeScopeHandle = Handle(
+      (scope) => scope.registerAppBar(this, widget.preferredSize),
+      (scope) => scope.unregisterAppBar(this),
+    );
   }
 
   @override
@@ -109,17 +131,47 @@ class _MD3RawAppBarState extends State<MD3RawAppBar>
     super.didChangeDependencies();
     final primaryScrollController = PrimaryScrollController.of(context);
     _updatePrimaryScrollController(primaryScrollController);
+    _sizeScopeHandle.update(
+      _shouldNotifySize(widget)
+          ? MD3AppBarSizeScopeState.maybeOf(context)
+          : null,
+    );
   }
 
   @override
   void didUpdateWidget(MD3RawAppBar oldWidget) {
     super.didUpdateWidget(oldWidget);
     backgroundController.duration = widget.elevationDuration;
+    if (oldWidget.isElevated != widget.isElevated || !widget.primary) {
+      _updateIsElevated(widget.isElevated ?? (widget.primary ? false : null));
+    }
+    if (oldWidget.preferredSize != widget.preferredSize) {
+      _sizeScopeHandle.value?.updateAppBarSize(this, widget.preferredSize);
+    }
+  }
+
+  void _updateIsElevated(bool curr) {
+    if (curr == null) {
+      _updateIsScrolled();
+      return;
+    }
+    final currVal = curr ? 1.0 : 0.0;
+    if (!backgroundController.isAnimating &&
+        backgroundController.value == currVal) {
+      return;
+    }
+    backgroundController.animateTo(currVal);
+  }
+
+  void deactivate() {
+    _sizeScopeHandle.detach();
+    super.deactivate();
   }
 
   @override
   void dispose() {
     backgroundController.dispose();
+    _sizeScopeHandle.dispose();
     super.dispose();
   }
 
@@ -134,6 +186,13 @@ class _MD3RawAppBarState extends State<MD3RawAppBar>
   }
 
   void _updateIsScrolled() {
+    if (widget.isElevated != null || !widget.primary) {
+      return;
+    }
+    if (primaryScrollController == null ||
+        !primaryScrollController.hasClients) {
+      return;
+    }
     final positions = primaryScrollController.positions;
     final offset = positions
         .map((e) => e.pixels)

@@ -117,15 +117,23 @@ class MD3AppBarSizeScopeState extends State<MD3AppBarSizeScope>
     return true;
   }
 
-  void _setSize(Size size) {
-    if (!_animController.isAnimating && _currentSize.value == size) {
+  void _setSize(Size target) {
+    if (!_animController.isAnimating && _currentSize.value == target) {
       return;
     }
-    setState(() => _currentSize = AlwaysStoppedAnimation(size));
+    // The widget may have been disposed after the previous frame
+    if (!mounted) {
+      return;
+    }
+    setState(() => _currentSize = AlwaysStoppedAnimation(target));
   }
 
   void _animateSizeTo(Size target) {
     if (!_animController.isAnimating && _currentSize.value == target) {
+      return;
+    }
+    // The widget may have been disposed after the previous frame
+    if (!mounted) {
       return;
     }
     setState(

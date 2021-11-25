@@ -2,17 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:material_widgets/src/md3_appBar/raw_appBar.dart';
 
 import '../../material_widgets.dart';
-import '../deprecated/material_breakpoint.dart';
-import '../deprecated/material_layout.dart';
-import '../deprecated/material_layout_data.dart';
 import 'package:material_you/material_you.dart';
-
-int _getButtonCountForBreakpoint(MaterialBreakpoint bp) {
-  final entries = MaterialBreakpoint.values.asMap().entries;
-  final bpAndIndex =
-      entries.singleWhere((bpAndIndex) => bp == bpAndIndex.value);
-  return bpAndIndex.key + 1;
-}
 
 @Deprecated('Use MD3ResponsiveAppBarAction')
 abstract class ResponsiveAppbarAction {
@@ -165,14 +155,6 @@ class ResponsiveAppbar extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 
-  Widget _actionToBottomSheetWidget(MD3ResponsiveAppBarAction action) {
-    return ListTile(
-      leading: action.icon,
-      onTap: action.onPressed,
-      title: action.title,
-    );
-  }
-
   PopupMenuItem<MD3ResponsiveAppBarAction> _actionToPopupMenuItem(
     BuildContext context,
     MD3ResponsiveAppBarAction action,
@@ -186,20 +168,9 @@ class ResponsiveAppbar extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 
-  WidgetBuilder _moreButtonBuilder(
-          List<MD3ResponsiveAppBarAction> hidden, bool isBottomSheet) =>
+  WidgetBuilder _moreButtonBuilder(List<MD3ResponsiveAppBarAction> hidden) =>
       (context) {
         void open() {
-          if (isBottomSheet) {
-            final widgets = hidden.map(_actionToBottomSheetWidget);
-            showModalBottomSheet<void>(
-              context: context,
-              builder: (context) {
-                return ListView(children: widgets.toList());
-              },
-            );
-            return;
-          }
           final items = hidden.map((e) => _actionToPopupMenuItem(context, e));
           final button = context.findRenderObject() as RenderBox;
           final overlay =
@@ -227,12 +198,16 @@ class ResponsiveAppbar extends StatelessWidget implements PreferredSizeWidget {
         );
       };
 
-  List<Widget> _buildActions(BuildContext context, MaterialLayoutData data) {
+  List<Widget> _buildActions(BuildContext context) {
     final builtActions = this.buildActions?.call(context) ?? [];
     if (builtActions == null || builtActions.isEmpty) {
       return null;
     }
-    var limit = _getButtonCountForBreakpoint(data.breakpoint);
+    // https://m3.material.io/components/top-app-bar/guidelines
+    //
+    // And quote: "Up to three interactive icons can be placed after the
+    // headline, at the trailing end of the container."
+    var limit = 3;
     if (_appBarType == _MD3AppBarType.center) {
       // MD3CenterAppBar supports only a single icon
       limit = 1;
@@ -250,9 +225,7 @@ class ResponsiveAppbar extends StatelessWidget implements PreferredSizeWidget {
     if (concreteActions.length > limit) {
       final shown = concreteActions.take(limit - 1);
       final hidden = concreteActions.skip(limit - 1).toList();
-      final moreButton = Builder(
-          builder: _moreButtonBuilder(
-              hidden, data.breakpoint == MaterialBreakpoint.one));
+      final moreButton = Builder(builder: _moreButtonBuilder(hidden));
       actions = [...shown.map(_actionToActionWidget), moreButton];
     } else {
       actions = concreteActions.map(_actionToActionWidget).toList();
@@ -263,8 +236,7 @@ class ResponsiveAppbar extends StatelessWidget implements PreferredSizeWidget {
   @override
   // ignore: missing_return
   Widget build(BuildContext context) {
-    final layout = MaterialLayout.of(context);
-    final actionWidgets = _buildActions(context, layout);
+    final actionWidgets = _buildActions(context);
     switch (_appBarType) {
       case _MD3AppBarType.center:
         if ((actionWidgets?.length ?? 0) > 1) {

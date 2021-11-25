@@ -1,24 +1,18 @@
-import 'dart:ui';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'dart:math' as math;
 import 'package:material_you/material_you.dart';
 
 enum MD3FABColorScheme {
-  primaryContainer,
+  primary,
   surface,
   secondary,
   tertiary,
 }
 
 class MD3FloatingActionButton extends ButtonStyleButton {
-  final MD3FABColorScheme fabColorScheme;
-  final bool isLowered;
-  final CustomColorScheme colorScheme;
   const MD3FloatingActionButton({
     Key key,
-    this.fabColorScheme = MD3FABColorScheme.primaryContainer,
+    this.fabColorScheme = MD3FABColorScheme.primary,
     this.isLowered = false,
     @required VoidCallback onPressed,
     VoidCallback onLongPress,
@@ -61,7 +55,7 @@ class MD3FloatingActionButton extends ButtonStyleButton {
     @required Widget label,
   }) = _ExpandedFAB;
 
-  factory MD3FloatingActionButton.small({
+  const factory MD3FloatingActionButton.small({
     Key key,
     MD3FABColorScheme fabColorScheme,
     bool isLowered,
@@ -93,10 +87,14 @@ class MD3FloatingActionButton extends ButtonStyleButton {
     Widget child,
   }) = _LargeFAB;
 
+  final MD3FABColorScheme fabColorScheme;
+  final bool isLowered;
+  final CustomColorScheme colorScheme;
+
   CustomColorScheme _customColorFromFABScheme(BuildContext context) {
     final scheme = context.colorScheme;
-    switch (this.fabColorScheme) {
-      case MD3FABColorScheme.primaryContainer:
+    switch (fabColorScheme) {
+      case MD3FABColorScheme.primary:
         return scheme.primaryScheme;
       case MD3FABColorScheme.surface:
         return CustomColorScheme(
@@ -288,8 +286,7 @@ class MD3FloatingActionButton extends ButtonStyleButton {
 
   @override
   ButtonStyle defaultStyleOf(BuildContext context) {
-    if (colorScheme != null &&
-        fabColorScheme != MD3FABColorScheme.primaryContainer) {
+    if (colorScheme != null && fabColorScheme != MD3FABColorScheme.primary) {
       throw StateError('You can only use one of MD3FABColorScheme or'
           ' MD3FloatingActionButton.colorScheme to theme yor FAB!');
     }
@@ -391,9 +388,9 @@ class MD3FloatingActionButtonTheme extends InheritedTheme {
 }
 
 class _SmallFAB extends MD3FloatingActionButton {
-  _SmallFAB({
+  const _SmallFAB({
     Key key,
-    MD3FABColorScheme fabColorScheme = MD3FABColorScheme.primaryContainer,
+    MD3FABColorScheme fabColorScheme = MD3FABColorScheme.primary,
     bool isLowered = false,
     @required VoidCallback onPressed,
     VoidCallback onLongPress,
@@ -436,7 +433,7 @@ class _SmallFAB extends MD3FloatingActionButton {
 class _LargeFAB extends MD3FloatingActionButton {
   _LargeFAB({
     Key key,
-    MD3FABColorScheme fabColorScheme = MD3FABColorScheme.primaryContainer,
+    MD3FABColorScheme fabColorScheme = MD3FABColorScheme.primary,
     bool isLowered = false,
     @required VoidCallback onPressed,
     VoidCallback onLongPress,
@@ -462,7 +459,7 @@ class _LargeFAB extends MD3FloatingActionButton {
           clipBehavior: clipBehavior ?? Clip.none,
           colorScheme: colorScheme,
           child: IconTheme.merge(
-            data: IconThemeData(size: 36),
+            data: const IconThemeData(size: 36),
             child: child,
           ),
         );
@@ -479,11 +476,10 @@ class _LargeFAB extends MD3FloatingActionButton {
 }
 
 class _ExpandedFAB extends MD3FloatingActionButton {
-  final bool isExpanded;
   _ExpandedFAB({
     Key key,
     bool isLowered = false,
-    MD3FABColorScheme fabColorScheme = MD3FABColorScheme.primaryContainer,
+    MD3FABColorScheme fabColorScheme = MD3FABColorScheme.primary,
     this.isExpanded = true,
     @required VoidCallback onPressed,
     VoidCallback onLongPress,
@@ -517,6 +513,7 @@ class _ExpandedFAB extends MD3FloatingActionButton {
             label: label,
           ),
         );
+  final bool isExpanded;
 
   @override
   ButtonStyle defaultStyleOf(BuildContext context) {

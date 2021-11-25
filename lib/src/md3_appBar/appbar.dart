@@ -56,7 +56,7 @@ class MD3CenterAlignedAppBar extends StatelessWidget
       actions: [
         SizedBox(width: 12),
         _MD3AppBarTrailingIconContainer(
-          child: trailing ?? const Icon(null),
+          child: trailing ?? _appBarNavigationItemOrPlaceholder(context, true),
         ),
         SizedBox(width: 4),
       ],
@@ -70,9 +70,19 @@ class MD3CenterAlignedAppBar extends StatelessWidget
   final Size preferredSize = const Size.fromHeight(64);
 }
 
-Widget _appBarNavigationItemOrPlaceholder(BuildContext context) {
+Widget _appBarNavigationItemOrPlaceholder(
+  BuildContext context, [
+  bool end = false,
+]) {
   final scaffold = Scaffold.maybeOf(context);
-  if (scaffold?.hasDrawer ?? false) {
+  if (end && (scaffold?.hasEndDrawer ?? false)) {
+    // the AppBar widget will not add the hamburger menu automatically
+    return IconButton(
+      onPressed: scaffold.openEndDrawer,
+      icon: Icon(Icons.menu),
+    );
+  }
+  if (!end && (scaffold?.hasDrawer ?? false)) {
     // the AppBar widget will add the hamburger menu automatically
     return null;
   }
@@ -103,6 +113,10 @@ class MD3SmallAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    var actions = this.actions;
+    if (actions?.isEmpty ?? true) {
+      actions = null;
+    }
     return MD3RawAppBar(
       title: title,
       leading: leading ?? _appBarNavigationItemOrPlaceholder(context),
@@ -111,11 +125,18 @@ class MD3SmallAppBar extends StatelessWidget implements PreferredSizeWidget {
       actions: [
         SizedBox(width: 12),
         ...(actions
-                ?.map((e) => _MD3AppBarTrailingIconContainer(
-                      child: e,
-                    ))
+                ?.map(
+                  (e) => _MD3AppBarTrailingIconContainer(
+                    child: e,
+                  ),
+                )
                 ?.toList() ??
-            []),
+            [
+              _appBarNavigationItemOrPlaceholder(
+                context,
+                true,
+              ),
+            ]),
         SizedBox(width: 4),
       ],
       primary: primary,
@@ -363,7 +384,8 @@ class _MD3LargeOrMediumAppBarState extends State<MD3LargeOrMediumAppBar>
   ) =>
       ConstrainedBox(
         constraints: BoxConstraints(
-          maxHeight: height + MediaQuery.of(context).viewPadding.top,
+          maxHeight: height +
+              (widget.primary ? MediaQuery.of(context).viewPadding.top : 0),
         ),
         child: _MD3LargeOrMediumAppBar(
           leading: widget.leading,
@@ -441,9 +463,11 @@ class _MD3LargeOrMediumAppBar extends StatelessWidget
             const SizedBox(width: 12),
             // ignore: unnecessary_parenthesis
             ...(actions
-                    ?.map((e) => _MD3AppBarTrailingIconContainer(
-                          child: e,
-                        ))
+                    ?.map(
+                      (e) => _MD3AppBarTrailingIconContainer(
+                        child: e,
+                      ),
+                    )
                     ?.map((e) => _topPadding(e, topAdditionalPaddding))
                     ?.toList() ??
                 []),

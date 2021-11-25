@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:material_widgets/src/md3_appBar/raw_appBar.dart';
 
-import '../material_widgets.dart';
-import 'deprecated/material_breakpoint.dart';
-import 'deprecated/material_layout.dart';
-import 'deprecated/material_layout_data.dart';
+import '../../material_widgets.dart';
+import '../deprecated/material_breakpoint.dart';
+import '../deprecated/material_layout.dart';
+import '../deprecated/material_layout_data.dart';
+import 'package:material_you/material_you.dart';
 
 int _getButtonCountForBreakpoint(MaterialBreakpoint bp) {
   final entries = MaterialBreakpoint.values.asMap().entries;
@@ -78,6 +79,9 @@ class ResponsiveAppbar extends StatelessWidget implements PreferredSizeWidget {
     this.leading,
     @Deprecated('use buildActions') List<ResponsiveAppbarAction> actions,
     List<ResponsiveAppbarAction> Function(BuildContext) buildActions,
+    this.primary = true,
+    this.notifySize = true,
+    this.isElevated,
   })  : _appBarType = _MD3AppBarType.small,
         preferredSize = const Size.fromHeight(MD3SmallAppBar.kHeight),
         buildActions = actions == null ? buildActions : ((_) => actions),
@@ -88,6 +92,9 @@ class ResponsiveAppbar extends StatelessWidget implements PreferredSizeWidget {
     this.title,
     this.leading,
     this.buildActions,
+    this.primary = true,
+    this.notifySize = true,
+    this.isElevated,
   })  : _appBarType = _MD3AppBarType.center,
         preferredSize = const Size.fromHeight(MD3SmallAppBar.kHeight),
         super(key: key);
@@ -97,6 +104,9 @@ class ResponsiveAppbar extends StatelessWidget implements PreferredSizeWidget {
     this.title,
     this.leading,
     this.buildActions,
+    this.primary = true,
+    this.notifySize = true,
+    this.isElevated,
   })  : _appBarType = _MD3AppBarType.small,
         preferredSize = const Size.fromHeight(MD3SmallAppBar.kHeight),
         super(key: key);
@@ -106,6 +116,9 @@ class ResponsiveAppbar extends StatelessWidget implements PreferredSizeWidget {
     this.title,
     this.leading,
     this.buildActions,
+    this.primary = true,
+    this.notifySize = true,
+    this.isElevated,
   })  : _appBarType = _MD3AppBarType.medium,
         preferredSize = const Size.fromHeight(MD3MediumAppBar.kHeight),
         super(key: key);
@@ -115,6 +128,9 @@ class ResponsiveAppbar extends StatelessWidget implements PreferredSizeWidget {
     this.title,
     this.leading,
     this.buildActions,
+    this.primary = true,
+    this.notifySize = true,
+    this.isElevated,
   })  : _appBarType = _MD3AppBarType.large,
         preferredSize = const Size.fromHeight(MD3LargeAppBar.kHeight),
         super(key: key);
@@ -124,6 +140,9 @@ class ResponsiveAppbar extends StatelessWidget implements PreferredSizeWidget {
     this.title,
     this.leading,
     this.buildActions,
+    this.primary = true,
+    this.notifySize = true,
+    this.isElevated,
   })  : _appBarType = _MD3AppBarType.mediumOrLarge,
         preferredSize = const Size.fromHeight(MD3LargeOrMediumAppBar.kHeight),
         super(key: key);
@@ -132,6 +151,9 @@ class ResponsiveAppbar extends StatelessWidget implements PreferredSizeWidget {
   final Widget leading;
   final List<ResponsiveAppbarAction> Function(BuildContext) buildActions;
   final _MD3AppBarType _appBarType;
+  final bool primary;
+  final bool notifySize;
+  final bool isElevated;
   @override
   final Size preferredSize;
 
@@ -152,8 +174,16 @@ class ResponsiveAppbar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   PopupMenuItem<MD3ResponsiveAppBarAction> _actionToPopupMenuItem(
-      MD3ResponsiveAppBarAction action) {
-    return PopupMenuItem(child: action.title, value: action);
+    BuildContext context,
+    MD3ResponsiveAppBarAction action,
+  ) {
+    return PopupMenuItem(
+      child: action.title,
+      value: action,
+      textStyle: context.textTheme.labelLarge.copyWith(
+        color: context.colorScheme.onSurface,
+      ),
+    );
   }
 
   WidgetBuilder _moreButtonBuilder(
@@ -163,13 +193,14 @@ class ResponsiveAppbar extends StatelessWidget implements PreferredSizeWidget {
           if (isBottomSheet) {
             final widgets = hidden.map(_actionToBottomSheetWidget);
             showModalBottomSheet<void>(
-                context: context,
-                builder: (context) {
-                  return ListView(children: widgets.toList());
-                });
+              context: context,
+              builder: (context) {
+                return ListView(children: widgets.toList());
+              },
+            );
             return;
           }
-          final items = hidden.map(_actionToPopupMenuItem);
+          final items = hidden.map((e) => _actionToPopupMenuItem(context, e));
           final button = context.findRenderObject() as RenderBox;
           final overlay =
               Overlay.of(context).context.findRenderObject() as RenderBox;
@@ -185,6 +216,7 @@ class ResponsiveAppbar extends StatelessWidget implements PreferredSizeWidget {
             context: context,
             items: items.toList(),
             position: position,
+            clipBehavior: Clip.antiAlias,
           ).then((e) => e?.onPressed?.call());
         }
 
@@ -243,30 +275,45 @@ class ResponsiveAppbar extends StatelessWidget implements PreferredSizeWidget {
           title: title,
           trailing:
               (actionWidgets?.isEmpty ?? true) ? null : actionWidgets.single,
+          primary: primary,
+          notifySize: notifySize,
+          isElevated: isElevated,
         );
       case _MD3AppBarType.small:
         return MD3SmallAppBar(
           leading: leading,
           title: title,
           actions: actionWidgets,
+          primary: primary,
+          notifySize: notifySize,
+          isElevated: isElevated,
         );
       case _MD3AppBarType.medium:
         return MD3MediumAppBar(
           leading: leading,
           title: title,
           actions: actionWidgets,
+          primary: primary,
+          notifySize: notifySize,
+          isElevated: isElevated,
         );
       case _MD3AppBarType.large:
         return MD3LargeAppBar(
           leading: leading,
           title: title,
           actions: actionWidgets,
+          primary: primary,
+          notifySize: notifySize,
+          isElevated: isElevated,
         );
       case _MD3AppBarType.mediumOrLarge:
         return MD3LargeOrMediumAppBar(
           leading: leading,
           title: title,
           actions: actionWidgets,
+          primary: primary,
+          notifySize: notifySize,
+          isElevated: isElevated,
         );
     }
   }

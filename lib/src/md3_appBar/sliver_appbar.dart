@@ -16,7 +16,21 @@ class MD3SliverAppBar extends StatefulWidget {
     this.expandable = true,
     this.primary = true,
     this.pinned = true,
-  }) : super(key: key);
+  })  : _center = false,
+        super(key: key);
+
+  /// Not on the spec, but may be useful.
+  MD3SliverAppBar.center({
+    Key key,
+    this.title,
+    this.leading,
+    Widget action,
+    this.expandable = true,
+    this.primary = true,
+    this.pinned = true,
+  })  : _center = true,
+        actions = action == null ? [] : [action],
+        super(key: key);
   final Widget title;
   final Widget leading;
   final List<Widget> actions;
@@ -26,6 +40,8 @@ class MD3SliverAppBar extends StatefulWidget {
   final bool expandable;
   final bool primary;
   final bool pinned;
+
+  final bool _center;
 
   @override
   State<MD3SliverAppBar> createState() => _MD3SliverAppBarState();
@@ -101,6 +117,7 @@ class _MD3SliverAppBarState extends State<MD3SliverAppBar> {
           leading: widget.leading,
           actions: widget.actions,
           primary: widget.primary,
+          center: widget._center,
           notifySize: _notifySize,
         ),
         pinned: widget.pinned,
@@ -121,6 +138,7 @@ class _MD3SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
     @required this.actions,
     @required this.primary,
     @required this.notifySize,
+    @required this.center,
   });
 
   final TextStyle bottomTitleTextStyle;
@@ -133,6 +151,7 @@ class _MD3SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   final List<Widget> actions;
   final bool primary;
   final ValueChanged<double> notifySize;
+  final bool center;
 
   @override
   Widget build(
@@ -155,34 +174,54 @@ class _MD3SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
     var topTitleOpacity =
         (shrinkOffset - bottomTitleAndTopPadddingHeight) / bottomPadding.bottom;
     topTitleOpacity = topTitleOpacity.clamp(0.0, 1.0) as double;
-
-    notifySize(
-        (maxExtent - shrinkOffset).clamp(minExtent, maxExtent).toDouble());
+    final fullHeight =
+        (maxExtent - shrinkOffset).clamp(minExtent, maxExtent).toDouble();
+    notifySize(fullHeight);
 
     final isElevated =
         bottomHeight != 0 ? bottomTitleOpacity != 1.0 : shrinkOffset > 0;
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        MD3RawAppBar(
-          isElevated: isElevated,
-          title: _opacityTextStyle(
-            opacity: topTitleOpacity,
-            style: titleTextStyle,
-            child: title,
-          ),
-          appBarHeight: 64,
-          actions: actions,
-          leading: leading,
-          primary: primary,
-          notifySize: false,
+    return SizedBox(
+      height: fullHeight,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          _appbar(isElevated, topTitleOpacity),
+          if (bottomHeight != 0.0)
+            _bottom(
+              (bottomHeight - shrinkOffset).clamp(0.0, bottomHeight).toDouble(),
+              bottomTitleOpacity,
+            ),
+        ],
+      ),
+    );
+  }
+
+  Widget _appbar(bool isElevated, double topTitleOpacity) {
+    if (!center) {
+      return MD3SmallAppBar(
+        isElevated: isElevated,
+        title: _opacityTextStyle(
+          opacity: topTitleOpacity,
+          style: titleTextStyle,
+          child: title,
         ),
-        if (bottomHeight != 0.0)
-          _bottom(
-            (bottomHeight - shrinkOffset).clamp(0.0, bottomHeight).toDouble(),
-            bottomTitleOpacity,
-          ),
-      ],
+        actions: actions,
+        leading: leading,
+        primary: primary,
+        notifySize: false,
+      );
+    }
+    return MD3CenterAlignedAppBar(
+      isElevated: isElevated,
+      title: _opacityTextStyle(
+        opacity: topTitleOpacity,
+        style: titleTextStyle,
+        child: title,
+      ),
+      leading: leading,
+      trailing: actions.isEmpty ? null : actions.single,
+      primary: primary,
+      notifySize: false,
     );
   }
 

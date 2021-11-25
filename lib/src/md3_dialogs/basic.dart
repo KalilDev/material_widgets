@@ -1,8 +1,31 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:material_widgets/material_widgets.dart';
 import 'package:material_you/material_you.dart';
+
+class MD3DialogDivider extends StatelessWidget {
+  const MD3DialogDivider({
+    Key key,
+    this.isVisible = true,
+    this.height = 16.0,
+  }) : super(key: key);
+  final bool isVisible;
+  final double height;
+
+  @override
+  Widget build(BuildContext context) => isVisible
+      ? Divider(
+          height: height,
+          thickness: 1,
+          color: context.colorScheme.surfaceVariant,
+          endIndent: 0,
+          indent: 0,
+        )
+      : SizedBox(
+          height: height,
+          width: 0,
+        );
+}
 
 class MD3BasicDialog extends StatelessWidget {
   const MD3BasicDialog({
@@ -27,13 +50,15 @@ class MD3BasicDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) => MD3DialogLayout(
         dialogAlignment: dialogAlignment,
-        child: _MD3BasicDialog(
-          dividerAfterTitle: dividerAfterTitle,
-          icon: icon,
-          title: title,
-          content: content,
-          extraContent: extraContent,
-          actions: actions,
+        child: MD3DialogAnimation(
+          child: _MD3BasicDialog(
+            dividerAfterTitle: dividerAfterTitle,
+            icon: icon,
+            title: title,
+            content: content,
+            extraContent: extraContent,
+            actions: actions,
+          ),
         ),
       );
 }
@@ -79,26 +104,13 @@ class _MD3BasicDialog extends StatelessWidget {
         const SizedBox(height: 16),
         _title(context, true),
       ];
-  Widget _divider(BuildContext context, bool visible, [double height = 16]) =>
-      false
-          ? Divider(
-              height: 16,
-              thickness: 1,
-              color: context.colorScheme.surfaceVariant,
-              endIndent: 0,
-              indent: 0,
-            )
-          : SizedBox(
-              height: 16,
-              width: 0,
-            );
   Widget _actions(BuildContext context) => SizedBox(
         width: double.infinity,
-        child: Wrap(
-          alignment: WrapAlignment.end,
-          runAlignment: WrapAlignment.end,
+        child: OverflowBar(
+          alignment: MainAxisAlignment.end,
           spacing: 8.0,
-          runSpacing: 8.0,
+          overflowAlignment: OverflowBarAlignment.end,
+          overflowSpacing: 8.0,
           children: actions,
         ),
       );
@@ -122,14 +134,15 @@ class _MD3BasicDialog extends StatelessWidget {
                 : CrossAxisAlignment.start,
             children: [
               if (icon != null) ..._iconAndTitle(context) else _title(context),
-              _divider(context, extraContent == null && dividerAfterTitle),
+              MD3DialogDivider(
+                  isVisible: extraContent == null && dividerAfterTitle),
               _wrapContent(context, content: content),
               if (extraContent != null) ...[
-                _divider(context, true),
+                const MD3DialogDivider(),
                 _wrapContent(context, content: extraContent),
-                _divider(context, true, 24),
+                const MD3DialogDivider(height: 24),
               ] else
-                SizedBox(height: 8.0),
+                const SizedBox(height: 8.0),
               if (actions != null) _actions(context),
             ],
           ),
@@ -186,8 +199,6 @@ class MD3DialogLayout extends StatelessWidget {
     switch (alignment) {
       case MD3TabletDialogAlignment.start:
         return Row(
-          mainAxisSize: MainAxisSize.max,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Expanded(child: child),
             const Expanded(child: SizedBox()),
@@ -197,8 +208,6 @@ class MD3DialogLayout extends StatelessWidget {
         return child;
       case MD3TabletDialogAlignment.end:
         return Row(
-          mainAxisSize: MainAxisSize.max,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const Expanded(child: SizedBox()),
             Expanded(child: child),
@@ -231,6 +240,69 @@ class MD3DialogLayout extends StatelessWidget {
       ),
     );
   }
+}
+
+class MD3DialogAnimation extends StatefulWidget {
+  const MD3DialogAnimation({
+    Key key,
+    @required this.child,
+  }) : super(key: key);
+  final Widget child;
+  static const Duration kDuration = Duration(milliseconds: 200);
+
+  @override
+  State<MD3DialogAnimation> createState() => _MD3DialogAnimationState();
+}
+
+class _MD3DialogAnimationState extends State<MD3DialogAnimation>
+    with SingleTickerProviderStateMixin {
+  AnimationController controller;
+  Animation<double> animation;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = AnimationController(
+      vsync: this,
+      duration: MD3DialogAnimation.kDuration,
+    );
+    animation = CurvedAnimation(
+      parent: controller,
+      curve: Curves.easeInOut,
+    );
+    controller.forward();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => MD3DialogTransition(
+        animation: animation,
+        child: widget.child,
+      );
+}
+
+class MD3DialogTransition extends StatelessWidget {
+  const MD3DialogTransition({
+    Key key,
+    @required this.child,
+    @required this.animation,
+  }) : super(key: key);
+  final Widget child;
+  final Animation<double> animation;
+
+  @override
+  Widget build(BuildContext context) => FadeTransition(
+        opacity: animation,
+        child: ScaleTransition(
+          scale: Tween(begin: 0.8, end: 1.0).animate(animation),
+          child: child,
+        ),
+      );
 }
 
 class _AlignmentAndMaxWidth {

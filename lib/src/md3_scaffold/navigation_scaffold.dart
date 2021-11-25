@@ -4,17 +4,17 @@ import 'package:material_you/material_you.dart';
 
 abstract class MD3NavigationDelegate {
   const MD3NavigationDelegate();
-  MD3AdaptativeScaffoldWidgets buildCompact(
+  MD3AdaptativeScaffoldSpec buildCompact(
     BuildContext context,
     MD3NavigationSpec spec,
     Widget body,
   );
-  MD3AdaptativeScaffoldWidgets buildMedium(
+  MD3AdaptativeScaffoldSpec buildMedium(
     BuildContext context,
     MD3NavigationSpec spec,
     Widget body,
   );
-  MD3AdaptativeScaffoldWidgets buildExpanded(
+  MD3AdaptativeScaffoldSpec buildExpanded(
     BuildContext context,
     MD3NavigationSpec spec,
     Widget body,
@@ -68,36 +68,40 @@ class MD3NavigationScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    MD3AdaptativeScaffoldWidgets widgets;
+    MD3AdaptativeScaffoldSpec scaffoldSpec;
     switch (context.sizeClass) {
       case MD3WindowSizeClass.compact:
-        widgets = delegate.buildCompact(context, spec, body);
+        scaffoldSpec = delegate.buildCompact(context, spec, body);
         break;
       case MD3WindowSizeClass.medium:
-        widgets = delegate.buildMedium(context, spec, body);
+        scaffoldSpec = delegate.buildMedium(context, spec, body);
         break;
       case MD3WindowSizeClass.expanded:
-        widgets = delegate.buildExpanded(context, spec, body);
+        scaffoldSpec = delegate.buildExpanded(context, spec, body);
         break;
     }
-    return MD3AdaptativeScaffold(
+    final scaffold = MD3AdaptativeScaffold(
       scaffoldKey: scaffoldKey,
-      appBar: widgets.appBar,
-      bottomNavigationBar: widgets.bottomNavigationBar,
-      floatingActionButton: widgets.floatingActionButton,
-      body: widgets.body,
-      startDrawer: widgets.startDrawer,
-      endDrawer: widgets.endDrawer,
-      startModalDrawer: widgets.startModalDrawer,
-      endModalDrawer: widgets.endModalDrawer,
+      appBar: scaffoldSpec.appBar,
+      bottomNavigationBar: scaffoldSpec.bottomNavigationBar,
+      floatingActionButton: scaffoldSpec.floatingActionButton,
+      body: scaffoldSpec.body,
+      startDrawer: scaffoldSpec.startDrawer,
+      endDrawer: scaffoldSpec.endDrawer,
+      startModalDrawer: scaffoldSpec.startModalDrawer,
+      endModalDrawer: scaffoldSpec.endModalDrawer,
       surfaceTintBackground: surfaceTintBackground,
       bodyMargin: bodyMargin,
     );
+    if (scaffoldSpec.buildScaffold != null) {
+      return scaffoldSpec.buildScaffold(context, scaffold);
+    }
+    return scaffold;
   }
 }
 
-class MD3AdaptativeScaffoldWidgets {
-  const MD3AdaptativeScaffoldWidgets({
+class MD3AdaptativeScaffoldSpec {
+  const MD3AdaptativeScaffoldSpec({
     this.appBar,
     this.bottomNavigationBar,
     this.body,
@@ -106,6 +110,7 @@ class MD3AdaptativeScaffoldWidgets {
     this.startModalDrawer,
     this.endModalDrawer,
     this.floatingActionButton,
+    this.buildScaffold,
   });
 
   final PreferredSizeWidget appBar;
@@ -116,4 +121,5 @@ class MD3AdaptativeScaffoldWidgets {
   final Widget startModalDrawer;
   final Widget endModalDrawer;
   final Widget floatingActionButton;
+  final Widget Function(BuildContext, Widget) buildScaffold;
 }

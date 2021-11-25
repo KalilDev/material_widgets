@@ -35,12 +35,12 @@ class MD3BottomNavigationDelegate extends MD3NavigationDelegate {
   final bool showModalDrawerOnCompact;
 
   @override
-  MD3AdaptativeScaffoldWidgets buildCompact(
+  MD3AdaptativeScaffoldSpec buildCompact(
     BuildContext context,
     MD3NavigationSpec spec,
     Widget body,
   ) =>
-      MD3AdaptativeScaffoldWidgets(
+      MD3AdaptativeScaffoldSpec(
         body: body,
         appBar: appBar,
         endDrawer: endDrawer,
@@ -73,7 +73,7 @@ class MD3BottomNavigationDelegate extends MD3NavigationDelegate {
       );
 
   @override
-  MD3AdaptativeScaffoldWidgets buildMedium(
+  MD3AdaptativeScaffoldSpec buildMedium(
     BuildContext context,
     MD3NavigationSpec spec,
     Widget body,
@@ -81,19 +81,19 @@ class MD3BottomNavigationDelegate extends MD3NavigationDelegate {
       _buildExpandableRail(spec, body, false);
 
   @override
-  MD3AdaptativeScaffoldWidgets buildExpanded(
+  MD3AdaptativeScaffoldSpec buildExpanded(
     BuildContext context,
     MD3NavigationSpec spec,
     Widget body,
   ) =>
       _buildExpandableRail(spec, body, true);
 
-  MD3AdaptativeScaffoldWidgets _buildExpandableRail(
+  MD3AdaptativeScaffoldSpec _buildExpandableRail(
     MD3NavigationSpec spec,
     Widget body,
     bool canExpand,
   ) =>
-      MD3AdaptativeScaffoldWidgets(
+      MD3AdaptativeScaffoldSpec(
         body: body,
         appBar: appBar,
         endDrawer: endDrawer,
@@ -129,12 +129,12 @@ class MD3DrawersNavigationDelegate extends MD3NavigationDelegate {
   final Widget floatingActionButton;
 
   @override
-  MD3AdaptativeScaffoldWidgets buildCompact(
+  MD3AdaptativeScaffoldSpec buildCompact(
     BuildContext context,
     MD3NavigationSpec spec,
     Widget body,
   ) =>
-      MD3AdaptativeScaffoldWidgets(
+      MD3AdaptativeScaffoldSpec(
         body: body,
         appBar: appBar,
         bottomNavigationBar: bottomNavigationBar,
@@ -145,7 +145,7 @@ class MD3DrawersNavigationDelegate extends MD3NavigationDelegate {
       );
 
   @override
-  MD3AdaptativeScaffoldWidgets buildMedium(
+  MD3AdaptativeScaffoldSpec buildMedium(
     BuildContext context,
     MD3NavigationSpec spec,
     Widget body,
@@ -153,12 +153,12 @@ class MD3DrawersNavigationDelegate extends MD3NavigationDelegate {
       buildCompact(context, spec, body);
 
   @override
-  MD3AdaptativeScaffoldWidgets buildExpanded(
+  MD3AdaptativeScaffoldSpec buildExpanded(
     BuildContext context,
     MD3NavigationSpec spec,
     Widget body,
   ) =>
-      MD3AdaptativeScaffoldWidgets(
+      MD3AdaptativeScaffoldSpec(
         body: body,
         appBar: appBar,
         bottomNavigationBar: bottomNavigationBar,

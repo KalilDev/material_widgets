@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:material_widgets/src/md3_appBar/size_scope.dart';
 import 'package:material_you/material_you.dart';
 
 import '../../material_widgets.dart';
@@ -103,8 +104,11 @@ class MD3BottomNavigationDelegate extends MD3NavigationDelegate {
         startDrawer: _ExpandableRail(
           spec: spec,
           floatingActionButtonBuilder: navigationFabBuilder,
-          appBarHeight: appBar?.preferredSize?.height,
           canExpand: canExpand,
+        ),
+        buildScaffold: (context, child) => MD3AppBarSizeScope(
+          initialSize: appBar?.preferredSize ?? Size.fromHeight(0),
+          child: child,
         ),
       );
 }
@@ -191,14 +195,12 @@ class _ExpandableRail extends StatefulWidget {
     Key key,
     this.spec,
     this.floatingActionButtonBuilder,
-    this.appBarHeight,
     this.header,
     this.canExpand = true,
   }) : super(key: key);
   final MD3NavigationSpec spec;
   final FloatingActionButtonBuilder floatingActionButtonBuilder;
   final Widget header;
-  final double appBarHeight;
   final bool canExpand;
 
   @override
@@ -315,12 +317,13 @@ class _ExpandableRailState extends State<_ExpandableRail>
           );
         },
       );
-  Widget _appBarSizedHeader(BuildContext context) => ConstrainedBox(
+  Widget _appBarSizedHeader(BuildContext context, double appBarHeight) =>
+      ConstrainedBox(
         constraints: BoxConstraints(
-          maxHeight: widget.appBarHeight ?? double.infinity,
+          maxHeight: appBarHeight ?? double.infinity,
         ),
         child: Row(
-          mainAxisSize: MainAxisSize.max,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(child: _shrinkable(context, widget.header)),
             if (widget.canExpand) _menuButton(context),
@@ -330,6 +333,7 @@ class _ExpandableRailState extends State<_ExpandableRail>
 
   @override
   Widget build(BuildContext context) {
+    final appBarHeight = MD3AppBarSizeInfo.maybeOf(context)?.size?.height;
     return ShrinkableDrawerController(
       key: shrinkableDrawerController,
       shrunkWidth: 80,
@@ -342,8 +346,8 @@ class _ExpandableRailState extends State<_ExpandableRail>
           children: [
             SizedBox(height: MediaQuery.of(context).viewPadding.top),
             SizedBox(
-              height: widget.appBarHeight,
-              child: _appBarSizedHeader(context),
+              height: appBarHeight,
+              child: _appBarSizedHeader(context, appBarHeight),
             ),
             Expanded(child: _fabHeader(context), flex: 4),
             ..._navigationDrawerItems(

@@ -130,7 +130,7 @@ class FilledButton extends ButtonStyleButton {
       backgroundColor: MD3DisablableColor(
         backgroundColor,
         disabledColor: disabledColor,
-        disabledOpacity: 1.0,
+        disabledOpacity: 0.12,
       ),
       foregroundColor: MD3DisablableColor(
         foregroundColor,

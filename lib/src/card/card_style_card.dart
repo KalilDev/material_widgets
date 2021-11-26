@@ -19,6 +19,7 @@ class CardStyle {
     this.padding,
     this.mouseCursor,
     this.borderSide,
+    this.clipBehavior,
   });
 
   final MaterialStateProperty<MD3ElevationLevel> elevation;
@@ -31,6 +32,7 @@ class CardStyle {
   final MaterialStateProperty<EdgeInsetsGeometry> padding;
   final MaterialStateProperty<MouseCursor> mouseCursor;
   final MaterialStateProperty<BorderSide> borderSide;
+  final Clip clipBehavior;
 
   CardStyle merge(CardStyle other) => CardStyle(
         elevation: other.elevation ?? elevation,
@@ -43,6 +45,7 @@ class CardStyle {
         padding: other.padding ?? padding,
         mouseCursor: other.mouseCursor ?? mouseCursor,
         borderSide: other.borderSide ?? borderSide,
+        clipBehavior: other.clipBehavior ?? clipBehavior,
       );
 
   static const double kHorizontalPadding = 16;
@@ -59,6 +62,7 @@ class CardStyle {
     MaterialStateProperty<EdgeInsetsGeometry> padding,
     MaterialStateProperty<MouseCursor> mouseCursor,
     MaterialStateProperty<BorderSide> borderSide,
+    Clip clipBehavior,
   }) =>
       CardStyle(
         elevation: elevation ?? this.elevation,
@@ -71,6 +75,7 @@ class CardStyle {
         padding: padding ?? this.padding,
         mouseCursor: mouseCursor ?? this.mouseCursor,
         borderSide: borderSide ?? this.borderSide,
+        clipBehavior: clipBehavior ?? this.clipBehavior,
       );
 }
 
@@ -237,6 +242,7 @@ class _CardStyleCardState extends State<CardStyleCard> with MaterialStateMixin {
       shape: shape?.copyWith(side: borderSide),
       shadowColor: style.shadowColor.resolve(materialStates),
       margin: EdgeInsets.zero,
+      clipBehavior: style.clipBehavior ?? Clip.none,
       child: InkWell(
         onTap: widget.onPressed,
         onLongPress: widget.onLongPress,

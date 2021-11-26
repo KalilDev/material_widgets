@@ -29,6 +29,7 @@ export 'src/md3_chips/input.dart';
 export 'src/md3_chips/suggestion.dart';
 export 'src/md3_dialogs/basic.dart';
 export 'src/md3_dialogs/full_screen.dart';
+export 'src/md3_layout/layout.dart';
 export 'src/md3_scaffold/delegates.dart';
 export 'src/md3_scaffold/navigation_scaffold.dart';
 export 'src/md3_scaffold/scaffold.dart';

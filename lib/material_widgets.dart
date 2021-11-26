@@ -12,8 +12,6 @@ export 'src/deprecated/material_breakpoint.dart';
 export 'src/deprecated/material_layout.dart';
 export 'src/deprecated/material_layout_data.dart';
 export 'src/deprecated/material_layout_visualizer.dart';
-export 'src/deprecated/responsive_scaffold/navigation_spec.dart';
-export 'src/deprecated/responsive_scaffold/responsive_scaffold.dart';
 export 'src/deprecated/whiteframe.dart';
 export 'src/material_onboarding.dart';
 export 'src/md3_appBar/appbar.dart';

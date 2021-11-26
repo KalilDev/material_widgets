@@ -25,6 +25,8 @@ dependencies:
     sdk: flutter
   material_widgets:
     path: ..
+  animations:
+  url_launcher: ^5.7.10
 
 dev_dependencies:
   flutter_test:
@@ -36,3 +38,11 @@ flutter:
     - assets/onboarding.1.png
     - assets/onboarding.2.png
     - assets/onboarding.3.png
+    - assets/image_placeholder.png
+    - assets/appbar.png
+    - assets/cards.png
+    - assets/chips.png
+    - assets/common_buttons.png
+    - assets/dialogs.png
+    - assets/fab.png
+    - assets/typography.png

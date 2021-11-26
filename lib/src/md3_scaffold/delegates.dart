@@ -385,6 +385,7 @@ Widget _buildDrawer(
       level0Elevation: level0Elevation,
       child: SafeArea(
         child: ListView(
+          primary: false,
           children: [
             drawerHeader ??
                 const NavigationDrawerHeader(

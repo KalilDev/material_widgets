@@ -86,7 +86,7 @@ Widget _appBarNavigationItemOrPlaceholder(
     // the AppBar widget will add the hamburger menu automatically
     return null;
   }
-  if (ModalRoute.of(context).canPop) {
+  if (ModalRoute.of(context).canPop && !end) {
     return const BackButton();
   }
   return const Icon(null);

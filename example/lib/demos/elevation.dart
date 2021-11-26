@@ -33,7 +33,7 @@ class ElevationDemo extends StatelessWidget {
     final title = context.textTheme.headlineSmall;
 
     return MD3AdaptativeScaffold(
-      appBar: MD3CenterAlignedAppBar(
+      appBar: MD3SmallAppBar(
         title: Text('Elevation'),
       ),
       body: ListView(

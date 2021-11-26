@@ -58,8 +58,8 @@ class DialogDemo extends StatelessWidget {
     }
 
     return MD3AdaptativeScaffold(
-      appBar: MD3CenterAlignedAppBar(
-        title: Text('Dialog'),
+      appBar: MD3SmallAppBar(
+        title: Text('Dialogs'),
       ),
       body: ListView(
         children: [

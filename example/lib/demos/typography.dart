@@ -28,7 +28,7 @@ class _TypographyDemoState extends State<TypographyDemo> {
   Widget build(BuildContext context) {
     final tt = baselineMD3Typography.resolveTo(deviceType);
     return MD3AdaptativeScaffold(
-      appBar: MD3CenterAlignedAppBar(
+      appBar: MD3SmallAppBar(
         title: Text('Typography'),
       ),
       floatingActionButton: MD3FloatingActionButton.expanded(

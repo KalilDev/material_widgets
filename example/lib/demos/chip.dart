@@ -131,7 +131,7 @@ class _ChipsDemoState extends State<ChipsDemo> {
     final title = context.textTheme.headlineSmall;
 
     return MD3AdaptativeScaffold(
-      appBar: MD3CenterAlignedAppBar(
+      appBar: MD3SmallAppBar(
         title: Text('Chips'),
       ),
       floatingActionButton: MD3FloatingActionButton.expanded(

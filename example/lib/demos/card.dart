@@ -61,7 +61,7 @@ class _CardsDemoState extends State<CardsDemo> {
   @override
   Widget build(BuildContext context) {
     return MD3AdaptativeScaffold(
-      appBar: MD3CenterAlignedAppBar(
+      appBar: MD3SmallAppBar(
         title: Text('Cards'),
       ),
       floatingActionButton: MD3FloatingActionButton.expanded(
@@ -80,9 +80,15 @@ class _CardsDemoState extends State<CardsDemo> {
         itemBuilder: (c, i) {
           final card = _buildCard(c, i);
           if (_draggable) {
-            return DraggableCard(child: card);
+            return DraggableCard(
+              key: ObjectKey(i),
+              child: card,
+            );
           }
-          return card;
+          return KeyedSubtree(
+            key: ObjectKey(i),
+            child: card,
+          );
         },
       ),
     );

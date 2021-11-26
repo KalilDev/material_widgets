@@ -10,8 +10,8 @@ class AppBarDemo extends StatelessWidget {
   Widget build(BuildContext context) {
     final title = context.textTheme.headlineSmall;
     return MD3AdaptativeScaffold(
-      appBar: MD3CenterAlignedAppBar(
-        title: Text('AppBar'),
+      appBar: MD3SmallAppBar(
+        title: Text('Top AppBar'),
       ),
       body: ListView(
         children: [

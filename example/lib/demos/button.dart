@@ -22,8 +22,8 @@ class _ButtonDemoState extends State<ButtonDemo> {
     final title = context.textTheme.headlineSmall;
 
     return MD3AdaptativeScaffold(
-      appBar: MD3CenterAlignedAppBar(
-        title: Text('Button'),
+      appBar: MD3SmallAppBar(
+        title: Text('Common Buttons'),
       ),
       floatingActionButton: MD3FloatingActionButton.expanded(
         onPressed: _toggleEnabled,

@@ -201,8 +201,8 @@ class _FABDemoState extends State<FABDemo> {
   Widget build(BuildContext context) {
     final title = context.textTheme.headlineSmall;
     return MD3AdaptativeScaffold(
-      appBar: MD3CenterAlignedAppBar(
-        title: Text('FAB'),
+      appBar: MD3SmallAppBar(
+        title: Text('Floating action buttons (FAB)'),
       ),
       floatingActionButton: Column(
         mainAxisSize: MainAxisSize.min,

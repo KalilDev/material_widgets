@@ -17,7 +17,7 @@ class SliverAppBarDemo extends StatelessWidget {
       body: CustomScrollView(
         slivers: [
           MD3SliverAppBar(
-            title: Text('SliverAppBar'),
+            title: Text('Sliver AppBar'),
             pinned: true,
           ),
           SliverToBoxAdapter(child: margin),

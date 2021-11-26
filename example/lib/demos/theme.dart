@@ -13,8 +13,8 @@ class ThemeDemo extends StatelessWidget {
     final title = context.textTheme.headlineSmall;
     final theme = context.monetTheme;
     return MD3AdaptativeScaffold(
-      appBar: MD3CenterAlignedAppBar(
-        title: Text('Theme'),
+      appBar: MD3SmallAppBar(
+        title: Text('Color System'),
       ),
       body: ListView(
         children: [
@@ -168,105 +168,103 @@ class MonetColorSchemeWidget extends StatelessWidget {
       );
 
   @override
-  Widget build(BuildContext context) => Row(
-        children: [
-          ConstrainedBox(
-            constraints: BoxConstraints(maxWidth: 700),
-            child: Column(
-              children: [
-                section(
-                  _two(
-                    'Primary',
-                    scheme.primary,
-                    scheme.onPrimary,
-                    left: const BorderRadius.only(
-                      topLeft: _kRadius,
-                    ),
-                  ),
-                  _two(
-                    'Primary Container',
-                    scheme.primaryContainer,
-                    scheme.onPrimaryContainer,
-                    right: const BorderRadius.only(
-                      topRight: _kRadius,
-                    ),
-                  ),
-                  _kHeightHeader,
+  Widget build(BuildContext context) => ConstrainedBox(
+        constraints: BoxConstraints(
+          maxWidth: 700,
+        ),
+        child: Column(
+          children: [
+            section(
+              _two(
+                'Primary',
+                scheme.primary,
+                scheme.onPrimary,
+                left: const BorderRadius.only(
+                  topLeft: _kRadius,
                 ),
-                SizedBox(height: _kGutter),
-                section(
-                  _two(
-                    'Secondary',
-                    scheme.secondary,
-                    scheme.onSecondary,
-                  ),
-                  _two(
-                    'Secondary Container',
-                    scheme.secondaryContainer,
-                    scheme.onSecondaryContainer,
-                  ),
+              ),
+              _two(
+                'Primary Container',
+                scheme.primaryContainer,
+                scheme.onPrimaryContainer,
+                right: const BorderRadius.only(
+                  topRight: _kRadius,
                 ),
-                SizedBox(height: _kGutter),
-                section(
-                  _two(
-                    'Tertiary',
-                    scheme.tertiary,
-                    scheme.onTertiary,
-                  ),
-                  _two(
-                    'Tertiary Container',
-                    scheme.tertiaryContainer,
-                    scheme.onTertiaryContainer,
-                  ),
-                ),
-                SizedBox(height: _kGutter),
-                section(
-                  _two(
-                    'Error',
-                    scheme.error,
-                    scheme.onError,
-                  ),
-                  _two(
-                    'Error Container',
-                    scheme.errorContainer,
-                    scheme.onErrorContainer,
-                  ),
-                ),
-                SizedBox(height: _kGutter),
-                section(
-                  _two(
-                    'Background',
-                    scheme.background,
-                    scheme.onBackground,
-                  ),
-                  _two(
-                    'Surface',
-                    scheme.surface,
-                    scheme.onSurface,
-                  ),
-                ),
-                SizedBox(height: _kGutter),
-                section(
-                  _two(
-                    'Surface-variant',
-                    scheme.surfaceVariant,
-                    scheme.onSurfaceVariant,
-                    left: const BorderRadius.only(
-                      bottomLeft: _kRadius,
-                    ),
-                  ),
-                  _color(
-                    'Outline',
-                    scheme.outline,
-                    scheme.surface,
-                    const BorderRadius.only(
-                      bottomRight: _kRadius,
-                    ),
-                  ),
-                ),
-              ],
+              ),
+              _kHeightHeader,
             ),
-          ),
-        ],
+            SizedBox(height: _kGutter),
+            section(
+              _two(
+                'Secondary',
+                scheme.secondary,
+                scheme.onSecondary,
+              ),
+              _two(
+                'Secondary Container',
+                scheme.secondaryContainer,
+                scheme.onSecondaryContainer,
+              ),
+            ),
+            SizedBox(height: _kGutter),
+            section(
+              _two(
+                'Tertiary',
+                scheme.tertiary,
+                scheme.onTertiary,
+              ),
+              _two(
+                'Tertiary Container',
+                scheme.tertiaryContainer,
+                scheme.onTertiaryContainer,
+              ),
+            ),
+            SizedBox(height: _kGutter),
+            section(
+              _two(
+                'Error',
+                scheme.error,
+                scheme.onError,
+              ),
+              _two(
+                'Error Container',
+                scheme.errorContainer,
+                scheme.onErrorContainer,
+              ),
+            ),
+            SizedBox(height: _kGutter),
+            section(
+              _two(
+                'Background',
+                scheme.background,
+                scheme.onBackground,
+              ),
+              _two(
+                'Surface',
+                scheme.surface,
+                scheme.onSurface,
+              ),
+            ),
+            SizedBox(height: _kGutter),
+            section(
+              _two(
+                'Surface-variant',
+                scheme.surfaceVariant,
+                scheme.onSurfaceVariant,
+                left: const BorderRadius.only(
+                  bottomLeft: _kRadius,
+                ),
+              ),
+              _color(
+                'Outline',
+                scheme.outline,
+                scheme.surface,
+                const BorderRadius.only(
+                  bottomRight: _kRadius,
+                ),
+              ),
+            ),
+          ],
+        ),
       );
 }

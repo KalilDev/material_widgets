@@ -165,21 +165,28 @@ class FABDemo extends StatefulWidget {
 }
 
 class _FABDemoState extends State<FABDemo> {
+  Color? customColorSeed;
   CustomColorScheme? customColor;
   int _customColorI = 0;
-  // horribly inneficient but irrelevant
+
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _updateCustomColor();
+  }
+
   void _toggleCustomColor() => setState(() {
-        final nextI = _customColorI++;
-        if (nextI % kCustomColors.length == 0) {
-          return customColor = null;
-        }
-        return customColor = kCustomColors
-            .map((e) => customColorThemeFor(context, true, e[0] as Color?, e[1] as String))
-            .map((e) => e[0])
-            .cast<CustomColorScheme>()
-            .skip(1)
-            .elementAt(nextI % (kCustomColors.length - 1));
+        final nextI = ++_customColorI;
+        customColorSeed =
+            kCustomColors[nextI % (kCustomColors.length - 1)][0] as Color?;
+        _updateCustomColor();
       });
+
+  void _updateCustomColor() {
+    customColor = customColorSeed == null
+        ? null
+        : customColorThemeFor(context, true, customColorSeed, '')[0]
+            as CustomColorScheme;
+  }
 
   bool _lowered = false;
   void _toggleLowered() => setState(() => _lowered = !_lowered);

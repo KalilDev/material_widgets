@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:material_widgets/material_widgets.dart';
 import 'package:material_you/material_you.dart';
@@ -267,19 +268,25 @@ class _FlippableCardState extends State<FlippableCard> {
   bool _isFlipped = false;
   void flip() => setState(() => _isFlipped = !_isFlipped);
   @override
-  Widget build(BuildContext context) => CardContainer(
-        bottomHeight: widget.bottomHeight,
-        child: SharedAxisSwitcher(
-          type: SharedAxisTransitionType.scaled,
-          child: _isFlipped
-              ? SizedBox.expand(
-                  key: ObjectKey(true),
-                  child: widget.back!(context, flip),
-                )
-              : SizedBox.expand(
-                  key: ObjectKey(false),
-                  child: widget.front!(context, flip),
-                ),
-        ),
+  Widget build(BuildContext context) {
+    Widget child = _isFlipped
+        ? SizedBox.expand(
+            key: ObjectKey(true),
+            child: widget.back!(context, flip),
+          )
+        : SizedBox.expand(
+            key: ObjectKey(false),
+            child: widget.front!(context, flip),
+          );
+    if (!kIsWeb) {
+      child = SharedAxisSwitcher(
+        type: SharedAxisTransitionType.scaled,
+        child: child,
       );
+    }
+    return CardContainer(
+      bottomHeight: widget.bottomHeight,
+      child: child,
+    );
+  }
 }

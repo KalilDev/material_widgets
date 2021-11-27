@@ -87,11 +87,11 @@ class MD3RawAppBar extends StatefulWidget implements PreferredSizeWidget {
 class _MD3RawAppBarState extends State<MD3RawAppBar>
     with SingleTickerProviderStateMixin {
   late Handle<MD3AppBarSizeScopeState> _sizeScopeHandle;
+  late Handle<ScrollController> _scrollControllerHandle;
 
   static bool _shouldNotifySize(MD3RawAppBar widget) =>
       widget.primary && widget.notifySize;
 
-  ScrollController primaryScrollController;
   late AnimationController backgroundController;
   Tween<Color?> get backgroundColorTween => ColorTween(
         begin: context.elevation.level0.overlaidColor(
@@ -124,13 +124,23 @@ class _MD3RawAppBarState extends State<MD3RawAppBar>
       (scope) => scope.registerAppBar(this, widget.preferredSize),
       (scope) => scope.unregisterAppBar(this),
     );
+    _scrollControllerHandle = Handle(
+      (controller) {
+        controller.addListener(_onScroll);
+        _updateIsScrolled();
+      },
+      (controller) {
+        controller.removeListener(_onScroll);
+        _updateIsScrolled();
+      },
+    );
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     final primaryScrollController = PrimaryScrollController.of(context);
-    _updatePrimaryScrollController(primaryScrollController);
+    _scrollControllerHandle.update(primaryScrollController);
     _sizeScopeHandle.update(
       _shouldNotifySize(widget)
           ? MD3AppBarSizeScopeState.maybeOf(context)
@@ -172,28 +182,19 @@ class _MD3RawAppBarState extends State<MD3RawAppBar>
   void dispose() {
     backgroundController.dispose();
     _sizeScopeHandle.dispose();
+    _scrollControllerHandle.dispose();
     super.dispose();
-  }
-
-  void _updatePrimaryScrollController(ScrollController? controller) {
-    if (controller == primaryScrollController) {
-      return;
-    }
-    primaryScrollController?.removeListener(_onScroll);
-    primaryScrollController = controller!;
-    controller.addListener(_onScroll);
-    _updateIsScrolled();
   }
 
   void _updateIsScrolled() {
     if (widget.isElevated != null || !widget.primary) {
       return;
     }
-    if (primaryScrollController == null ||
-        !primaryScrollController.hasClients) {
+    final scrollController = _scrollControllerHandle.value;
+    if (scrollController == null || !scrollController.hasClients) {
       return;
     }
-    final positions = primaryScrollController.positions;
+    final positions = scrollController.positions;
     final offset = positions
         .map((e) => e.pixels)
         .fold<double>(0.0, (largest, e) => max(largest, e));

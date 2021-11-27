@@ -27,9 +27,6 @@ class MD3DraggableElevation extends MD3MaterialStateElevation
 extension ColorMaterialState on Color {
   MaterialStateColor toMaterialState() {
     final self = this;
-    if (self == null) {
-      return null;
-    }
     return self is MaterialStateColor
         ? self
         : MaterialStateColor.resolveWith((_) => this);
@@ -39,9 +36,6 @@ extension ColorMaterialState on Color {
 extension MaterialStatePropertyColor on MaterialStateProperty<Color> {
   MaterialStateColor cast() {
     final self = this;
-    if (self == null) {
-      return null;
-    }
     return self is MaterialStateColor
         ? self
         : MaterialStateColor.resolveWith(resolve);
@@ -51,9 +45,6 @@ extension MaterialStatePropertyColor on MaterialStateProperty<Color> {
 extension BorderSideMaterialState on BorderSide {
   MaterialStateBorderSide toMaterialState() {
     final self = this;
-    if (self == null) {
-      return null;
-    }
     return self is MaterialStateBorderSide
         ? self
         : MaterialStateBorderSide.resolveWith((_) => this);
@@ -63,11 +54,8 @@ extension BorderSideMaterialState on BorderSide {
 extension MaterialStatePropertyBorderSide on MaterialStateProperty<BorderSide> {
   MaterialStateBorderSide cast() {
     final self = this;
-    if (self == null) {
-      return null;
-    }
     return self is MaterialStateBorderSide
-        ? self
+        ? self as MaterialStateBorderSide
         : MaterialStateBorderSide.resolveWith(resolve);
   }
 }
@@ -75,9 +63,6 @@ extension MaterialStatePropertyBorderSide on MaterialStateProperty<BorderSide> {
 extension MD3ElevationLevelMaterialState on MD3ElevationLevel {
   MD3MaterialStateElevation toMaterialState() {
     final self = this;
-    if (self == null) {
-      return null;
-    }
     return self is MD3MaterialStateElevation
         ? self
         : MD3MaterialStateElevation.resolveWith((_) => this);
@@ -88,9 +73,6 @@ extension MaterialStatePropertyMD3ElevationLevel
     on MaterialStateProperty<MD3ElevationLevel> {
   MD3MaterialStateElevation cast() {
     final self = this;
-    if (self == null) {
-      return null;
-    }
     return self is MD3MaterialStateElevation
         ? self
         : MD3MaterialStateElevation.resolveWith(resolve);
@@ -110,4 +92,4 @@ T runMaterialStateProperty<T>(
   MaterialStateProperty<T> value,
   Set<MaterialState> states,
 ) =>
-    value?.resolve(states);
+    value.resolve(states);

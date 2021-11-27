@@ -12,6 +12,7 @@ class Handle<T> {
       throw StateError('Handle already disposed!');
     }
     if (_value != null && value != _value) {
+      _value = null;
       _detach(_value!);
     }
     _value = value;

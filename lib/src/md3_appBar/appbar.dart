@@ -135,7 +135,7 @@ class MD3SmallAppBar extends StatelessWidget implements PreferredSizeWidget {
               _appBarNavigationItemOrPlaceholder(
                 context,
                 true,
-              ),
+              )!,
             ]),
         SizedBox(width: 4),
       ],
@@ -183,12 +183,10 @@ class MD3MediumAppBar extends _MD3LargeOrMediumAppBar {
   static const double kBottomPadding = 24;
 }
 
-Widget _topPadding(Widget child, double padding) => child == null
-    ? null
-    : Padding(
-        padding: EdgeInsets.only(top: padding),
-        child: child,
-      );
+Widget _topPadding(Widget child, double padding) => Padding(
+      padding: EdgeInsets.only(top: padding),
+      child: child,
+    );
 
 ///
 /// https://m3.material.io/m3/pages/top-app-bar/specs/#8140aaaf-5729-4368-a0f5-baef8d576dbf
@@ -257,7 +255,7 @@ class MD3LargeOrMediumAppBar extends StatefulWidget
 class _MD3LargeOrMediumAppBarState extends State<MD3LargeOrMediumAppBar>
     with SingleTickerProviderStateMixin {
   late AnimationController _expansionController;
-  ScrollController _primaryScrollController;
+  late Handle<ScrollController> _scrollControllerHandle;
 
   static const kDuration = Duration(milliseconds: 200);
 
@@ -268,28 +266,24 @@ class _MD3LargeOrMediumAppBarState extends State<MD3LargeOrMediumAppBar>
       duration: kDuration,
     );
     expansionAnimation.parent = ReverseAnimation(_expansionController);
+    _scrollControllerHandle = Handle(
+      (controller) {
+        controller.addListener(_onScroll);
+        _maybeUpdateScrollAnimation();
+      },
+      (controller) {
+        controller.removeListener(_onScroll);
+        _maybeUpdateScrollAnimation();
+      },
+    );
   }
 
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final primaryScrollController = PrimaryScrollController.of(context);
-    _maybeUpdateScrollController(primaryScrollController);
+    _scrollControllerHandle.update(PrimaryScrollController.of(context));
   }
 
   void _onScroll() {
-    _maybeUpdateScrollAnimation();
-  }
-
-  void _maybeUpdateScrollController(ScrollController? controller) {
-    if (_primaryScrollController == controller) {
-      return;
-    }
-    _primaryScrollController?.removeListener(_onScroll);
-    _primaryScrollController = controller!;
-    if (controller == null) {
-      return;
-    }
-    _primaryScrollController.addListener(_onScroll);
     _maybeUpdateScrollAnimation();
   }
 
@@ -337,9 +331,12 @@ class _MD3LargeOrMediumAppBarState extends State<MD3LargeOrMediumAppBar>
   }
 
   void _maybeUpdateScrollAnimation() {
-    final furthestPixels = _primaryScrollController.positions
-        .map((e) => e.pixels ?? 0.0)
-        .fold<double>(0.0, (greatest, e) => max(greatest, e));
+    final scrollController = _scrollControllerHandle.value;
+
+    final furthestPixels = scrollController?.positions
+            .map((e) => e.pixels)
+            .fold<double>(0.0, (greatest, e) => max(greatest, e)) ??
+        0.0;
     final previousDt = _expansionController.value;
     final dt = (furthestPixels / kHeightDelta).clamp(0.0, 1.0).toDouble();
     if (dt == previousDt) {
@@ -354,7 +351,7 @@ class _MD3LargeOrMediumAppBarState extends State<MD3LargeOrMediumAppBar>
 
   void dispose() {
     _expansionController.dispose();
-    _primaryScrollController = null;
+    _scrollControllerHandle.dispose();
     super.dispose();
   }
 

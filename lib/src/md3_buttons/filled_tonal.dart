@@ -94,17 +94,17 @@ class FilledTonalButton extends ButtonStyleButton {
         );
 
   factory FilledTonalButton.icon({
-    Key key,
+    Key? key,
     required VoidCallback? onPressed,
-    VoidCallback onLongPress,
-    ValueChanged<bool> onHover,
-    ValueChanged<bool> onFocusChange,
+    VoidCallback? onLongPress,
+    ValueChanged<bool>? onHover,
+    ValueChanged<bool>? onFocusChange,
     ButtonStyle style,
-    FocusNode focusNode,
-    bool autofocus,
+    FocusNode? focusNode,
+    bool? autofocus,
     Clip clipBehavior,
-    @required Widget icon,
-    @required Widget label,
+    required Widget icon,
+    required Widget label,
   }) = _FilledTonalButtonWithIcon;
 
   @override

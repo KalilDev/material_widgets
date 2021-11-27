@@ -10,7 +10,10 @@ import 'text_aligner.dart';
 class _OnboardingPageScope extends InheritedWidget {
   final bool isPortrait;
   final bool isDesktop;
-  const _OnboardingPageScope({required this.isDesktop, required this.isPortrait, required Widget child})
+  const _OnboardingPageScope(
+      {required this.isDesktop,
+      required this.isPortrait,
+      required Widget child})
       : super(child: child);
 
   @override
@@ -205,7 +208,7 @@ class MaterialOnboarding extends StatefulWidget {
 }
 
 class _MaterialOnboardingState extends State<MaterialOnboarding> {
-  PageController controller;
+  late PageController controller;
   int _currentPage = 0;
   Stream<Null>? _timer;
   late StreamSubscription _timerSubs;
@@ -238,12 +241,12 @@ class _MaterialOnboardingState extends State<MaterialOnboarding> {
     _timerSubs = _timer!.listen(_onTimer);
   }
 
-  void _destroyTimer() async {
+  Future<void> _destroyTimer() async {
     await _timerSubs.cancel();
     _timer = null;
   }
 
-  void _recreateTimer([VoidCallback callback]) async {
+  void _recreateTimer(VoidCallback callback) async {
     callback();
     await _destroyTimer();
     _createTimer();
@@ -416,7 +419,10 @@ class _LandscapeOnboardingBody extends StatelessWidget {
   final Widget pageIndicator;
 
   const _LandscapeOnboardingBody(
-      {Key? key, required this.pageView, required this.getStartedButton, required this.pageIndicator})
+      {Key? key,
+      required this.pageView,
+      required this.getStartedButton,
+      required this.pageIndicator})
       : super(key: key);
 
   static const double bottomBarHeight = 48.0;
@@ -470,7 +476,10 @@ class _PortraitOnboardingBody extends StatelessWidget {
   final Widget pageIndicator;
 
   const _PortraitOnboardingBody(
-      {Key? key, required this.pageView, required this.getStartedButton, required this.pageIndicator})
+      {Key? key,
+      required this.pageView,
+      required this.getStartedButton,
+      required this.pageIndicator})
       : super(key: key);
 
   static const double bottomBarHeight = 48.0;

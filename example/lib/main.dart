@@ -5,8 +5,8 @@ import 'package:material_you/material_you.dart';
 import 'package:material_color_utilities/material_color_utilities.dart';
 import 'demos.dart';
 
-class RainbowThemeBuilder extends StatefulWidget {
-  const RainbowThemeBuilder({
+class RainbowSeedBuilder extends StatefulWidget {
+  const RainbowSeedBuilder({
     Key? key,
     this.degreesPerSecond = 60,
     this.chroma = 48,
@@ -19,10 +19,10 @@ class RainbowThemeBuilder extends StatefulWidget {
   final Widget Function(BuildContext context, Color) builder;
 
   @override
-  _RainbowThemeBuilderState createState() => _RainbowThemeBuilderState();
+  _RainbowSeedBuilderState createState() => _RainbowSeedBuilderState();
 }
 
-class _RainbowThemeBuilderState extends State<RainbowThemeBuilder>
+class _RainbowSeedBuilderState extends State<RainbowSeedBuilder>
     with SingleTickerProviderStateMixin {
   final Stream<int> stream =
       Stream.periodic(kThemeAnimationDuration, (i) => i + 1);
@@ -77,7 +77,7 @@ class _MyAppState extends State<MyApp> {
       toggleRainbow: _toggleRainbow,
     );
     final themeMode = _isDark ? ThemeMode.dark : ThemeMode.light;
-    return RainbowThemeBuilder(
+    return RainbowSeedBuilder(
       builder: (context, rainbowSeed) => MD3Themes(
         seed: _isRainbow ? rainbowSeed : null,
         monetThemeForFallbackPalette: _isRainbow ? null : baseline_3p,

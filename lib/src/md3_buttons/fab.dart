@@ -258,7 +258,7 @@ class MD3FloatingActionButton extends ButtonStyleButton {
       maximumSize: MaterialStateProperty.all(Size.infinite),
       backgroundColor: MD3ElevationTintableColor(
         backgroundColor,
-        tintColor!,
+        tintColor,
         md3Elevation,
       ),
       foregroundColor: MaterialStateProperty.all(foregroundColor),

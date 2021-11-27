@@ -95,6 +95,13 @@ class MD3AppBarSizeScopeState extends State<MD3AppBarSizeScope>
     );
   }
 
+  @override
+  void dispose() {
+    _animController.dispose();
+    assert(_debugSetCurrent(null));
+    super.dispose();
+  }
+
   static MD3AppBarSizeScopeState? maybeOf(BuildContext context) => context
       .dependOnInheritedWidgetOfExactType<_InheritedMD3AppBarSizeScope>()
       ?.self;

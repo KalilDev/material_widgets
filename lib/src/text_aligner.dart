@@ -30,25 +30,31 @@ class _TextAlignPainter extends CustomPainter {
   final _metricsCache = <String, List<ui.LineMetrics>>{};
 
   Size layoutSize(BoxConstraints constraints) {
-    final titlePainter = _painter(
-      title!,
-      isTitle: true,
-    );
-    final titleMetrics = _layoutAndMetrics(
-      title!,
-      titlePainter,
-      minWidth: constraints.minWidth,
-      maxWidth: constraints.maxWidth,
-    );
-    var width = titlePainter.width;
-    var height = titleMetrics.last.height;
+    double width = 0;
+    double height = 0;
+    double titleBaseline = 0;
+    if (title != null) {
+      final titlePainter = _painter(
+        title!,
+        isTitle: true,
+      );
+      final titleMetrics = _layoutAndMetrics(
+        title!,
+        titlePainter,
+        minWidth: constraints.minWidth,
+        maxWidth: constraints.maxWidth,
+      );
+      width = titlePainter.width;
+      height = titleMetrics.last.height;
+      titleBaseline = titleMetrics.last.baseline;
+    }
 
     // In case the title is null, we will line the text baseline with where the
     // title baseline would be, instead of spacing it
     final baselineOffset = title == null ? 0.0 : titleBodyBaselineDistance;
     final drawOnBaseline = title != null;
 
-    final bodyStartBaseline = titleMetrics.last.baseline + baselineOffset;
+    final bodyStartBaseline = titleBaseline + baselineOffset;
 
     void layoutBodyPart(String text, double baselineOffset) {
       final painter = _painter(text);
@@ -134,6 +140,9 @@ class _TextAlignPainter extends CustomPainter {
     // if start is null, it will be Offset.zero, otherwise it will be the
     // previous baseline
     Offset paintTitle(TextPainter painter) {
+      if (title == null) {
+        return Offset.zero;
+      }
       final metrics = _layoutAndMetrics(title!, painter, maxWidth: size.width);
       alignedPaint(painter, Offset.zero);
       return Offset(0, metrics.last.baseline);

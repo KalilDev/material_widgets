@@ -1,8 +1,5 @@
-import 'dart:ui';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:material_widgets/material_widgets.dart';
 import 'package:material_you/material_you.dart';
 
 import 'utils.dart';
@@ -14,10 +11,13 @@ class MD3ChipThemeData with Diagnosticable {
   final ButtonStyle? style;
 
   static MD3ChipThemeData? lerp(
-      MD3ChipThemeData a, MD3ChipThemeData b, double t) {
+    MD3ChipThemeData? a,
+    MD3ChipThemeData? b,
+    double t,
+  ) {
     if (a == null && b == null) return null;
     return MD3ChipThemeData(
-      style: ButtonStyle.lerp(a.style, b.style, t),
+      style: ButtonStyle.lerp(a?.style, b?.style, t),
     );
   }
 
@@ -67,7 +67,7 @@ class MD3ChipTheme extends InheritedTheme {
 }
 
 class ChipStyle {
-  ChipStyle({
+  const ChipStyle({
     this.backgroundColor,
     this.backgroundTintColor,
     this.labelColor,
@@ -76,42 +76,7 @@ class ChipStyle {
     this.md3Elevation,
   });
 
-  final MaterialStateProperty<Color>? backgroundColor;
-  final MaterialStateProperty<Color>? backgroundTintColor;
-  final MaterialStateProperty<Color>? labelColor;
-  final MaterialStateProperty<Color>? stateLayerColor;
-  final MaterialStateProperty<BorderSide>? borderSide;
-  final MaterialStateProperty<MD3ElevationLevel>? md3Elevation;
-
-  static const double paddingBetweenElements = 8.0;
-
-  ChipStyle merge(ChipStyle other) => ChipStyle(
-        backgroundColor: other.backgroundColor ?? backgroundColor,
-        backgroundTintColor: other.backgroundTintColor ?? backgroundTintColor,
-        labelColor: other.labelColor ?? labelColor,
-        stateLayerColor: other.stateLayerColor ?? stateLayerColor,
-        borderSide: other.borderSide ?? borderSide,
-        md3Elevation: other.md3Elevation ?? md3Elevation,
-      );
-
-  ChipStyle copyWith({
-    MaterialStateProperty<Color>? backgroundColor,
-    MaterialStateProperty<Color>? backgroundTintColor,
-    MaterialStateProperty<Color>? labelColor,
-    MaterialStateProperty<Color>? stateLayerColor,
-    MaterialStateProperty<BorderSide>? borderSide,
-    MaterialStateProperty<MD3ElevationLevel>? md3Elevation,
-  }) =>
-      ChipStyle(
-        backgroundColor: backgroundColor ?? this.backgroundColor,
-        backgroundTintColor: backgroundTintColor ?? this.backgroundTintColor,
-        labelColor: labelColor ?? this.labelColor,
-        stateLayerColor: stateLayerColor ?? this.stateLayerColor,
-        borderSide: borderSide ?? this.borderSide,
-        md3Elevation: md3Elevation ?? this.md3Elevation,
-      );
-
-  static ChipStyle selected({
+  factory ChipStyle.selected({
     required Color backgroundColor,
     required Color foregroundColor,
     Color? disabledColor,
@@ -134,7 +99,7 @@ class ChipStyle {
     );
   }
 
-  static ChipStyle normal({
+  factory ChipStyle.normal({
     required Color backgroundColor,
     Color? backgroundTintColor,
     required Color foregroundColor,
@@ -172,30 +137,7 @@ class ChipStyle {
     );
   }
 
-  static MD3MaterialStateElevation elevatedElevation(
-    MD3ElevationTheme elevation,
-  ) =>
-      MD3MaterialStateElevation(
-        elevation.level1,
-        elevation.level2,
-        disabled: elevation.level0,
-        focused: elevation.level1,
-        dragged: elevation.level4,
-      );
-  static MD3MaterialStateElevation loweredElevation(
-    MD3ElevationTheme elevation,
-  ) =>
-      MD3DraggableElevation(
-        elevation.level0,
-        elevation.level4,
-      );
-  static MD3MaterialStateElevation elevationFor(
-    MD3ElevationTheme elevation, {
-    required bool isElevated,
-  }) =>
-      isElevated ? elevatedElevation(elevation) : loweredElevation(elevation);
-
-  static ChipStyle chipStyleFor(
+  factory ChipStyle.from(
     MonetColorScheme scheme,
     MD3ElevationTheme elevation, {
     required bool elevated,
@@ -225,6 +167,64 @@ class ChipStyle {
     );
   }
 
+  final MaterialStateProperty<Color>? backgroundColor;
+  final MaterialStateProperty<Color>? backgroundTintColor;
+  final MaterialStateProperty<Color>? labelColor;
+  final MaterialStateProperty<Color>? stateLayerColor;
+  final MaterialStateProperty<BorderSide>? borderSide;
+  final MaterialStateProperty<MD3ElevationLevel>? md3Elevation;
+
+  static const double paddingBetweenElements = 8.0;
+
+  ChipStyle merge(ChipStyle other) => ChipStyle(
+        backgroundColor: other.backgroundColor ?? backgroundColor,
+        backgroundTintColor: other.backgroundTintColor ?? backgroundTintColor,
+        labelColor: other.labelColor ?? labelColor,
+        stateLayerColor: other.stateLayerColor ?? stateLayerColor,
+        borderSide: other.borderSide ?? borderSide,
+        md3Elevation: other.md3Elevation ?? md3Elevation,
+      );
+
+  ChipStyle copyWith({
+    MaterialStateProperty<Color>? backgroundColor,
+    MaterialStateProperty<Color>? backgroundTintColor,
+    MaterialStateProperty<Color>? labelColor,
+    MaterialStateProperty<Color>? stateLayerColor,
+    MaterialStateProperty<BorderSide>? borderSide,
+    MaterialStateProperty<MD3ElevationLevel>? md3Elevation,
+  }) =>
+      ChipStyle(
+        backgroundColor: backgroundColor ?? this.backgroundColor,
+        backgroundTintColor: backgroundTintColor ?? this.backgroundTintColor,
+        labelColor: labelColor ?? this.labelColor,
+        stateLayerColor: stateLayerColor ?? this.stateLayerColor,
+        borderSide: borderSide ?? this.borderSide,
+        md3Elevation: md3Elevation ?? this.md3Elevation,
+      );
+
+  static MD3MaterialStateElevation elevatedElevation(
+    MD3ElevationTheme elevation,
+  ) =>
+      MD3MaterialStateElevation(
+        elevation.level1,
+        elevation.level2,
+        disabled: elevation.level0,
+        focused: elevation.level1,
+        dragged: elevation.level4,
+      );
+  static MD3MaterialStateElevation loweredElevation(
+    MD3ElevationTheme elevation,
+  ) =>
+      MD3DraggableElevation(
+        elevation.level0,
+        elevation.level4,
+      );
+  static MD3MaterialStateElevation elevationFor(
+    MD3ElevationTheme elevation, {
+    required bool isElevated,
+  }) =>
+      isElevated ? elevatedElevation(elevation) : loweredElevation(elevation);
+
   ButtonStyle toButtonStyle(MD3StateLayerOpacityTheme stateLayerOpacityTheme) {
     final MaterialStateProperty<Color>? background = backgroundTintColor != null
         ? MD3ElevationTintableColor(
@@ -252,7 +252,7 @@ class ChipStyle {
 abstract class MD3ChipStyleChip extends ButtonStyleButton {
   MD3ChipStyleChip({
     Key? key,
-    required VoidCallback onPressed,
+    required VoidCallback? onPressed,
     VoidCallback? onLongPress,
     ValueChanged<bool>? onHover,
     ValueChanged<bool>? onFocusChange,
@@ -379,7 +379,6 @@ abstract class MD3ChipStyleChip extends ButtonStyleButton {
     );
   }
 
-  @override
   ChipStyle? themeChipStyleOf(BuildContext context);
   @override
   ButtonStyle? themeStyleOf(BuildContext context) =>

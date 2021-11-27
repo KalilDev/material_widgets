@@ -1,13 +1,7 @@
-import 'dart:math';
-
 import 'package:example/common/layout.dart';
 import 'package:flutter/material.dart';
 
 import 'package:material_widgets/material_widgets.dart';
-import 'package:material_you/material_you.dart';
-import 'package:flutter_monet_theme/flutter_monet_theme.dart';
-import 'package:monet_theme/monet_theme.dart';
-import 'package:material_color_utilities/material_color_utilities.dart';
 import 'package:material_you/material_you.dart';
 
 class ResponsiveScaffoldDemo extends StatefulWidget {

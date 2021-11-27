@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:material_widgets/material_widgets.dart';
@@ -53,7 +51,7 @@ class MD3InputChipTheme extends InheritedTheme {
   static MD3InputChipThemeData of(BuildContext context) {
     final MD3InputChipTheme? buttonTheme =
         context.dependOnInheritedWidgetOfExactType<MD3InputChipTheme>();
-    return buttonTheme?.data ?? MD3InputChipThemeData(style: ChipStyle());
+    return buttonTheme?.data ?? const MD3InputChipThemeData(style: ChipStyle());
   }
 
   @override
@@ -67,8 +65,6 @@ class MD3InputChipTheme extends InheritedTheme {
 }
 
 class MD3InputChip extends MD3ChipStyleChip {
-  final bool selected;
-
   MD3InputChip({
     Key? key,
     required VoidCallback onPressed,
@@ -105,8 +101,10 @@ class MD3InputChip extends MD3ChipStyleChip {
           leadingAvatar: leadingAvatar,
         );
 
+  final bool selected;
+
   @override
-  ChipStyle defaultChipStyleOf(BuildContext context) => ChipStyle.chipStyleFor(
+  ChipStyle defaultChipStyleOf(BuildContext context) => ChipStyle.from(
         context.colorScheme,
         context.elevation,
         elevated: false,

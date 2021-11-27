@@ -2,7 +2,6 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:material_widgets/src/md3_appBar/appbar.dart';
-import 'package:material_widgets/src/md3_appBar/raw_appBar.dart';
 import 'package:material_you/material_you.dart';
 
 import 'size_scope.dart';
@@ -49,9 +48,6 @@ class MD3SliverAppBar extends StatefulWidget {
 
 class _MD3SliverAppBarState extends State<MD3SliverAppBar> {
   late Handle<MD3AppBarSizeScopeState> _sizeScopeHandle;
-
-  static bool _shouldNotifySize(MD3RawAppBar widget) =>
-      widget.primary && widget.notifySize;
 
   double get _bottomPadding => 28;
 
@@ -166,7 +162,7 @@ class _MD3SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
     final bottomPadding =
         this.bottomPadding.resolve(Directionality.of(context));
     final titleHeight = bottomTitleTextStyle.fontSize! *
-        (MediaQuery.maybeOf(context)!.textScaleFactor ?? 1) *
+        (MediaQuery.maybeOf(context)?.textScaleFactor ?? 1) *
         (bottomTitleTextStyle.height ?? 1);
     final bottomTitleTopPaddding =
         bottomHeight - titleHeight - bottomPadding.bottom;
@@ -178,8 +174,7 @@ class _MD3SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
     var topTitleOpacity =
         (shrinkOffset - bottomTitleAndTopPadddingHeight) / bottomPadding.bottom;
     topTitleOpacity = topTitleOpacity.clamp(0.0, 1.0);
-    final fullHeight =
-        (maxExtent - shrinkOffset).clamp(minExtent, maxExtent).toDouble();
+    final fullHeight = (maxExtent - shrinkOffset).clamp(minExtent, maxExtent);
     notifySize(fullHeight);
 
     final isElevated =
@@ -192,7 +187,7 @@ class _MD3SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
           _appbar(isElevated, topTitleOpacity),
           if (bottomHeight != 0.0)
             _bottom(
-              (bottomHeight - shrinkOffset).clamp(0.0, bottomHeight).toDouble(),
+              (bottomHeight - shrinkOffset).clamp(0.0, bottomHeight),
               bottomTitleOpacity,
             ),
         ],

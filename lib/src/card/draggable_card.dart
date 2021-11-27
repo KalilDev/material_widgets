@@ -1,9 +1,5 @@
-import 'dart:math';
-
 import 'package:flutter/foundation.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:vector_math/vector_math_64.dart';
 import '../monadic_value_listenable.dart';
 
 class InheritedDraggableCardInformation extends InheritedWidget {
@@ -269,13 +265,13 @@ class _DraggableCardState<T extends Object> extends State<DraggableCard<T>>
 
   Offset _getChildOrigin() {
     final childKey = _isBeingDragged ? _referenceChildKey : _childKey;
-    final renderBox = childKey.currentContext!.findRenderObject() as RenderBox;
+    final renderBox = childKey.currentContext!.findRenderObject()! as RenderBox;
     return renderBox.localToGlobal(Offset.zero);
   }
 
   Size _getChildSize() {
     final childKey = _isBeingDragged ? _referenceChildKey : _childKey;
-    final renderBox = childKey.currentContext!.findRenderObject() as RenderBox;
+    final renderBox = childKey.currentContext!.findRenderObject()! as RenderBox;
     return renderBox.size;
   }
 
@@ -326,7 +322,7 @@ class _DraggableCardState<T extends Object> extends State<DraggableCard<T>>
 
   void _updateChildSize() {
     final newSize = _getChildSize();
-    if (newSize == _childSize) {
+    if (newSize == _childSize.value) {
       return;
     }
 

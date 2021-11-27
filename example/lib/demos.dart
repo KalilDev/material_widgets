@@ -41,9 +41,8 @@ class Demo {
   MapEntry<String, WidgetBuilder> toRouteEntry() =>
       MapEntry('/$routeName', builder);
   NavigationItem toNavigationItem() => NavigationItem(
-        label: Text(label),
+        labelText: label,
         icon: icon ?? Icon(null),
-        activeIcon: icon ?? Icon(null),
       );
 
   void navigate(BuildContext context) =>

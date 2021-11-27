@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use_from_same_package
+
 import 'package:flutter/material.dart';
 import 'package:material_you/material_you.dart';
 
@@ -6,49 +8,25 @@ import '../../material_widgets.dart';
 @Deprecated('Use MD3ResponsiveAppBarAction')
 abstract class ResponsiveAppbarAction {
   @Deprecated('Use MD3ResponsiveAppBarAction')
-  factory ResponsiveAppbarAction(
-      {Widget icon,
-      String tooltip,
-      Widget title,
-      VoidCallback onPressed}) = MD3ResponsiveAppBarAction;
-  @Deprecated('Use MD3ResponsiveAppBarAction')
-  static MD3ResponsiveAppBarAction create(
-          {Widget? icon,
-          String? tooltip,
-          Widget? title,
-          VoidCallback? onPressed}) =>
-      MD3ResponsiveAppBarAction(
-        icon: icon,
-        tooltip: tooltip,
-        title: title,
-        onPressed: onPressed,
-      );
-  @Deprecated(
-    'Use ResponsiveAppbar.buildActions with MD3ResponsiveAppBarAction',
-  )
-  static _ResponsiveAppBarActionBuilder builder(
-          MD3ResponsiveAppBarAction Function(BuildContext) build) =>
-      _ResponsiveAppBarActionBuilder(build);
+  factory ResponsiveAppbarAction({
+    Widget icon,
+    String tooltip,
+    Widget title,
+    VoidCallback onPressed,
+  }) = MD3ResponsiveAppBarAction;
 }
 
 class MD3ResponsiveAppBarAction implements ResponsiveAppbarAction {
-  final Widget? icon;
-  final String? tooltip;
-  final Widget? title;
-  final VoidCallback? onPressed;
-
   const MD3ResponsiveAppBarAction({
     this.icon,
     this.tooltip,
     this.title,
     this.onPressed,
   });
-}
-
-class _ResponsiveAppBarActionBuilder implements ResponsiveAppbarAction {
-  final MD3ResponsiveAppBarAction Function(BuildContext) build;
-
-  const _ResponsiveAppBarActionBuilder(this.build);
+  final Widget? icon;
+  final String? tooltip;
+  final Widget? title;
+  final VoidCallback? onPressed;
 }
 
 enum _MD3AppBarType {
@@ -172,9 +150,9 @@ class ResponsiveAppbar extends StatelessWidget implements PreferredSizeWidget {
       (context) {
         void open() {
           final items = hidden.map((e) => _actionToPopupMenuItem(context, e!));
-          final button = context.findRenderObject() as RenderBox;
+          final button = context.findRenderObject()! as RenderBox;
           final overlay =
-              Overlay.of(context)!.context.findRenderObject() as RenderBox;
+              Overlay.of(context)!.context.findRenderObject()! as RenderBox;
           final position = RelativeRect.fromRect(
             Rect.fromPoints(
               button.localToGlobal(Offset.zero, ancestor: overlay),
@@ -218,10 +196,6 @@ class ResponsiveAppbar extends StatelessWidget implements PreferredSizeWidget {
       if (e is MD3ResponsiveAppBarAction) {
         return e;
       }
-      if (e is _ResponsiveAppBarActionBuilder) {
-        return e.build(context);
-      }
-      return null;
     }).where((e) => e != null);
     List<Widget> actions;
     if (concreteActions.length > limit) {

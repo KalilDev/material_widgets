@@ -9,10 +9,10 @@ extension MonadicValueListenable<T> on ValueListenable<T> {
 }
 
 class _MappedValueListenable<T, T1> implements ValueListenable<T1> {
+  _MappedValueListenable(this._base, this._mapper);
+
   final ValueListenable<T> _base;
   final T1 Function(T) _mapper;
-
-  _MappedValueListenable(this._base, this._mapper);
 
   @override
   void addListener(VoidCallback listener) => _base.addListener(listener);
@@ -26,10 +26,10 @@ class _MappedValueListenable<T, T1> implements ValueListenable<T1> {
 
 class _BoundValueListenable<T, T1> extends ChangeNotifier
     implements ValueListenable<T1> {
+  _BoundValueListenable(this._base, this._mapper);
+
   final ValueListenable<T> _base;
   final ValueListenable<T1> Function(T) _mapper;
-
-  _BoundValueListenable(this._base, this._mapper);
 
   void _onMapped() {
     notifyListeners();

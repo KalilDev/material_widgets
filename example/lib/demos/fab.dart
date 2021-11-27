@@ -22,6 +22,7 @@ enum FABColorScheme {
 }
 
 extension on FABColorScheme {
+  // ignore: missing_return
   MD3FABColorScheme toMD3() {
     switch (this) {
       case FABColorScheme.primary:
@@ -112,6 +113,7 @@ String fabPermutationName(FABSpec spec) {
   return name;
 }
 
+// ignore: missing_return
 Widget buildFabPermutation(FABSpec spec, VoidCallback onPressed) {
   switch (spec.fabType) {
     case FabType.expandedHidden:

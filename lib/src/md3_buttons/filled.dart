@@ -3,7 +3,6 @@ import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:material_widgets/material_widgets.dart';
 import 'package:material_you/material_you.dart';
 
 @immutable
@@ -13,10 +12,13 @@ class FilledButtonThemeData with Diagnosticable {
   final ButtonStyle? style;
 
   static FilledButtonThemeData? lerp(
-      FilledButtonThemeData a, FilledButtonThemeData b, double t) {
+    FilledButtonThemeData? a,
+    FilledButtonThemeData? b,
+    double t,
+  ) {
     if (a == null && b == null) return null;
     return FilledButtonThemeData(
-      style: ButtonStyle.lerp(a.style, b.style, t),
+      style: ButtonStyle.lerp(a?.style, b?.style, t),
     );
   }
 
@@ -212,8 +214,7 @@ class _FilledButtonWithIcon extends FilledButton {
     Clip? clipBehavior,
     required Widget icon,
     required Widget label,
-  })  : assert(label != null),
-        super(
+  }) : super(
           key: key,
           onPressed: onPressed,
           onLongPress: onLongPress,
@@ -241,9 +242,11 @@ class _FilledButtonWithIcon extends FilledButton {
 }
 
 class _FilledButtonWithIconChild extends StatelessWidget {
-  const _FilledButtonWithIconChild(
-      {Key? key, required this.label, required this.icon})
-      : super(key: key);
+  const _FilledButtonWithIconChild({
+    Key? key,
+    required this.label,
+    required this.icon,
+  }) : super(key: key);
 
   final Widget label;
   final Widget icon;

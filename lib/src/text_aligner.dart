@@ -5,18 +5,6 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 
 class _TextAlignPainter extends CustomPainter {
-  final TextStyle? titleStyle;
-  final String? title;
-  final double titleBodyBaselineDistance;
-  final List<String> body;
-  final double bodyBaselineHeight;
-  final TextStyle? bodyStyle;
-  final TextDirection textDirection;
-  final TextAlign titleAlign;
-  final TextAlign bodyAlign;
-  final bool showBaselines;
-  final _metricsCache = <String, List<ui.LineMetrics>>{};
-
   _TextAlignPainter({
     required this.titleStyle,
     required this.title,
@@ -29,6 +17,17 @@ class _TextAlignPainter extends CustomPainter {
     required this.bodyAlign,
     required this.showBaselines,
   });
+  final TextStyle? titleStyle;
+  final String? title;
+  final double titleBodyBaselineDistance;
+  final List<String> body;
+  final double bodyBaselineHeight;
+  final TextStyle? bodyStyle;
+  final TextDirection textDirection;
+  final TextAlign titleAlign;
+  final TextAlign bodyAlign;
+  final bool showBaselines;
+  final _metricsCache = <String, List<ui.LineMetrics>>{};
 
   Size layoutSize(BoxConstraints constraints) {
     final titlePainter = _painter(
@@ -108,7 +107,7 @@ class _TextAlignPainter extends CustomPainter {
       var align = painter.textAlign;
       if (align == TextAlign.start || align == TextAlign.end) {
         final isStart = align == TextAlign.start;
-        switch (painter.textDirection) {
+        switch (painter.textDirection!) {
           case TextDirection.rtl:
             align = isStart ? TextAlign.right : TextAlign.left;
             break;
@@ -119,9 +118,11 @@ class _TextAlignPainter extends CustomPainter {
       }
       switch (align) {
         case TextAlign.right:
+          // ignore: parameter_assignments
           start = start.translate(size.width - painter.width, 0);
           break;
         case TextAlign.center:
+          // ignore: parameter_assignments
           start = start.translate((size.width - painter.width) / 2, 0);
           break;
         default:
@@ -229,15 +230,6 @@ class _TextAlignPainter extends CustomPainter {
 /// body[1]                    |  -> [bodyBaselineHeight]
 /// ___________________________ -> body[1] baseline
 class TextAligner extends StatelessWidget {
-  final TextStyle? titleStyle;
-  final String? title;
-  final double titleBodyBaselineDistance;
-  final List<String> body;
-  final double bodyBaselineHeight;
-  final TextStyle? bodyStyle;
-  final TextAlign? titleAlign;
-  final TextAlign? bodyAlign;
-
   TextAligner({
     Key? key,
     this.titleStyle,
@@ -250,6 +242,15 @@ class TextAligner extends StatelessWidget {
     this.bodyAlign,
   })  : assert(body.isNotEmpty),
         super(key: key);
+
+  final TextStyle? titleStyle;
+  final String? title;
+  final double titleBodyBaselineDistance;
+  final List<String> body;
+  final double bodyBaselineHeight;
+  final TextStyle? bodyStyle;
+  final TextAlign? titleAlign;
+  final TextAlign? bodyAlign;
 
   @override
   Widget build(BuildContext context) {

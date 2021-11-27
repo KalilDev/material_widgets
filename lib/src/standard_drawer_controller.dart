@@ -1,4 +1,3 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 // TODO(eseidel): Draw width should vary based on device size:
@@ -39,8 +38,7 @@ class StandardDrawerController extends StatefulWidget {
     required this.child,
     required this.alignment,
     this.drawerCallback,
-  })  : assert(alignment != null),
-        super(key: key);
+  }) : super(key: key);
 
   /// The widget below this widget in the tree.
   ///
@@ -97,43 +95,31 @@ class StandardDrawerControllerState extends State<StandardDrawerController>
   /// Typically called by [ScaffoldState.openDrawer].
   void open() {
     _controller.fling();
-    if (widget.drawerCallback != null) widget.drawerCallback!(true);
+    widget.drawerCallback?.call(true);
   }
 
   /// Starts an animation to close the drawer.
   void close() {
     _controller.fling(velocity: -1.0);
-    if (widget.drawerCallback != null) widget.drawerCallback!(false);
+    widget.drawerCallback?.call(false);
   }
 
-  Tween<Offset>? get _drawerTranslationTween {
-    switch (widget.alignment) {
-      case DrawerAlignment.start:
-        return Tween(begin: const Offset(-_kWidth, 0), end: Offset.zero);
-      case DrawerAlignment.end:
-        return Tween(begin: const Offset(_kWidth, 0), end: Offset.zero);
-    }
-    return null;
-  }
-
-  Alignment? get _overflowBoxAlignment {
+  Alignment get _overflowBoxAlignment {
     switch (widget.alignment) {
       case DrawerAlignment.start:
         return Alignment.centerRight;
       case DrawerAlignment.end:
         return Alignment.centerLeft;
     }
-    return null;
   }
 
-  Tween<double>? get _drawerSizeTween {
+  Tween<double> get _drawerSizeTween {
     switch (widget.alignment) {
       case DrawerAlignment.start:
         return Tween(begin: 0, end: _kWidth);
       case DrawerAlignment.end:
         return Tween(begin: 0, end: _kWidth);
     }
-    return null;
   }
 
   Widget _buildDrawer(BuildContext context) {
@@ -145,9 +131,9 @@ class StandardDrawerControllerState extends State<StandardDrawerController>
           key: _drawerKey,
           node: _focusScopeNode,
           child: SizedBox(
-            width: _drawerSizeTween!.evaluate(_controller),
+            width: _drawerSizeTween.evaluate(_controller),
             child: OverflowBox(
-              alignment: _overflowBoxAlignment!,
+              alignment: _overflowBoxAlignment,
               minWidth: _kWidth,
               maxWidth: _kWidth,
               child: widget.child,

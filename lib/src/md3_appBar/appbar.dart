@@ -67,6 +67,7 @@ class MD3CenterAlignedAppBar extends StatelessWidget
   }
 
   @override
+  // ignore: avoid_field_initializers_in_const_classes
   final Size preferredSize = const Size.fromHeight(64);
 }
 
@@ -146,6 +147,7 @@ class MD3SmallAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
+  // ignore: avoid_field_initializers_in_const_classes
   final Size preferredSize = const Size.fromHeight(64);
 
   static const double kHeight = 64;
@@ -340,7 +342,7 @@ class _MD3LargeOrMediumAppBarState extends State<MD3LargeOrMediumAppBar>
             .fold<double>(0.0, (greatest, e) => max(greatest, e)) ??
         0.0;
     final previousDt = _expansionController.value;
-    final dt = (furthestPixels / kHeightDelta).clamp(0.0, 1.0).toDouble();
+    final dt = (furthestPixels / kHeightDelta).clamp(0.0, 1.0);
     if (dt == previousDt) {
       return;
     }

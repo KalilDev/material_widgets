@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:material_widgets/src/card/card_style_card.dart';
 import 'package:material_you/material_you.dart';

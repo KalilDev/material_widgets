@@ -1,7 +1,6 @@
 name: material_widgets
 description: An package of widgets conforming to the material design spec.
-version: 0.4.0-preview.2
-author: KalilDev
+version: 0.4.0-preview.3
 # homepage:
 
 environment:

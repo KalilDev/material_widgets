@@ -1,11 +1,7 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:material_you/material_you.dart';
 
 import 'draggable_card.dart';
-import 'outlined_card.dart';
 
 class CardStyle {
   CardStyle({
@@ -80,14 +76,6 @@ class CardStyle {
 }
 
 abstract class CardStyleCard extends StatefulWidget {
-  final VoidCallback? onPressed;
-  final VoidCallback? onLongPress;
-  final ValueChanged<bool>? onHover;
-  final ValueChanged<bool>? onFocusChange;
-  final FocusNode? focusNode;
-  final CardStyle? style;
-  final Widget child;
-
   const CardStyleCard({
     Key? key,
     this.onPressed,
@@ -98,6 +86,14 @@ abstract class CardStyleCard extends StatefulWidget {
     this.style,
     required this.child,
   }) : super(key: key);
+
+  final VoidCallback? onPressed;
+  final VoidCallback? onLongPress;
+  final ValueChanged<bool>? onHover;
+  final ValueChanged<bool>? onFocusChange;
+  final FocusNode? focusNode;
+  final CardStyle? style;
+  final Widget child;
 
   CardStyle defaultStyleOf(BuildContext context);
   CardStyle? themeStyleOf(BuildContext context);

@@ -18,7 +18,7 @@ class _CardsDemoState extends State<CardsDemo> {
 
   Widget _buildCard(BuildContext context, int i) {
     void _onPressed() {
-      Scaffold.of(context).showSnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Pressed the card at $i'),
         ),
@@ -56,6 +56,7 @@ class _CardsDemoState extends State<CardsDemo> {
           color: theme[0],
         );
     }
+    throw StateError('Unreachable');
   }
 
   @override

@@ -1,28 +1,18 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_monet_theme/flutter_monet_theme.dart';
 import 'package:material_you/material_you.dart';
 
 @immutable
 class MD3DraggableElevation extends MD3MaterialStateElevation
     with Diagnosticable {
-  MD3DraggableElevation(this.regular, this.dragged)
-      : super(
-          const MD3ElevationLevel(0),
-          const MD3ElevationLevel(0),
+  MD3DraggableElevation(
+    MD3ElevationLevel regular,
+    MD3ElevationLevel dragged,
+  ) : super(
+          regular,
+          regular,
+          dragged: dragged,
         );
-
-  final MD3ElevationLevel regular;
-  @override
-  final MD3ElevationLevel dragged;
-
-  @override
-  MD3ElevationLevel resolve(Set<MaterialState> states) {
-    if (states.contains(MaterialState.dragged)) {
-      return dragged;
-    }
-    return regular;
-  }
 }
 
 extension ColorMaterialState on Color {
@@ -84,7 +74,8 @@ extension MonadicMaterialStateProperty<T> on MaterialStateProperty<T> {
   MaterialStateProperty<T1> map<T1>(T1 Function(T) fn) =>
       MaterialStateProperty.resolveWith((states) => fn(resolve(states)));
   MaterialStateProperty<T1> bind<T1>(
-          MaterialStateProperty<T1> Function(T) fn) =>
+    MaterialStateProperty<T1> Function(T) fn,
+  ) =>
       MaterialStateProperty.resolveWith(
         (states) => runMaterialStateProperty(fn(resolve(states)), states),
       );

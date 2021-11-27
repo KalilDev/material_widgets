@@ -143,7 +143,7 @@ class _MD3BasicDialog extends StatelessWidget {
                 const MD3DialogDivider(height: 24),
               ] else
                 const SizedBox(height: 8.0),
-              if (actions != null) _actions(context),
+              if (actions.isNotEmpty) _actions(context),
             ],
           ),
         ),
@@ -214,7 +214,6 @@ class MD3DialogLayout extends StatelessWidget {
           ],
         );
     }
-    throw ArgumentError.notNull('dialogAlignment');
   }
 
   @override

@@ -137,9 +137,8 @@ class Home extends StatelessWidget {
       selectedIndex: 0,
       items: [
         NavigationItem(
-          label: Text('Home'),
+          labelText: 'Home',
           icon: Icon(Icons.home),
-          activeIcon: Icon(Icons.home),
         ),
         ...Demo.demos.map((e) => e.toNavigationItem())
       ],

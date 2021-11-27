@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:material_widgets/material_widgets.dart';
@@ -53,7 +51,8 @@ class MD3FilterChipTheme extends InheritedTheme {
   static MD3FilterChipThemeData of(BuildContext context) {
     final MD3FilterChipTheme? buttonTheme =
         context.dependOnInheritedWidgetOfExactType<MD3FilterChipTheme>();
-    return buttonTheme?.data ?? MD3FilterChipThemeData(style: ChipStyle());
+    return buttonTheme?.data ??
+        const MD3FilterChipThemeData(style: ChipStyle());
   }
 
   @override
@@ -67,9 +66,6 @@ class MD3FilterChipTheme extends InheritedTheme {
 }
 
 class MD3FilterChip extends MD3ChipStyleChip {
-  final bool selected;
-  final bool elevated;
-
   MD3FilterChip({
     Key? key,
     required VoidCallback onPressed,
@@ -103,8 +99,11 @@ class MD3FilterChip extends MD3ChipStyleChip {
           trailing: trailing,
         );
 
+  final bool selected;
+  final bool elevated;
+
   @override
-  ChipStyle defaultChipStyleOf(BuildContext context) => ChipStyle.chipStyleFor(
+  ChipStyle defaultChipStyleOf(BuildContext context) => ChipStyle.from(
         context.colorScheme,
         context.elevation,
         selected: selected,

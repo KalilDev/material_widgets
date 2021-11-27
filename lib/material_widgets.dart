@@ -10,7 +10,7 @@ export 'src/card/filled_card.dart';
 export 'src/card/outlined_card.dart';
 export 'src/material_onboarding.dart';
 export 'src/md3_appBar/appbar.dart';
-export 'src/md3_appBar/raw_appBar.dart';
+export 'src/md3_appBar/raw_appbar.dart';
 export 'src/md3_appBar/responsive_appbar.dart';
 export 'src/md3_appBar/size_scope.dart';
 export 'src/md3_appBar/sliver_appbar.dart';

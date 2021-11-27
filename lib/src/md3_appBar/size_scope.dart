@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class Handle<T> {
+class Handle<T extends Object> {
   Handle(this._attach, this._detach);
 
   final void Function(T) _attach;
@@ -12,8 +12,9 @@ class Handle<T> {
       throw StateError('Handle already disposed!');
     }
     if (_value != null && value != _value) {
+      final v = _value!;
       _value = null;
-      _detach(_value!);
+      _detach(v);
     }
     _value = value;
     if (value != null) {

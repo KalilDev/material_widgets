@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:material_widgets/src/md3_appBar/size_scope.dart';
 import 'package:material_you/material_you.dart';
 
 import '../../material_widgets.dart';
@@ -65,9 +64,9 @@ class MD3BottomNavigationDelegate extends MD3NavigationDelegate {
             .map(
               (e) => NavigationDestination(
                 icon: e.icon,
-                selectedIcon: e.activeIcon ?? e.icon,
+                selectedIcon: e.activeIcon,
                 label: e.labelText,
-                tooltip: e.labelText,
+                tooltip: e.tooltip,
               ),
             )
             .toList(),
@@ -181,7 +180,7 @@ class MD3DrawersNavigationDelegate extends MD3NavigationDelegate {
       );
 }
 
-extension _<T> on Iterable<T> {
+extension _ItE<T> on Iterable<T> {
   Iterable<T1> mapIndexed<T1>(T1 Function(T, int) fn) sync* {
     var i = 0;
     for (final e in this) {
@@ -303,7 +302,7 @@ class _ExpandableRailState extends State<_ExpandableRail>
         (e, i) {
           final selected = spec.selectedIndex == i;
           final child = NavigationDrawerItem(
-            icon: selected ? e.activeIcon ?? e.icon : e.icon,
+            icon: selected ? e.activeIcon : e.icon,
             selected: selected,
             title: _shrinkable(context, e.label),
             onTap: () => spec.onChanged(i),
@@ -356,7 +355,7 @@ class _ExpandableRailState extends State<_ExpandableRail>
               context,
               widget.spec,
             ),
-            const Expanded(flex: 7, child: const SizedBox()),
+            const Expanded(flex: 7, child: SizedBox()),
           ],
         ),
       ),
@@ -364,8 +363,11 @@ class _ExpandableRailState extends State<_ExpandableRail>
   }
 }
 
-Widget _drawer(BuildContext context,
-        {Widget? child, bool level0Elevation = false}) =>
+Widget _drawer(
+  BuildContext context, {
+  Widget? child,
+  bool level0Elevation = false,
+}) =>
     Drawer(
       backgroundColor: context.elevation.level0.overlaidColor(
         context.colorScheme.surface,
@@ -414,7 +416,7 @@ Iterable<Widget> _navigationDrawerItems(
       (e, i) {
         final selected = spec.selectedIndex == i;
         final child = NavigationDrawerItem(
-          icon: selected ? e.activeIcon ?? e.icon : e.icon,
+          icon: selected ? e.activeIcon : e.icon,
           selected: selected,
           title: noLabel ? const SizedBox() : e.label,
           onTap: () => spec.onChanged(i),

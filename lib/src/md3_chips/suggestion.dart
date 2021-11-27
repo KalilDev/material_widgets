@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:material_widgets/material_widgets.dart';
@@ -53,7 +51,8 @@ class MD3SuggestionChipTheme extends InheritedTheme {
   static MD3SuggestionChipThemeData of(BuildContext context) {
     final MD3SuggestionChipTheme? buttonTheme =
         context.dependOnInheritedWidgetOfExactType<MD3SuggestionChipTheme>();
-    return buttonTheme?.data ?? MD3SuggestionChipThemeData(style: ChipStyle());
+    return buttonTheme?.data ??
+        const MD3SuggestionChipThemeData(style: ChipStyle());
   }
 
   @override
@@ -67,9 +66,6 @@ class MD3SuggestionChipTheme extends InheritedTheme {
 }
 
 class MD3SuggestionChip extends MD3ChipStyleChip {
-  final bool elevated;
-  final bool selected;
-
   MD3SuggestionChip({
     Key? key,
     required VoidCallback onPressed,
@@ -103,8 +99,11 @@ class MD3SuggestionChip extends MD3ChipStyleChip {
           label: label,
         );
 
+  final bool elevated;
+  final bool selected;
+
   @override
-  ChipStyle defaultChipStyleOf(BuildContext context) => ChipStyle.chipStyleFor(
+  ChipStyle defaultChipStyleOf(BuildContext context) => ChipStyle.from(
         context.colorScheme,
         context.elevation,
         elevated: elevated,

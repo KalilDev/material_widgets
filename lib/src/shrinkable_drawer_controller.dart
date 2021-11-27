@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/gestures.dart';
-import 'package:flutter/foundation.dart';
 
 // TODO(eseidel): Draw width should vary based on device size:
 // https://material.io/design/components/navigation-drawer.html#specs
@@ -41,9 +39,7 @@ class ShrinkableDrawerController extends StatefulWidget {
     required this.alignment,
     this.drawerCallback,
     this.shrunkWidth = 56,
-  })  : assert(child != null),
-        assert(alignment != null),
-        super(key: key);
+  }) : super(key: key);
 
   /// The widget below this widget in the tree.
   ///
@@ -101,46 +97,23 @@ class ShrinkableDrawerControllerState extends State<ShrinkableDrawerController>
   ///
   /// Typically called by [ScaffoldState.openDrawer].
   void open() {
-    _controller.fling(velocity: 1.0);
-    if (widget.drawerCallback != null) widget.drawerCallback!(true);
+    _controller.fling();
+    widget.drawerCallback?.call(true);
   }
 
   /// Starts an animation to close the drawer.
   void close() {
     _controller.fling(velocity: -1.0);
-    if (widget.drawerCallback != null) widget.drawerCallback!(false);
+    widget.drawerCallback?.call(false);
   }
 
-  Tween<Offset>? get _drawerTranslationTween {
-    assert(widget.alignment != null);
-    switch (widget.alignment) {
-      case DrawerAlignment.start:
-        return Tween(begin: Offset(-_kWidth, 0), end: Offset.zero);
-      case DrawerAlignment.end:
-        return Tween(begin: Offset(_kWidth, 0), end: Offset.zero);
-    }
-    return null;
-  }
-
-  Alignment? get _overflowBoxAlignment {
-    switch (widget.alignment) {
-      case DrawerAlignment.start:
-        return Alignment.centerRight;
-      case DrawerAlignment.end:
-        return Alignment.centerLeft;
-    }
-    return null;
-  }
-
-  Tween<double>? get _drawerSizeTween {
-    assert(widget.alignment != null);
+  Tween<double> get _drawerSizeTween {
     switch (widget.alignment) {
       case DrawerAlignment.start:
         return Tween(begin: widget.shrunkWidth, end: _kWidth);
       case DrawerAlignment.end:
         return Tween(begin: widget.shrunkWidth, end: _kWidth);
     }
-    return null;
   }
 
   Widget _buildDrawer(BuildContext context) {
@@ -149,7 +122,7 @@ class ShrinkableDrawerControllerState extends State<ShrinkableDrawerController>
         key: _drawerKey,
         node: _focusScopeNode,
         child: SizedBox(
-          width: _drawerSizeTween!.evaluate(_controller),
+          width: _drawerSizeTween.evaluate(_controller),
           child: widget.child,
         ),
       ),

@@ -2,16 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:material_you/material_you.dart';
 
 class NavigationDrawerThemeData {
-  final bool? isStandardDrawer;
-  final double? headerBaseline;
-  final EdgeInsetsGeometry? itemPadding;
-  final ShapeBorder? itemShape;
-  final Color? itemSelectedColor;
-  final Color? itemUnselectedColor;
-  final Color? itemSelectedColorBackground;
-  final double? iconTitleSpacing;
-  final double? spacerHeight;
-
   const NavigationDrawerThemeData({
     this.isStandardDrawer,
     this.headerBaseline,
@@ -23,13 +13,26 @@ class NavigationDrawerThemeData {
     this.iconTitleSpacing,
     this.spacerHeight,
   });
+  final bool? isStandardDrawer;
+  final double? headerBaseline;
+  final EdgeInsetsGeometry? itemPadding;
+  final ShapeBorder? itemShape;
+  final Color? itemSelectedColor;
+  final Color? itemUnselectedColor;
+  final Color? itemSelectedColorBackground;
+  final double? iconTitleSpacing;
+  final double? spacerHeight;
 }
 
 class NavigationDrawerTheme extends InheritedWidget {
-  final NavigationDrawerThemeData? data;
+  const NavigationDrawerTheme({
+    Key? key,
+    required this.data,
+    required Widget child,
+  }) : super(key: key, child: child);
 
-  const NavigationDrawerTheme({this.data, required Widget child})
-      : super(child: child);
+  final NavigationDrawerThemeData data;
+
   @override
   bool updateShouldNotify(NavigationDrawerTheme oldWidget) =>
       data != oldWidget.data;
@@ -42,12 +45,6 @@ class NavigationDrawerTheme extends InheritedWidget {
 }
 
 class NavigationDrawerHeader extends StatelessWidget {
-  final Widget? title;
-  final Widget? subtitle;
-  final TextStyle? textStyle;
-  final double? baseline;
-  final bool? isStandardDrawer;
-
   const NavigationDrawerHeader({
     Key? key,
     this.title,
@@ -56,6 +53,13 @@ class NavigationDrawerHeader extends StatelessWidget {
     this.isStandardDrawer,
     this.baseline,
   }) : super(key: key);
+
+  final Widget? title;
+  @Deprecated('Deprecated on MD3')
+  final Widget? subtitle;
+  final TextStyle? textStyle;
+  final double? baseline;
+  final bool? isStandardDrawer;
 
   static const double kStandardHeight = 64;
   static const double kModalHeight = 74;
@@ -68,14 +72,6 @@ class NavigationDrawerHeader extends StatelessWidget {
   // bottom to text baseline
   static const double kModalSubtitleOffset = 18;
 
-  bool _getIsStandardDrawer(BuildContext context) {
-    if (isStandardDrawer != null) {
-      return isStandardDrawer!;
-    }
-    const defaultVal = false;
-    return NavigationDrawerTheme.of(context)?.isStandardDrawer ?? defaultVal;
-  }
-
   double _getbaseline(BuildContext context) {
     if (baseline != null) {
       return baseline!;
@@ -86,9 +82,6 @@ class NavigationDrawerHeader extends StatelessWidget {
   }
 
   Widget buildTitle(BuildContext context) {
-    final offset = _getIsStandardDrawer(context)
-        ? kStandardTitleOffset
-        : kModalTitleOffset;
     final style = textStyle ?? context.textTheme.titleMedium;
     final widget = DefaultTextStyle(
       style: style.copyWith(
@@ -97,19 +90,6 @@ class NavigationDrawerHeader extends StatelessWidget {
       child: title!,
     );
     return widget;
-  }
-
-  Widget buildSubtitle(BuildContext context) {
-    const offset = kModalSubtitleOffset;
-    final widget = DefaultTextStyle(
-      style: Theme.of(context).textTheme.caption!,
-      child: subtitle!,
-    );
-    return Positioned(
-      left: _getbaseline(context),
-      bottom: offset,
-      child: widget,
-    );
   }
 
   @override
@@ -129,9 +109,10 @@ class NavigationDrawerHeader extends StatelessWidget {
 }
 
 class NavigationDrawerSpacer extends StatelessWidget {
+  const NavigationDrawerSpacer({Key? key, this.height}) : super(key: key);
+
   final double? height;
 
-  const NavigationDrawerSpacer({Key? key, this.height}) : super(key: key);
   double _getHeight(BuildContext context) {
     if (height != null) {
       return height!;
@@ -151,14 +132,15 @@ class NavigationDrawerSpacer extends StatelessWidget {
 }
 
 class NavigationDrawerGroupHeader extends StatelessWidget {
-  final Widget? subtitle;
-  final double? baseline;
-
   const NavigationDrawerGroupHeader({
     Key? key,
     this.subtitle,
     this.baseline,
   }) : super(key: key);
+
+  final Widget? subtitle;
+  final double? baseline;
+
   static const double kHeight = 36;
   // top to text baseline
   static const double kTitleOffset = 28;
@@ -172,6 +154,19 @@ class NavigationDrawerGroupHeader extends StatelessWidget {
 }
 
 class NavigationDrawerItem extends StatelessWidget {
+  const NavigationDrawerItem({
+    Key? key,
+    this.title,
+    this.icon,
+    this.selected = false,
+    this.padding,
+    this.onTap,
+    this.shape,
+    this.selectedColor,
+    this.selectedContentColor,
+    this.iconTitleSpacing,
+  }) : super(key: key);
+
   final Widget? title;
   final Widget? icon;
   final bool selected;
@@ -182,20 +177,7 @@ class NavigationDrawerItem extends StatelessWidget {
   final Color? selectedContentColor;
   final double? iconTitleSpacing;
 
-  const NavigationDrawerItem(
-      {Key? key,
-      this.title,
-      this.icon,
-      this.selected = false,
-      this.padding,
-      this.onTap,
-      this.shape,
-      this.selectedColor,
-      this.selectedContentColor,
-      this.iconTitleSpacing})
-      : super(key: key);
-
-  final double kHeight = 56.0;
+  static const double kHeight = 56.0;
   bool get isDisabled => onTap == null;
 
   Color _getSelectedColorBackground(BuildContext context) {
@@ -278,8 +260,8 @@ class NavigationDrawerItem extends StatelessWidget {
   }
 
   Widget _buildIcon(BuildContext context) {
-    var icon = this.icon!;
-    icon = IconTheme(
+    final icon = this.icon!;
+    return IconTheme(
       data: IconTheme.of(context).copyWith(
         color: selected
             ? _getSelectedForegroundColor(context)
@@ -287,7 +269,6 @@ class NavigationDrawerItem extends StatelessWidget {
       ),
       child: icon,
     );
-    return icon;
   }
 
   Widget _buildLabel(BuildContext context) {

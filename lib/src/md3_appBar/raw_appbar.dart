@@ -1,3 +1,5 @@
+// ignore_for_file: parameter_assignments, unnecessary_null_comparison
+
 import 'dart:math';
 
 import 'package:flutter/material.dart';

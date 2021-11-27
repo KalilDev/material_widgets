@@ -3,7 +3,6 @@ import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:material_widgets/material_widgets.dart';
 import 'package:material_you/material_you.dart';
 
 @immutable
@@ -13,10 +12,13 @@ class FilledTonalButtonThemeData with Diagnosticable {
   final ButtonStyle? style;
 
   static FilledTonalButtonThemeData? lerp(
-      FilledTonalButtonThemeData a, FilledTonalButtonThemeData b, double t) {
+    FilledTonalButtonThemeData? a,
+    FilledTonalButtonThemeData? b,
+    double t,
+  ) {
     if (a == null && b == null) return null;
     return FilledTonalButtonThemeData(
-      style: ButtonStyle.lerp(a.style, b.style, t),
+      style: ButtonStyle.lerp(a?.style, b?.style, t),
     );
   }
 
@@ -106,7 +108,6 @@ class FilledTonalButton extends ButtonStyleButton {
     required Widget label,
   }) = _FilledTonalButtonWithIcon;
 
-  @override
   static ButtonStyle styleFrom({
     required Color backgroundColor,
     required Color foregroundColor,
@@ -212,8 +213,7 @@ class _FilledTonalButtonWithIcon extends FilledTonalButton {
     Clip? clipBehavior,
     required Widget icon,
     required Widget label,
-  })  : assert(label != null),
-        super(
+  }) : super(
           key: key,
           onPressed: onPressed,
           onLongPress: onLongPress,
@@ -241,9 +241,11 @@ class _FilledTonalButtonWithIcon extends FilledTonalButton {
 }
 
 class _FilledTonalButtonWithIconChild extends StatelessWidget {
-  const _FilledTonalButtonWithIconChild(
-      {Key? key, required this.label, required this.icon})
-      : super(key: key);
+  const _FilledTonalButtonWithIconChild({
+    Key? key,
+    required this.label,
+    required this.icon,
+  }) : super(key: key);
 
   final Widget label;
   final Widget icon;

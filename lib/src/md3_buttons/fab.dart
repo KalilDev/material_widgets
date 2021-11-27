@@ -333,12 +333,13 @@ class MD3FloatingActionButtonThemeData with Diagnosticable {
   final ButtonStyle? style;
 
   static MD3FloatingActionButtonThemeData? lerp(
-      MD3FloatingActionButtonThemeData a,
-      MD3FloatingActionButtonThemeData b,
-      double t) {
+    MD3FloatingActionButtonThemeData? a,
+    MD3FloatingActionButtonThemeData? b,
+    double t,
+  ) {
     if (a == null && b == null) return null;
     return MD3FloatingActionButtonThemeData(
-      style: ButtonStyle.lerp(a.style, b.style, t),
+      style: ButtonStyle.lerp(a?.style, b?.style, t),
     );
   }
 

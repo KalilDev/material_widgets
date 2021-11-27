@@ -22,31 +22,44 @@ abstract class MD3NavigationDelegate {
 }
 
 class NavigationItem {
-  final Widget label;
-  final Widget icon;
-  final Widget? activeIcon;
-  final Color? backgroundColor;
-  final String labelText;
-
-  const NavigationItem({
+  factory NavigationItem({
+    required String labelText,
+    Widget? label,
+    required Widget icon,
+    Widget? activeIcon,
+    String? tooltip,
+  }) =>
+      NavigationItem.raw(
+        label: label ?? Text(labelText),
+        icon: icon,
+        activeIcon: activeIcon ?? icon,
+        labelText: labelText,
+        tooltip: tooltip,
+      );
+  const NavigationItem.raw({
     required this.label,
     required this.icon,
     required this.activeIcon,
-    this.backgroundColor,
     required this.labelText,
+    this.tooltip,
   });
+
+  final Widget label;
+  final Widget icon;
+  final Widget activeIcon;
+  final String labelText;
+  final String? tooltip;
 }
 
 class MD3NavigationSpec {
-  final List<NavigationItem> items;
-  final ValueChanged<int> onChanged;
-  final int selectedIndex;
-
   const MD3NavigationSpec({
     required this.items,
     required this.onChanged,
     required this.selectedIndex,
   });
+  final List<NavigationItem> items;
+  final ValueChanged<int> onChanged;
+  final int selectedIndex;
 }
 
 class MD3NavigationScaffold extends StatelessWidget {

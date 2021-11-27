@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:material_widgets/material_widgets.dart';
@@ -53,7 +51,8 @@ class MD3AssistChipTheme extends InheritedTheme {
   static MD3AssistChipThemeData of(BuildContext context) {
     final MD3AssistChipTheme? buttonTheme =
         context.dependOnInheritedWidgetOfExactType<MD3AssistChipTheme>();
-    return buttonTheme?.data ?? MD3AssistChipThemeData(style: ChipStyle());
+    return buttonTheme?.data ??
+        const MD3AssistChipThemeData(style: ChipStyle());
   }
 
   @override
@@ -67,7 +66,6 @@ class MD3AssistChipTheme extends InheritedTheme {
 }
 
 class MD3AssistChip extends MD3ChipStyleChip {
-  final bool elevated;
   MD3AssistChip({
     Key? key,
     required VoidCallback onPressed,
@@ -101,9 +99,10 @@ class MD3AssistChip extends MD3ChipStyleChip {
           label: label,
           trailing: trailing,
         );
+  final bool elevated;
 
   @override
-  ChipStyle defaultChipStyleOf(BuildContext context) => ChipStyle.chipStyleFor(
+  ChipStyle defaultChipStyleOf(BuildContext context) => ChipStyle.from(
         context.colorScheme,
         context.elevation,
         elevated: elevated,

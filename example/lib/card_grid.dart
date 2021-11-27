@@ -9,16 +9,16 @@ bool defaultIsGrid(BuildContext context) =>
 /// The parameters required to create an [GridView] or an [SliverGrid]
 class GridParameters {
   const GridParameters({
-    this.columnCount,
-    this.itemWidth,
-    this.crossAxisSpacing,
-    this.mainAxisSpacing,
+    required this.columnCount,
+    required this.itemWidth,
+    required this.crossAxisSpacing,
+    required this.mainAxisSpacing,
   });
 
-  final int/*!*/ columnCount;
-  final double/*!*/ itemWidth;
-  final double/*!*/ crossAxisSpacing;
-  final double/*!*/ mainAxisSpacing;
+  final int columnCount;
+  final double itemWidth;
+  final double crossAxisSpacing;
+  final double mainAxisSpacing;
 }
 
 /// Compute the column count and the width of each widget in a card grid.
@@ -77,7 +77,7 @@ GridParameters gridParametersForColumns(
 SliverGridDelegate gridDelegateFromParameters(
   GridParameters parameters, {
   double childAspectRatio = 1.0,
-  double mainAxisExtent,
+  double? mainAxisExtent,
 }) =>
     SliverGridDelegateWithFixedCrossAxisCount(
       crossAxisCount: parameters.columnCount,
@@ -89,9 +89,9 @@ SliverGridDelegate gridDelegateFromParameters(
 
 SliverGrid sliverGridFromParameters(
   GridParameters parameters, {
-  @required SliverChildDelegate childDelegate,
+  required SliverChildDelegate childDelegate,
   double childAspectRatio = 1.0,
-  double mainAxisExtent,
+  double? mainAxisExtent,
 }) =>
     SliverGrid(
       gridDelegate: gridDelegateFromParameters(
@@ -104,10 +104,10 @@ SliverGrid sliverGridFromParameters(
 
 GridView gridViewFromParameters(
   GridParameters parameters, {
-  @required SliverChildDelegate childDelegate,
+  required SliverChildDelegate childDelegate,
   double childAspectRatio = 1.0,
-  double mainAxisExtent,
-  EdgeInsetsGeometry padding,
+  double? mainAxisExtent,
+  EdgeInsetsGeometry? padding,
 }) =>
     GridView.custom(
       gridDelegate: gridDelegateFromParameters(

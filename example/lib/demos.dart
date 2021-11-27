@@ -21,16 +21,16 @@ class Demo {
   final String routeName;
   final WidgetBuilder builder;
   final String label;
-  final Widget icon;
-  final Widget image;
-  final String subtitle;
-  final String description;
-  final String specUrl;
+  final Widget? icon;
+  final Widget? image;
+  final String? subtitle;
+  final String? description;
+  final String? specUrl;
 
   const Demo({
-    @required this.routeName,
-    @required this.builder,
-    @required this.label,
+    required this.routeName,
+    required this.builder,
+    required this.label,
     this.icon,
     this.image,
     this.subtitle,
@@ -71,8 +71,8 @@ class Demo {
         ),
         back: (context, flip) => TextCard(
           title: Text(label),
-          subtitle: subtitle != null ? Text(subtitle) : null,
-          content: description != null ? Text(description) : SizedBox(),
+          subtitle: subtitle != null ? Text(subtitle!) : null,
+          content: description != null ? Text(description!) : SizedBox(),
           bottom: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [

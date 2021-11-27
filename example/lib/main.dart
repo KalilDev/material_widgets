@@ -7,11 +7,11 @@ import 'demos.dart';
 
 class RainbowThemeBuilder extends StatefulWidget {
   const RainbowThemeBuilder({
-    Key key,
+    Key? key,
     this.degreesPerSecond = 60,
     this.chroma = 48,
     this.tone = 40,
-    @required this.builder,
+    required this.builder,
   }) : super(key: key);
   final double degreesPerSecond;
   final double chroma;
@@ -39,7 +39,7 @@ class _RainbowThemeBuilderState extends State<RainbowThemeBuilder>
       initialData: 0,
       builder: (context, snapshot) {
         final hct = HctColor.from(
-          degreesPerTick * snapshot.data,
+          degreesPerTick * snapshot.data!,
           widget.chroma,
           widget.tone,
         );
@@ -90,7 +90,7 @@ class _MyAppState extends State<MyApp> {
           themeMode: themeMode,
           builder: (context, home) => AnimatedMonetColorScheme(
             themeMode: themeMode,
-            child: home,
+            child: home!,
           ),
           home: home,
         ),
@@ -101,12 +101,12 @@ class _MyAppState extends State<MyApp> {
 
 class Home extends StatelessWidget {
   const Home({
-    Key key,
-    this.toggleDark,
-    this.toggleRainbow,
+    Key? key,
+    required this.toggleDark,
+    required this.toggleRainbow,
   }) : super(key: key);
-  final VoidCallback/*!*/ toggleDark;
-  final VoidCallback/*!*/ toggleRainbow;
+  final VoidCallback toggleDark;
+  final VoidCallback toggleRainbow;
 
   Widget _buildFab(BuildContext context) {
     if (context.sizeClass == MD3WindowSizeClass.compact) {
@@ -166,7 +166,7 @@ class Home extends StatelessWidget {
 }
 
 class _DemosGrid extends StatelessWidget {
-  const _DemosGrid({Key key}) : super(key: key);
+  const _DemosGrid({Key? key}) : super(key: key);
 
   Widget _buildDemo(BuildContext context, int i) =>
       Demo.demos[i].buildCardSwitcher(context);

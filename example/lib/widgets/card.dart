@@ -7,7 +7,7 @@ import 'switcher.dart';
 
 class TextCard extends StatelessWidget {
   const TextCard({
-    Key key,
+    Key? key,
     this.title,
     this.subtitle,
     this.content,
@@ -16,33 +16,33 @@ class TextCard extends StatelessWidget {
     this.onPressed,
     this.onLongPress,
   }) : super(key: key);
-  final Widget title;
-  final Widget subtitle;
-  final Widget bottom;
-  final Widget content;
+  final Widget? title;
+  final Widget? subtitle;
+  final Widget? bottom;
+  final Widget? content;
   final bool scrollable;
-  final VoidCallback onPressed;
-  final VoidCallback onLongPress;
+  final VoidCallback? onPressed;
+  final VoidCallback? onLongPress;
   Widget _content(BuildContext context) => content != null
       ? DefaultTextStyle(
           style: context.textTheme.bodyMedium.copyWith(
-            color: DefaultTextStyle.of(context).style.color.withOpacity(0.6),
+            color: DefaultTextStyle.of(context).style.color!.withOpacity(0.6),
           ),
-          child: content,
+          child: content!,
         )
       : SizedBox();
 
   Widget _subtitle(BuildContext context) => DefaultTextStyle(
         style: context.textTheme.bodySmall.copyWith(
-          color: DefaultTextStyle.of(context).style.color.withOpacity(0.8),
+          color: DefaultTextStyle.of(context).style.color!.withOpacity(0.8),
         ),
-        child: subtitle,
+        child: subtitle!,
       );
   Widget _title(BuildContext context) => DefaultTextStyle(
         style: context.textTheme.titleMedium.copyWith(
           color: DefaultTextStyle.of(context).style.color,
         ),
-        child: title,
+        child: title!,
       );
 
   @override
@@ -82,7 +82,7 @@ class TextCard extends StatelessWidget {
               ],
               if (bottom != null) ...[
                 const SizedBox(height: 8),
-                bottom,
+                bottom!,
               ],
               const SizedBox(height: 16),
             ],
@@ -93,17 +93,17 @@ class TextCard extends StatelessWidget {
 
 class ImageCard extends StatelessWidget {
   const ImageCard({
-    Key key,
+    Key? key,
     this.image,
     this.bottom,
     this.onPressed,
     this.onLongPress,
     this.outlined = true,
   }) : super(key: key);
-  final Widget image;
-  final Widget bottom;
-  final VoidCallback onPressed;
-  final VoidCallback onLongPress;
+  final Widget? image;
+  final Widget? bottom;
+  final VoidCallback? onPressed;
+  final VoidCallback? onLongPress;
   final bool outlined;
   @override
   Widget build(BuildContext context) {
@@ -145,7 +145,7 @@ class ImageCard extends StatelessWidget {
 
 class OutlinedSquaredCard extends StatelessWidget {
   const OutlinedSquaredCard({
-    Key key,
+    Key? key,
     this.color,
     this.content,
     this.title,
@@ -153,12 +153,12 @@ class OutlinedSquaredCard extends StatelessWidget {
     this.onPressed,
     this.onLongPressed,
   }) : super(key: key);
-  final CustomColorScheme color;
-  final Widget content;
-  final Widget title;
-  final Widget subtitle;
-  final VoidCallback onPressed;
-  final VoidCallback onLongPressed;
+  final CustomColorScheme? color;
+  final Widget? content;
+  final Widget? title;
+  final Widget? subtitle;
+  final VoidCallback? onPressed;
+  final VoidCallback? onLongPressed;
 
   Widget _wrapContent(BuildContext context, Widget child) => IconTheme.merge(
         data: IconThemeData(
@@ -176,10 +176,10 @@ class OutlinedSquaredCard extends StatelessWidget {
     );
     final subtitleGeometryStyle = context.textTheme.bodySmall;
     var contentBottomPadding = 16.0;
-    contentBottomPadding += titleStyle.height * titleStyle.fontSize;
+    contentBottomPadding += titleStyle.height! * titleStyle.fontSize!;
     if (subtitle != null) {
       contentBottomPadding +=
-          subtitleGeometryStyle.height * subtitleGeometryStyle.fontSize;
+          subtitleGeometryStyle.height! * subtitleGeometryStyle.fontSize!;
     }
     contentBottomPadding += 8;
     return OutlinedCard(
@@ -204,7 +204,7 @@ class OutlinedSquaredCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     if (title != null)
-                      DefaultTextStyle(style: titleStyle, child: title),
+                      DefaultTextStyle(style: titleStyle, child: title!),
                     if (title != null && subtitle != null)
                       const SizedBox(height: 2),
                     if (subtitle != null)
@@ -213,7 +213,7 @@ class OutlinedSquaredCard extends StatelessWidget {
                           color: foreground ??
                               DefaultTextStyle.of(context).style.color,
                         ),
-                        child: subtitle,
+                        child: subtitle!,
                       ),
                   ],
                 ),
@@ -227,16 +227,16 @@ class OutlinedSquaredCard extends StatelessWidget {
 }
 
 class CardContainer extends StatelessWidget {
-  const CardContainer({Key key, this.child, this.bottomHeight})
+  const CardContainer({Key? key, this.child, this.bottomHeight})
       : super(key: key);
-  final Widget child;
-  final double bottomHeight;
+  final Widget? child;
+  final double? bottomHeight;
 
   @override
   Widget build(BuildContext context) => LayoutBuilder(
         builder: (context, constraints) {
           final width = constraints.maxWidth;
-          final height = width + bottomHeight;
+          final height = width + bottomHeight!;
           return SizedBox(
             height: height,
             width: width,
@@ -250,14 +250,14 @@ typedef FlippableWidgetBuilder = Widget Function(BuildContext, VoidCallback);
 
 class FlippableCard extends StatefulWidget {
   const FlippableCard({
-    Key key,
+    Key? key,
     this.bottomHeight,
     this.back,
     this.front,
   }) : super(key: key);
-  final FlippableWidgetBuilder back;
-  final FlippableWidgetBuilder front;
-  final double bottomHeight;
+  final FlippableWidgetBuilder? back;
+  final FlippableWidgetBuilder? front;
+  final double? bottomHeight;
 
   @override
   _FlippableCardState createState() => _FlippableCardState();
@@ -274,11 +274,11 @@ class _FlippableCardState extends State<FlippableCard> {
           child: _isFlipped
               ? SizedBox.expand(
                   key: ObjectKey(true),
-                  child: widget.back(context, flip),
+                  child: widget.back!(context, flip),
                 )
               : SizedBox.expand(
                   key: ObjectKey(false),
-                  child: widget.front(context, flip),
+                  child: widget.front!(context, flip),
                 ),
         ),
       );

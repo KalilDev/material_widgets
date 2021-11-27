@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 class TypographyDemo extends StatefulWidget {
   const TypographyDemo({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -14,7 +14,7 @@ class TypographyDemo extends StatefulWidget {
 
 class _TypographyDemoState extends State<TypographyDemo> {
   int _deviceTypeI = 0;
-  MD3DeviceType deviceType;
+  late MD3DeviceType deviceType;
   void initState() {
     super.initState();
     deviceType =

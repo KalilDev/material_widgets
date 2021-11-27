@@ -44,7 +44,7 @@ class FABSpec {
   final FabType fabType;
   final bool isLowered;
   final FABColorScheme colorScheme;
-  final CustomColorScheme customColor;
+  final CustomColorScheme? customColor;
 
   FABSpec(
     this.fabType,
@@ -55,7 +55,7 @@ class FABSpec {
 }
 
 List<FABSpec> fabSpecPermutationsForType(FabType type, bool isLowered,
-        [CustomColorScheme customColor]) =>
+        [CustomColorScheme? customColor]) =>
     FABColorScheme.values
         .where((e) => customColor != null || e != FABColorScheme.custom)
         .map(
@@ -157,7 +157,7 @@ Widget buildFabPermutation(FABSpec spec, VoidCallback onPressed) {
 
 class FABDemo extends StatefulWidget {
   const FABDemo({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -165,7 +165,7 @@ class FABDemo extends StatefulWidget {
 }
 
 class _FABDemoState extends State<FABDemo> {
-  CustomColorScheme customColor;
+  CustomColorScheme? customColor;
   int _customColorI = 0;
   // horribly inneficient but irrelevant
   void _toggleCustomColor() => setState(() {
@@ -174,7 +174,7 @@ class _FABDemoState extends State<FABDemo> {
           return customColor = null;
         }
         return customColor = kCustomColors
-            .map((e) => customColorThemeFor(context, true, e[0], e[1]))
+            .map((e) => customColorThemeFor(context, true, e[0] as Color?, e[1] as String))
             .map((e) => e[0])
             .cast<CustomColorScheme>()
             .skip(1)
@@ -193,8 +193,8 @@ class _FABDemoState extends State<FABDemo> {
       );
 
   Widget _row(List<FABSpec> specs) => Wrap(
-        spacing: gutter.width,
-        runSpacing: gutter.height,
+        spacing: gutter.width!,
+        runSpacing: gutter.height!,
         children:
             specs.map((e) => buildFabPermutation(e, () => onFab(e))).toList(),
       );

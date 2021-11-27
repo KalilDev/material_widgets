@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 class ButtonDemo extends StatefulWidget {
   const ButtonDemo({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -15,7 +15,7 @@ class ButtonDemo extends StatefulWidget {
 class _ButtonDemoState extends State<ButtonDemo> {
   bool _enabled = true;
   void _toggleEnabled() => setState(() => _enabled = !_enabled);
-  VoidCallback get _onPressed => _enabled ? () {} : null;
+  VoidCallback? get _onPressed => _enabled ? () {} : null;
 
   @override
   Widget build(BuildContext context) {

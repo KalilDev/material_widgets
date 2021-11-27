@@ -5,7 +5,7 @@ import 'package:material_widgets/material_widgets.dart';
 import 'package:material_you/material_you.dart';
 
 class ResponsiveScaffoldDemo extends StatefulWidget {
-  const ResponsiveScaffoldDemo({Key key}) : super(key: key);
+  const ResponsiveScaffoldDemo({Key? key}) : super(key: key);
   @override
   State<ResponsiveScaffoldDemo> createState() => _ResponsiveScaffoldDemoState();
 }

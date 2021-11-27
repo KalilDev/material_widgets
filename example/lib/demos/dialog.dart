@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 class DialogDemo extends StatelessWidget {
   const DialogDemo({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

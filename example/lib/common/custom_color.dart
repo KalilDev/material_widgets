@@ -16,8 +16,8 @@ const kCustomColors = [
 List<dynamic> customColorThemeFor(
   BuildContext context,
   bool harmonized,
-  Color color,
-  String/*!*/ name,
+  Color? color,
+  String name,
 ) {
   CustomColorScheme colorScheme;
   if (color == null) {

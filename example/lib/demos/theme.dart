@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 class ThemeDemo extends StatelessWidget {
   const ThemeDemo({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -58,7 +58,7 @@ class ThemeDemo extends StatelessWidget {
 }
 
 class TonalColorWidget extends StatelessWidget {
-  const TonalColorWidget({Key key, @required this.color}) : super(key: key);
+  const TonalColorWidget({Key? key, required this.color}) : super(key: key);
   final ColorTonalPalette color;
 
   static const kTones = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 95, 100];
@@ -103,8 +103,8 @@ class TonalColorWidget extends StatelessWidget {
 class MonetColorSchemeWidget extends StatelessWidget {
   final MonetColorScheme scheme;
   const MonetColorSchemeWidget({
-    Key key,
-    @required this.scheme,
+    Key? key,
+    required this.scheme,
   }) : super(key: key);
 
   static const _kRadius = Radius.circular(24);
@@ -133,7 +133,7 @@ class MonetColorSchemeWidget extends StatelessWidget {
         ),
       );
 
-  Widget _color(String name, Color color, Color on, [BorderRadius radius]) =>
+  Widget _color(String name, Color color, Color on, [BorderRadius? radius]) =>
       SizedBox.expand(
         child: Material(
           color: color,
@@ -157,8 +157,8 @@ class MonetColorSchemeWidget extends StatelessWidget {
     String name,
     Color color,
     Color on, {
-    BorderRadius left,
-    BorderRadius right,
+    BorderRadius? left,
+    BorderRadius? right,
   }) =>
       Row(
         children: [

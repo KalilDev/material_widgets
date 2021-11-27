@@ -7,7 +7,7 @@ import 'package:material_you/material_you.dart';
 
 class ChipsDemo extends StatefulWidget {
   const ChipsDemo({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -18,7 +18,7 @@ class _ChipsDemoState extends State<ChipsDemo> {
   bool _enabled = true;
   void _toggleEnabled() => setState(() => _enabled = !_enabled);
 
-  VoidCallback get _onChip => _enabled ? () {} : null;
+  VoidCallback? get _onChip => _enabled ? () {} : null;
 
   ChipRow _filter() => ChipRow(
         children: [
@@ -166,11 +166,11 @@ class _ChipsDemoState extends State<ChipsDemo> {
 
 class ChipRow extends StatelessWidget {
   const ChipRow({
-    Key key,
+    Key? key,
     this.children,
   }) : super(key: key);
 
-  final List<Widget> children;
+  final List<Widget>? children;
 
   @override
   Widget build(BuildContext context) => ConstrainedBox(
@@ -182,7 +182,7 @@ class ChipRow extends StatelessWidget {
             alignment: WrapAlignment.start,
             spacing: ChipStyle.paddingBetweenElements,
             runSpacing: ChipStyle.paddingBetweenElements,
-            children: children,
+            children: children!,
           ),
         ),
       );

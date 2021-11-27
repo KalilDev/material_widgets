@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:material_widgets/material_widgets.dart';
 
 class AppBarDemo extends StatelessWidget {
-  const AppBarDemo({Key key}) : super(key: key);
+  const AppBarDemo({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -80,8 +80,8 @@ class AppBarDemo extends StatelessWidget {
 
 class _AppBarWrapper extends StatelessWidget {
   const _AppBarWrapper({
-    Key key,
-    @required this.child,
+    Key? key,
+    required this.child,
   }) : super(key: key);
   final PreferredSizeWidget child;
 

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 class SliverAppBarDemo extends StatelessWidget {
   const SliverAppBarDemo({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

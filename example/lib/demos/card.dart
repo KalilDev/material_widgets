@@ -5,7 +5,7 @@ import 'package:material_you/material_you.dart';
 
 class CardsDemo extends StatefulWidget {
   const CardsDemo({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -45,7 +45,7 @@ class _CardsDemoState extends State<CardsDemo> {
       case 3:
         final colorI = i ~/ 4;
         final color = kCustomColors[colorI % kCustomColors.length];
-        final theme = customColorThemeFor(context, true, color[0], color[1]);
+        final theme = customColorThemeFor(context, true, color[0] as Color?, color[1] as String);
         return ColoredCard(
           child: Center(
             child: Text(

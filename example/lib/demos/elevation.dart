@@ -4,7 +4,7 @@ import 'package:material_you/material_you.dart';
 import 'package:flutter/material.dart';
 
 class ElevationDemo extends StatelessWidget {
-  const ElevationDemo({Key key}) : super(key: key);
+  const ElevationDemo({Key? key}) : super(key: key);
 
   Widget _card(MD3ElevationLevel level, BuildContext context) => Center(
         child: Material(

@@ -22,13 +22,6 @@ packages:
       url: "http://localhost:4000"
     source: hosted
     version: "2.1.0"
-  breakpoint:
-    dependency: transitive
-    description:
-      name: breakpoint
-      url: "http://localhost:4000"
-    source: hosted
-    version: "1.2.0"
   characters:
     dependency: transitive
     description:
@@ -181,7 +174,7 @@ packages:
       name: smooth_page_indicator
       url: "http://localhost:4000"
     source: hosted
-    version: "0.2.3"
+    version: "1.0.0+2"
   source_span:
     dependency: transitive
     description:

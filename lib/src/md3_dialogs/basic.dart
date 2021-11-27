@@ -118,7 +118,6 @@ class _MD3BasicDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      elevation: 0,
       borderRadius: BorderRadius.circular(28),
       color: context.elevation.level3.overlaidColor(
         context.colorScheme.surface,
@@ -135,7 +134,8 @@ class _MD3BasicDialog extends StatelessWidget {
             children: [
               if (icon != null) ..._iconAndTitle(context) else _title(context),
               MD3DialogDivider(
-                  isVisible: extraContent == null && dividerAfterTitle),
+                isVisible: extraContent == null && dividerAfterTitle,
+              ),
               _wrapContent(context, content: content),
               if (extraContent != null) ...[
                 const MD3DialogDivider(),

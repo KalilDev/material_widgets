@@ -1,18 +1,19 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_monet_theme/flutter_monet_theme.dart';
 import 'package:material_you/material_you.dart';
-import 'package:flutter/material.dart';
 
 @immutable
 class MD3DraggableElevation extends MD3MaterialStateElevation
     with Diagnosticable {
   MD3DraggableElevation(this.regular, this.dragged)
       : super(
-          MD3ElevationLevel(0),
-          MD3ElevationLevel(0),
+          const MD3ElevationLevel(0),
+          const MD3ElevationLevel(0),
         );
 
   final MD3ElevationLevel regular;
+  @override
   final MD3ElevationLevel dragged;
 
   @override
@@ -85,7 +86,8 @@ extension MonadicMaterialStateProperty<T> on MaterialStateProperty<T> {
   MaterialStateProperty<T1> bind<T1>(
           MaterialStateProperty<T1> Function(T) fn) =>
       MaterialStateProperty.resolveWith(
-          (states) => runMaterialStateProperty(fn(resolve(states)), states));
+        (states) => runMaterialStateProperty(fn(resolve(states)), states),
+      );
 }
 
 T runMaterialStateProperty<T>(

@@ -1,6 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 
 // TODO(eseidel): Draw width should vary based on device size:
 // https://material.io/design/components/navigation-drawer.html#specs
@@ -40,8 +39,7 @@ class StandardDrawerController extends StatefulWidget {
     required this.child,
     required this.alignment,
     this.drawerCallback,
-  })  : assert(child != null),
-        assert(alignment != null),
+  })  : assert(alignment != null),
         super(key: key);
 
   /// The widget below this widget in the tree.
@@ -98,7 +96,7 @@ class StandardDrawerControllerState extends State<StandardDrawerController>
   ///
   /// Typically called by [ScaffoldState.openDrawer].
   void open() {
-    _controller.fling(velocity: 1.0);
+    _controller.fling();
     if (widget.drawerCallback != null) widget.drawerCallback!(true);
   }
 
@@ -109,12 +107,11 @@ class StandardDrawerControllerState extends State<StandardDrawerController>
   }
 
   Tween<Offset>? get _drawerTranslationTween {
-    assert(widget.alignment != null);
     switch (widget.alignment) {
       case DrawerAlignment.start:
-        return Tween(begin: Offset(-_kWidth, 0), end: Offset.zero);
+        return Tween(begin: const Offset(-_kWidth, 0), end: Offset.zero);
       case DrawerAlignment.end:
-        return Tween(begin: Offset(_kWidth, 0), end: Offset.zero);
+        return Tween(begin: const Offset(_kWidth, 0), end: Offset.zero);
     }
     return null;
   }
@@ -130,7 +127,6 @@ class StandardDrawerControllerState extends State<StandardDrawerController>
   }
 
   Tween<double>? get _drawerSizeTween {
-    assert(widget.alignment != null);
     switch (widget.alignment) {
       case DrawerAlignment.start:
         return Tween(begin: 0, end: _kWidth);

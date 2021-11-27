@@ -1,5 +1,5 @@
-import 'dart:ui';
 import 'dart:math' as math;
+import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -14,10 +14,9 @@ class FilledTonalButtonThemeData with Diagnosticable {
 
   static FilledTonalButtonThemeData? lerp(
       FilledTonalButtonThemeData a, FilledTonalButtonThemeData b, double t) {
-    assert(t != null);
     if (a == null && b == null) return null;
     return FilledTonalButtonThemeData(
-      style: ButtonStyle.lerp(a?.style, b?.style, t),
+      style: ButtonStyle.lerp(a.style, b.style, t),
     );
   }
 
@@ -37,7 +36,8 @@ class FilledTonalButtonThemeData with Diagnosticable {
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(
-        DiagnosticsProperty<ButtonStyle>('style', style, defaultValue: null));
+      DiagnosticsProperty<ButtonStyle>('style', style, defaultValue: null),
+    );
   }
 }
 
@@ -46,8 +46,7 @@ class FilledTonalButtonTheme extends InheritedTheme {
     Key? key,
     required this.data,
     required Widget child,
-  })  : assert(data != null),
-        super(key: key, child: child);
+  }) : super(key: key, child: child);
 
   final FilledTonalButtonThemeData data;
 
@@ -55,7 +54,7 @@ class FilledTonalButtonTheme extends InheritedTheme {
     final FilledTonalButtonTheme? buttonTheme =
         context.dependOnInheritedWidgetOfExactType<FilledTonalButtonTheme>();
     return buttonTheme?.data ??
-        FilledTonalButtonThemeData(style: ButtonStyle());
+        const FilledTonalButtonThemeData(style: ButtonStyle());
   }
 
   @override
@@ -213,8 +212,7 @@ class _FilledTonalButtonWithIcon extends FilledTonalButton {
     Clip? clipBehavior,
     required Widget icon,
     required Widget label,
-  })  : assert(icon != null),
-        assert(label != null),
+  })  : assert(label != null),
         super(
           key: key,
           onPressed: onPressed,

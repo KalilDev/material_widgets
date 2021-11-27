@@ -1,5 +1,5 @@
-import 'dart:ui';
 import 'dart:math' as math;
+import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -14,10 +14,9 @@ class FilledButtonThemeData with Diagnosticable {
 
   static FilledButtonThemeData? lerp(
       FilledButtonThemeData a, FilledButtonThemeData b, double t) {
-    assert(t != null);
     if (a == null && b == null) return null;
     return FilledButtonThemeData(
-      style: ButtonStyle.lerp(a?.style, b?.style, t),
+      style: ButtonStyle.lerp(a.style, b.style, t),
     );
   }
 
@@ -37,7 +36,8 @@ class FilledButtonThemeData with Diagnosticable {
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(
-        DiagnosticsProperty<ButtonStyle>('style', style, defaultValue: null));
+      DiagnosticsProperty<ButtonStyle>('style', style, defaultValue: null),
+    );
   }
 }
 
@@ -46,15 +46,15 @@ class FilledButtonTheme extends InheritedTheme {
     Key? key,
     required this.data,
     required Widget child,
-  })  : assert(data != null),
-        super(key: key, child: child);
+  }) : super(key: key, child: child);
 
   final FilledButtonThemeData data;
 
   static FilledButtonThemeData of(BuildContext context) {
     final FilledButtonTheme? buttonTheme =
         context.dependOnInheritedWidgetOfExactType<FilledButtonTheme>();
-    return buttonTheme?.data ?? FilledButtonThemeData(style: ButtonStyle());
+    return buttonTheme?.data ??
+        const FilledButtonThemeData(style: ButtonStyle());
   }
 
   @override
@@ -212,8 +212,7 @@ class _FilledButtonWithIcon extends FilledButton {
     Clip? clipBehavior,
     required Widget icon,
     required Widget label,
-  })  : assert(icon != null),
-        assert(label != null),
+  })  : assert(label != null),
         super(
           key: key,
           onPressed: onPressed,

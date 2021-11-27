@@ -24,7 +24,7 @@ class CardStyle {
 
   final MaterialStateProperty<MD3ElevationLevel>? elevation;
   final MaterialStateProperty<Color>? stateLayerColor;
-  final MaterialStateProperty<OutlinedBorder>?/*?*/ shape;
+  final MaterialStateProperty<OutlinedBorder>? /*?*/ shape;
   final MaterialStateProperty<Color>? backgroundColor;
   final MaterialStateProperty<Color>? shadowColor;
   final MaterialStateProperty<Color>? elevationTintColor;
@@ -109,11 +109,13 @@ abstract class CardStyleCard extends StatefulWidget {
 class _CardStyleCardState extends State<CardStyleCard> with MaterialStateMixin {
   FocusNode? focus;
 
+  @override
   void initState() {
     super.initState();
     focus = widget.focusNode ?? FocusNode();
   }
 
+  @override
   void didUpdateWidget(CardStyleCard oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.focusNode == widget.focusNode) {
@@ -213,7 +215,8 @@ class _CardStyleCardState extends State<CardStyleCard> with MaterialStateMixin {
     );
   }
 
-  Widget _foreground(Color color, {required Widget child}) => DefaultTextStyle.merge(
+  Widget _foreground(Color color, {required Widget child}) =>
+      DefaultTextStyle.merge(
         style: TextStyle(color: color),
         child: IconTheme.merge(
           data: IconThemeData(
@@ -239,7 +242,7 @@ class _CardStyleCardState extends State<CardStyleCard> with MaterialStateMixin {
               tintColor,
             ),
       elevation: elevation.value,
-      shape: shape?.copyWith(side: borderSide),
+      shape: shape.copyWith(side: borderSide),
       shadowColor: style.shadowColor!.resolve(materialStates),
       margin: EdgeInsets.zero,
       clipBehavior: style.clipBehavior ?? Clip.none,

@@ -267,7 +267,7 @@ class MD3FloatingActionButton extends ButtonStyleButton {
         stateLayerOpacityTheme,
       ),
       shadowColor: ButtonStyleButton.allOrNull(shadowColor),
-      elevation: md3Elevation?.value,
+      elevation: md3Elevation.value,
       padding: MaterialStateProperty.all(const EdgeInsets.all(16)),
       fixedSize: MaterialStateProperty.all(const Size.square(56)),
       shape: ButtonStyleButton.allOrNull(shape),
@@ -287,8 +287,10 @@ class MD3FloatingActionButton extends ButtonStyleButton {
   @override
   ButtonStyle defaultStyleOf(BuildContext context) {
     if (colorScheme != null && fabColorScheme != MD3FABColorScheme.primary) {
-      throw StateError('You can only use one of MD3FABColorScheme or'
-          ' MD3FloatingActionButton.colorScheme to theme yor FAB!');
+      throw StateError(
+        'You can only use one of MD3FABColorScheme or'
+        ' MD3FloatingActionButton.colorScheme to theme yor FAB!',
+      );
     }
     final color = colorScheme ?? _customColorFromFABScheme(context);
     final elevationTheme = context.elevation;
@@ -334,10 +336,9 @@ class MD3FloatingActionButtonThemeData with Diagnosticable {
       MD3FloatingActionButtonThemeData a,
       MD3FloatingActionButtonThemeData b,
       double t) {
-    assert(t != null);
     if (a == null && b == null) return null;
     return MD3FloatingActionButtonThemeData(
-      style: ButtonStyle.lerp(a?.style, b?.style, t),
+      style: ButtonStyle.lerp(a.style, b.style, t),
     );
   }
 
@@ -357,7 +358,8 @@ class MD3FloatingActionButtonThemeData with Diagnosticable {
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(
-        DiagnosticsProperty<ButtonStyle>('style', style, defaultValue: null));
+      DiagnosticsProperty<ButtonStyle>('style', style, defaultValue: null),
+    );
   }
 }
 
@@ -366,8 +368,7 @@ class MD3FloatingActionButtonTheme extends InheritedTheme {
     Key? key,
     required this.data,
     required Widget child,
-  })  : assert(data != null),
-        super(key: key, child: child);
+  }) : super(key: key, child: child);
 
   final MD3FloatingActionButtonThemeData data;
 
@@ -421,7 +422,7 @@ class _SmallFAB extends MD3FloatingActionButton {
   @override
   ButtonStyle defaultStyleOf(BuildContext context) {
     return super.defaultStyleOf(context).copyWith(
-          fixedSize: MaterialStateProperty.all(Size.square(40)),
+          fixedSize: MaterialStateProperty.all(const Size.square(40)),
           shape: MaterialStateProperty.all(
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           ),
@@ -467,7 +468,7 @@ class _LargeFAB extends MD3FloatingActionButton {
   @override
   ButtonStyle defaultStyleOf(BuildContext context) {
     return super.defaultStyleOf(context).copyWith(
-          fixedSize: MaterialStateProperty.all(Size.square(96)),
+          fixedSize: MaterialStateProperty.all(const Size.square(96)),
           shape: MaterialStateProperty.all(
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
           ),
@@ -492,8 +493,7 @@ class _ExpandedFAB extends MD3FloatingActionButton {
     CustomColorScheme? colorScheme,
     Widget? icon,
     required Widget label,
-  })  : assert(label != null),
-        assert(isExpanded || icon != null),
+  })  : assert(isExpanded || icon != null),
         super(
           key: key,
           fabColorScheme: fabColorScheme,
@@ -520,10 +520,10 @@ class _ExpandedFAB extends MD3FloatingActionButton {
     final defaults = super.defaultStyleOf(context);
 
     return defaults.copyWith(
-      fixedSize: MaterialStateProperty.all(Size(double.nan, 56)),
+      fixedSize: MaterialStateProperty.all(const Size(double.nan, 56)),
       // TODO: should be 80 according to the spec, but changing it with
       // isExpanded causes an jump, breaking the animation!!
-      minimumSize: MaterialStateProperty.all(Size(56, 0)),
+      minimumSize: MaterialStateProperty.all(const Size(56, 0)),
     );
   }
 }
@@ -554,11 +554,11 @@ class _ExpandedFabChildState extends State<_ExpandedFabChild>
         if (widget.icon != null) widget.icon!,
         Flexible(
           child: AnimatedSize(
-            duration: Duration(milliseconds: 200),
+            duration: const Duration(milliseconds: 200),
             curve: Curves.easeInOut,
             alignment: Alignment.centerLeft,
-            child: widget.label == null || !widget.isExpanded
-                ? SizedBox()
+            child: !widget.isExpanded
+                ? const SizedBox()
                 : Padding(
                     padding:
                         EdgeInsets.only(left: widget.icon != null ? 12 : 0),

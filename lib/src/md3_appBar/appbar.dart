@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:material_widgets/material_widgets.dart';
 import 'package:material_widgets/src/monadic_value_listenable.dart';
 import 'package:material_you/material_you.dart';
-import 'responsive_appbar.dart';
+
 import '../monadic_value_listenable.dart';
 
 class _MD3AppBarTrailingIconContainer extends StatelessWidget {
@@ -54,11 +54,11 @@ class MD3CenterAlignedAppBar extends StatelessWidget
       leading: leading ?? _appBarNavigationItemOrPlaceholder(context),
       appBarHeight: 64,
       actions: [
-        SizedBox(width: 12),
+        const SizedBox(width: 12),
         _MD3AppBarTrailingIconContainer(
           child: trailing ?? _appBarNavigationItemOrPlaceholder(context, true),
         ),
-        SizedBox(width: 4),
+        const SizedBox(width: 4),
       ],
       primary: primary,
       notifySize: notifySize,
@@ -79,7 +79,7 @@ Widget? _appBarNavigationItemOrPlaceholder(
     // the AppBar widget will not add the hamburger menu automatically
     return IconButton(
       onPressed: scaffold!.openEndDrawer,
-      icon: Icon(Icons.menu),
+      icon: const Icon(Icons.menu),
     );
   }
   if (!end && (scaffold?.hasDrawer ?? false)) {
@@ -123,21 +123,21 @@ class MD3SmallAppBar extends StatelessWidget implements PreferredSizeWidget {
       titleSpacing: 0,
       appBarHeight: 64,
       actions: [
-        SizedBox(width: 12),
-        ...(actions
+        const SizedBox(width: 12),
+        ...actions
                 ?.map(
                   (e) => _MD3AppBarTrailingIconContainer(
                     child: e,
                   ),
                 )
-                ?.toList() ??
+                .toList() ??
             [
               _appBarNavigationItemOrPlaceholder(
                 context,
                 true,
               )!,
-            ]),
-        SizedBox(width: 4),
+            ],
+        const SizedBox(width: 4),
       ],
       primary: primary,
       notifySize: notifySize,
@@ -259,6 +259,7 @@ class _MD3LargeOrMediumAppBarState extends State<MD3LargeOrMediumAppBar>
 
   static const kDuration = Duration(milliseconds: 200);
 
+  @override
   void initState() {
     super.initState();
     _expansionController = AnimationController(
@@ -278,6 +279,7 @@ class _MD3LargeOrMediumAppBarState extends State<MD3LargeOrMediumAppBar>
     );
   }
 
+  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     _scrollControllerHandle.update(PrimaryScrollController.of(context));
@@ -349,6 +351,7 @@ class _MD3LargeOrMediumAppBarState extends State<MD3LargeOrMediumAppBar>
     _expansionController.value = dt;
   }
 
+  @override
   void dispose() {
     _expansionController.dispose();
     _scrollControllerHandle.dispose();
@@ -361,10 +364,13 @@ class _MD3LargeOrMediumAppBarState extends State<MD3LargeOrMediumAppBar>
   static final Tween<double> heightTween =
       Tween(begin: MD3MediumAppBar.kHeight, end: MD3LargeAppBar.kHeight);
   static final Tween<double> bottomHeightTween = Tween(
-      begin: MD3MediumAppBar.kBottomHeight, end: MD3LargeAppBar.kBottomHeight);
+    begin: MD3MediumAppBar.kBottomHeight,
+    end: MD3LargeAppBar.kBottomHeight,
+  );
   static final Tween<double> bottomPaddingTween = Tween(
-      begin: MD3MediumAppBar.kBottomPadding,
-      end: MD3LargeAppBar.kBottomPadding);
+    begin: MD3MediumAppBar.kBottomPadding,
+    end: MD3LargeAppBar.kBottomPadding,
+  );
   static const double kHeightDelta =
       MD3LargeAppBar.kHeight - MD3MediumAppBar.kHeight;
   Tween<TextStyle> titleStyleTween(BuildContext context) => TextStyleTween(
@@ -465,8 +471,8 @@ class _MD3LargeOrMediumAppBar extends StatelessWidget
                         child: e,
                       ),
                     )
-                    ?.map((e) => _topPadding(e, topAdditionalPaddding))
-                    ?.toList() ??
+                    .map((e) => _topPadding(e, topAdditionalPaddding))
+                    .toList() ??
                 []),
             const SizedBox(width: 4),
           ],
@@ -501,8 +507,9 @@ class _MD3LargerAppBarBottom extends StatelessWidget
     required double height,
   })  : preferredSize = Size.fromHeight(height),
         super(key: key);
+  @override
   final Size preferredSize;
 
   @override
-  Widget build(BuildContext context) => SizedBox();
+  Widget build(BuildContext context) => const SizedBox();
 }

@@ -3,8 +3,9 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:material_you/material_you.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+
 import 'text_aligner.dart';
 
 class _OnboardingPageScope extends InheritedWidget {
@@ -78,23 +79,24 @@ class _PageText extends StatelessWidget {
         SizedBox(
           height: textHeight,
           child: Column(
-              crossAxisAlignment: textAlign == TextAlign.left
-                  ? CrossAxisAlignment.start
-                  : CrossAxisAlignment.center,
-              children: [
-                if (title != null)
-                  Text(
-                    title!,
-                    style: titleStyle,
-                    textAlign: textAlign,
-                  ),
-                for (final line in textBody)
-                  Text(
-                    line,
-                    style: bodyStyle,
-                    textAlign: textAlign,
-                  )
-              ]),
+            crossAxisAlignment: textAlign == TextAlign.left
+                ? CrossAxisAlignment.start
+                : CrossAxisAlignment.center,
+            children: [
+              if (title != null)
+                Text(
+                  title!,
+                  style: titleStyle,
+                  textAlign: textAlign,
+                ),
+              for (final line in textBody)
+                Text(
+                  line,
+                  style: bodyStyle,
+                  textAlign: textAlign,
+                )
+            ],
+          ),
         )
       else
         SizedBox(
@@ -119,8 +121,8 @@ class _PageText extends StatelessWidget {
         crossAxisAlignment: _OnboardingPageScope.of(context)!.isPortrait
             ? CrossAxisAlignment.center
             : CrossAxisAlignment.start,
-        children: _bodyAndSpacer(context),
         mainAxisSize: MainAxisSize.min,
+        children: _bodyAndSpacer(context),
       );
 }
 
@@ -143,7 +145,8 @@ class _OnboardingPageContent extends StatelessWidget {
     if (_OnboardingPageScope.of(context)!.isPortrait) {
       final padding = _OnboardingPageScope.of(context)!.isDesktop
           ? EdgeInsets.zero
-          : EdgeInsets.only(bottom: _PortraitOnboardingBody.bottomBarHeight);
+          : const EdgeInsets.only(
+              bottom: _PortraitOnboardingBody.bottomBarHeight);
       return Padding(
         padding: padding,
         child: SizedBox.expand(
@@ -210,7 +213,7 @@ class MaterialOnboarding extends StatefulWidget {
 class _MaterialOnboardingState extends State<MaterialOnboarding> {
   late PageController controller;
   int _currentPage = 0;
-  Stream<Null>? _timer;
+  Stream<void>? _timer;
   late StreamSubscription _timerSubs;
 
   void _pageListener() {
@@ -237,7 +240,7 @@ class _MaterialOnboardingState extends State<MaterialOnboarding> {
   }
 
   void _createTimer() {
-    _timer = Stream<Null>.periodic(widget.autoSwitchInterval);
+    _timer = Stream<void>.periodic(widget.autoSwitchInterval);
     _timerSubs = _timer!.listen(_onTimer);
   }
 
@@ -314,17 +317,16 @@ class _MaterialOnboardingState extends State<MaterialOnboarding> {
   Widget _pageView(BuildContext context, {required List<Widget> pages}) =>
       _pointerListener(
         child: _OnboardingPageScope(
+          isPortrait: isPortrait,
+          isDesktop: isDesktop,
           child: PageView(
             children: pages,
             controller: controller,
           ),
-          isPortrait: isPortrait,
-          isDesktop: isDesktop,
         ),
       );
 
   Widget _getStartedButton(BuildContext context) {
-    assert(widget.button != null);
     return widget.button;
   }
 
@@ -349,7 +351,9 @@ class _MaterialOnboardingState extends State<MaterialOnboarding> {
         dotWidth: 8.0,
         activeDotColor: isDesktop ? whiteish : cs.primary,
         dotColor: Color.alphaBlend(
-            (isDesktop ? cs.onSurface : cs.primary).withAlpha(90), cs.surface),
+          (isDesktop ? cs.onSurface : cs.primary).withAlpha(90),
+          cs.surface,
+        ),
       ),
     );
   }
@@ -376,7 +380,7 @@ class _MaterialOnboardingState extends State<MaterialOnboarding> {
     return Material(
       elevation: isVisible ? 4.0 : 0,
       type: MaterialType.card,
-      shape: CircleBorder(),
+      shape: const CircleBorder(),
       clipBehavior: Clip.antiAlias,
       color: isVisible ? null : _desktopBg(context),
       child: isVisible ? icon : SizedBox(height: size, width: size),
@@ -388,7 +392,7 @@ class _MaterialOnboardingState extends State<MaterialOnboarding> {
     if (isDesktop) {
       return Container(
         color: _desktopBg(context),
-        constraints: BoxConstraints.expand(),
+        constraints: const BoxConstraints.expand(),
         child: _DesktopOnboardingBody(
           pageView: _pageView(context, pages: widget.pages),
           getStartedButton: _getStartedButton(context),
@@ -441,9 +445,9 @@ class _LandscapeOnboardingBody extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             // TODO: make this layout better, instead of using this magic number
-            SizedBox(height: 148),
+            const SizedBox(height: 148),
             getStartedButton,
-            SizedBox(height: 24.0),
+            const SizedBox(height: 24.0),
             _wrappedIndicator(context),
           ],
         ),
@@ -493,12 +497,12 @@ class _PortraitOnboardingBody extends StatelessWidget {
 
   Widget _pageViewWrapper(BuildContext context, {required Widget child}) {
     final positionedButton = Positioned(
-      child: getStartedButton,
       bottom: 24 + bottomBarHeight,
+      child: getStartedButton,
     );
     final positionedIndicator = Positioned(
-      child: _wrappedIndicator(context),
       bottom: 0,
+      child: _wrappedIndicator(context),
     );
     return Stack(
       alignment: Alignment.bottomCenter,
@@ -536,7 +540,7 @@ class _DesktopOnboardingBody extends StatelessWidget {
   }) : super(key: key);
 
   Widget _desktopCard(BuildContext context, {Widget? child}) => ConstrainedBox(
-        constraints: BoxConstraints(
+        constraints: const BoxConstraints(
           maxWidth: 390 * 1.5,
           maxHeight: 430 * 1.5,
         ),
@@ -548,8 +552,8 @@ class _DesktopOnboardingBody extends StatelessWidget {
 
   Widget _pageViewWrapper(BuildContext context, {required Widget child}) {
     final positionedButton = Positioned(
-      child: getStartedButton,
       bottom: 24,
+      child: getStartedButton,
     );
     return Stack(
       alignment: Alignment.bottomCenter,
@@ -565,7 +569,7 @@ class _DesktopOnboardingBody extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Flexible(child: child),
-        SizedBox(
+        const SizedBox(
           height: 24,
         ),
         pageIndicator,
@@ -573,6 +577,7 @@ class _DesktopOnboardingBody extends StatelessWidget {
     );
   }
 
+  @override
   Widget build(BuildContext context) {
     return Center(
       child: Padding(
@@ -584,7 +589,7 @@ class _DesktopOnboardingBody extends StatelessWidget {
               width: 48.0,
               child: previousPageButton,
             ),
-            SizedBox(
+            const SizedBox(
               width: 24.0,
             ),
             Flexible(
@@ -602,7 +607,7 @@ class _DesktopOnboardingBody extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               width: 24.0,
             ),
             SizedBox(

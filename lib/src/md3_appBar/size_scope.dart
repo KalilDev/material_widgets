@@ -80,6 +80,7 @@ class MD3AppBarSizeScopeState extends State<MD3AppBarSizeScope>
   late Animation<double> _curvedAnim;
   late AnimationController _animController;
 
+  @override
   void initState() {
     super.initState();
     _currentSize = AlwaysStoppedAnimation(widget.initialSize);
@@ -186,6 +187,7 @@ class MD3AppBarSizeScopeState extends State<MD3AppBarSizeScope>
     );
   }
 
+  @override
   void didUpdateWidget(MD3AppBarSizeScope oldWidget) {
     super.didUpdateWidget(oldWidget);
     _animController.duration = widget.duration;

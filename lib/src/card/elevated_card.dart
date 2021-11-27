@@ -112,7 +112,8 @@ class ElevatedCardThemeData with Diagnosticable {
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(
-        DiagnosticsProperty<CardStyle>('style', style, defaultValue: null));
+      DiagnosticsProperty<CardStyle>('style', style, defaultValue: null),
+    );
   }
 }
 
@@ -121,8 +122,7 @@ class ElevatedCardTheme extends InheritedTheme {
     Key? key,
     required this.data,
     required Widget child,
-  })  : assert(data != null),
-        super(key: key, child: child);
+  }) : super(key: key, child: child);
 
   final ElevatedCardThemeData data;
 

@@ -47,8 +47,7 @@ class DraggableCard<T extends Object> extends StatefulWidget {
     this.rootOverlay = false,
     this.hitTestBehavior = HitTestBehavior.deferToChild,
     this.canDrag = true,
-  })  : assert(child != null),
-        assert(maxSimultaneousDrags == null || maxSimultaneousDrags >= 0),
+  })  : assert(maxSimultaneousDrags == null || maxSimultaneousDrags >= 0),
         super(key: key);
 
   final T? data;
@@ -130,6 +129,7 @@ class __DraggableSizedChildState extends State<_DraggableSizedChild>
     _sizeAnimation = AlwaysStoppedAnimation(_size);
   }
 
+  @override
   void didUpdateWidget(_DraggableSizedChild oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.duration == widget.duration) {
@@ -196,7 +196,8 @@ class __DraggableReturnFlightWidgetState
     p0 = AlwaysStoppedAnimation(widget.initialOffset);
     p2 = AlwaysStoppedAnimation(widget.target);
     final p0ToP2 = p2.value - p0.value;
-    final duration = Duration(seconds: 1) * kVelocityPerPixel * p0ToP2.distance;
+    final duration =
+        const Duration(seconds: 1) * kVelocityPerPixel * p0ToP2.distance;
     _controller = AnimationController(
       vsync: this,
       duration: duration,
@@ -213,6 +214,7 @@ class __DraggableReturnFlightWidgetState
     _controller.forward().whenCompleteOrCancel(widget.close);
   }
 
+  @override
   void dispose() {
     _controller.dispose();
     super.dispose();
@@ -302,7 +304,7 @@ class _DraggableCardState<T extends Object> extends State<DraggableCard<T>>
         close: close,
         child: _DraggableSizedChild(
           size: _childSize,
-          duration: Duration(milliseconds: 400),
+          duration: const Duration(milliseconds: 400),
           child: InheritedDraggableCardInformation(
             isBeingDragged: true,
             child: KeyedSubtree(
@@ -366,11 +368,10 @@ class _DraggableCardState<T extends Object> extends State<DraggableCard<T>>
       onDraggableCanceled: widget.onDraggableCanceled,
       onDragEnd: _onDragEnd,
       onDragCompleted: widget.onDragCompleted,
-      ignoringFeedbackSemantics: true,
       rootOverlay: widget.rootOverlay,
       feedback: _DraggableSizedChild(
         size: _childSize,
-        duration: Duration(milliseconds: 800),
+        duration: const Duration(milliseconds: 800),
         child: InheritedDraggableCardInformation(
           isBeingDragged: true,
           child: keyedChild,

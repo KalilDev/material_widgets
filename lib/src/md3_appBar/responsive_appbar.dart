@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:material_widgets/src/md3_appBar/raw_appBar.dart';
+import 'package:material_you/material_you.dart';
 
 import '../../material_widgets.dart';
-import 'package:material_you/material_you.dart';
 
 @Deprecated('Use MD3ResponsiveAppBarAction')
 abstract class ResponsiveAppbarAction {
@@ -25,7 +24,8 @@ abstract class ResponsiveAppbarAction {
         onPressed: onPressed,
       );
   @Deprecated(
-      'Use ResponsiveAppbar.buildActions with MD3ResponsiveAppBarAction')
+    'Use ResponsiveAppbar.buildActions with MD3ResponsiveAppBarAction',
+  )
   static _ResponsiveAppBarActionBuilder builder(
           MD3ResponsiveAppBarAction Function(BuildContext) build) =>
       _ResponsiveAppBarActionBuilder(build);
@@ -160,11 +160,11 @@ class ResponsiveAppbar extends StatelessWidget implements PreferredSizeWidget {
     MD3ResponsiveAppBarAction action,
   ) {
     return PopupMenuItem(
-      child: action.title,
       value: action,
       textStyle: context.textTheme.labelLarge.copyWith(
         color: context.colorScheme.onSurface,
       ),
+      child: action.title,
     );
   }
 
@@ -178,8 +178,10 @@ class ResponsiveAppbar extends StatelessWidget implements PreferredSizeWidget {
           final position = RelativeRect.fromRect(
             Rect.fromPoints(
               button.localToGlobal(Offset.zero, ancestor: overlay),
-              button.localToGlobal(button.size.bottomRight(Offset.zero),
-                  ancestor: overlay),
+              button.localToGlobal(
+                button.size.bottomRight(Offset.zero),
+                ancestor: overlay,
+              ),
             ),
             Offset.zero & overlay.size,
           );
@@ -192,15 +194,15 @@ class ResponsiveAppbar extends StatelessWidget implements PreferredSizeWidget {
         }
 
         return IconButton(
-          icon: Icon(Icons.more_vert),
+          icon: const Icon(Icons.more_vert),
           onPressed: open,
-          tooltip: "more",
+          tooltip: 'more',
         );
       };
 
   List<Widget>? _buildActions(BuildContext context) {
-    final builtActions = this.buildActions?.call(context) ?? [];
-    if (builtActions == null || builtActions.isEmpty) {
+    final builtActions = buildActions?.call(context) ?? [];
+    if (builtActions.isEmpty) {
       return null;
     }
     // https://m3.material.io/components/top-app-bar/guidelines

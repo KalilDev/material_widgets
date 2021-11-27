@@ -1,5 +1,4 @@
 import 'dart:ui';
-import 'dart:math' as math;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -47,8 +46,7 @@ class MD3FilterChipTheme extends InheritedTheme {
     Key? key,
     required this.data,
     required Widget child,
-  })  : assert(data != null),
-        super(key: key, child: child);
+  }) : super(key: key, child: child);
 
   final MD3FilterChipThemeData data;
 
@@ -88,8 +86,7 @@ class MD3FilterChip extends MD3ChipStyleChip {
     Widget? leading,
     required Widget label,
     Widget? trailing,
-  })  : assert(label != null),
-        super(
+  }) : super(
           key: key,
           onPressed: onPressed,
           onLongPress: onLongPress,
@@ -100,7 +97,8 @@ class MD3FilterChip extends MD3ChipStyleChip {
           autofocus: autofocus,
           chipStyle: chipStyle,
           clipBehavior: clipBehavior,
-          leading: (selected && leading == null) ? const Icon(Icons.check) : leading,
+          leading:
+              (selected && leading == null) ? const Icon(Icons.check) : leading,
           label: label,
           trailing: trailing,
         );

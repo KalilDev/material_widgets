@@ -28,7 +28,8 @@ class NavigationDrawerThemeData {
 class NavigationDrawerTheme extends InheritedWidget {
   final NavigationDrawerThemeData? data;
 
-  NavigationDrawerTheme({this.data, required Widget child}) : super(child: child);
+  const NavigationDrawerTheme({this.data, required Widget child})
+      : super(child: child);
   @override
   bool updateShouldNotify(NavigationDrawerTheme oldWidget) =>
       data != oldWidget.data;
@@ -89,7 +90,7 @@ class NavigationDrawerHeader extends StatelessWidget {
         ? kStandardTitleOffset
         : kModalTitleOffset;
     final style = textStyle ?? context.textTheme.titleMedium;
-    var widget = DefaultTextStyle(
+    final widget = DefaultTextStyle(
       style: style.copyWith(
         color: context.colorScheme.onSurfaceVariant,
       ),
@@ -99,13 +100,15 @@ class NavigationDrawerHeader extends StatelessWidget {
   }
 
   Widget buildSubtitle(BuildContext context) {
-    final offset = kModalSubtitleOffset;
-    var widget = DefaultTextStyle(
-        style: Theme.of(context).textTheme.caption!, child: subtitle!);
+    const offset = kModalSubtitleOffset;
+    final widget = DefaultTextStyle(
+      style: Theme.of(context).textTheme.caption!,
+      child: subtitle!,
+    );
     return Positioned(
-      child: widget,
       left: _getbaseline(context),
       bottom: offset,
+      child: widget,
     );
   }
 
@@ -256,7 +259,7 @@ class NavigationDrawerItem extends StatelessWidget {
     if (padding != null) {
       return padding!;
     }
-    const defaultVal = EdgeInsets.symmetric(horizontal: 12.0, vertical: 0.0);
+    const defaultVal = EdgeInsets.symmetric(horizontal: 12.0);
     return NavigationDrawerTheme.of(context)
             ?.itemPadding
             ?.resolve(Directionality.of(context)) ??

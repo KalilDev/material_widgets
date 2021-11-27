@@ -40,12 +40,9 @@ class MD3RawAppBar extends StatefulWidget implements PreferredSizeWidget {
     this.isElevated,
     this.elevationDuration = const Duration(milliseconds: 200),
     this.notifySize = true,
-  })  : assert(automaticallyImplyLeading != null),
-        assert(primary != null),
-        assert(toolbarOpacity != null),
-        assert(bottomOpacity != null),
+  })  : assert(primary != null),
         preferredSize =
-            _preferredAppBarSize(appBarHeight, bottom?.preferredSize?.height),
+            _preferredAppBarSize(appBarHeight, bottom?.preferredSize.height),
         super(key: key);
 
   static Size prefferedAppBarSize(double appBarHeight, double bottomHeight) =>
@@ -173,6 +170,7 @@ class _MD3RawAppBarState extends State<MD3RawAppBar>
     backgroundController.animateTo(currVal);
   }
 
+  @override
   void deactivate() {
     _sizeScopeHandle.detach();
     super.deactivate();

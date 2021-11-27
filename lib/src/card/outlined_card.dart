@@ -67,7 +67,6 @@ class OutlinedCard extends CardStyleCard {
       backgroundTintColor: MD3ElevationLevel.surfaceTint(scheme),
       foregroundColor: scheme.onSurface,
       borderSide: BorderSide(
-        width: 1.0,
         color: scheme.outline,
       ),
       elevation: MD3MaterialStateElevation(
@@ -121,7 +120,8 @@ class OutlinedCardThemeData with Diagnosticable {
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(
-        DiagnosticsProperty<CardStyle>('style', style, defaultValue: null));
+      DiagnosticsProperty<CardStyle>('style', style, defaultValue: null),
+    );
   }
 }
 
@@ -130,8 +130,7 @@ class OutlinedCardTheme extends InheritedTheme {
     Key? key,
     required this.data,
     required Widget child,
-  })  : assert(data != null),
-        super(key: key, child: child);
+  }) : super(key: key, child: child);
 
   final OutlinedCardThemeData data;
 

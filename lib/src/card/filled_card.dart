@@ -47,7 +47,6 @@ class FilledCard extends CardStyleCard {
               foregroundColor!,
               stateLayerOpacity,
             ),
-      elevationTintColor: null,
       foregroundColor: ButtonStyleButton.allOrNull(foregroundColor),
       shape: ButtonStyleButton.allOrNull(shape),
       padding: ButtonStyleButton.allOrNull(padding),
@@ -111,7 +110,8 @@ class FilledCardThemeData with Diagnosticable {
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(
-        DiagnosticsProperty<CardStyle>('style', style, defaultValue: null));
+      DiagnosticsProperty<CardStyle>('style', style, defaultValue: null),
+    );
   }
 }
 
@@ -120,8 +120,7 @@ class FilledCardTheme extends InheritedTheme {
     Key? key,
     required this.data,
     required Widget child,
-  })  : assert(data != null),
-        super(key: key, child: child);
+  }) : super(key: key, child: child);
 
   final FilledCardThemeData data;
 

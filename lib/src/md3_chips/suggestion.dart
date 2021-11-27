@@ -1,5 +1,4 @@
 import 'dart:ui';
-import 'dart:math' as math;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -47,8 +46,7 @@ class MD3SuggestionChipTheme extends InheritedTheme {
     Key? key,
     required this.data,
     required Widget child,
-  })  : assert(data != null),
-        super(key: key, child: child);
+  }) : super(key: key, child: child);
 
   final MD3SuggestionChipThemeData data;
 
@@ -87,8 +85,7 @@ class MD3SuggestionChip extends MD3ChipStyleChip {
     this.selected = false,
     Widget? leading,
     required Widget label,
-  })  : assert(label != null),
-        super(
+  }) : super(
           key: key,
           onPressed: onPressed,
           onLongPress: onLongPress,

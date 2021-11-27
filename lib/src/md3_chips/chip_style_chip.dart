@@ -1,5 +1,4 @@
 import 'dart:ui';
-import 'dart:math' as math;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -16,10 +15,9 @@ class MD3ChipThemeData with Diagnosticable {
 
   static MD3ChipThemeData? lerp(
       MD3ChipThemeData a, MD3ChipThemeData b, double t) {
-    assert(t != null);
     if (a == null && b == null) return null;
     return MD3ChipThemeData(
-      style: ButtonStyle.lerp(a?.style, b?.style, t),
+      style: ButtonStyle.lerp(a.style, b.style, t),
     );
   }
 
@@ -49,8 +47,7 @@ class MD3ChipTheme extends InheritedTheme {
     Key? key,
     required this.data,
     required Widget child,
-  })  : assert(data != null),
-        super(key: key, child: child);
+  }) : super(key: key, child: child);
 
   final MD3ChipThemeData data;
 
@@ -131,10 +128,8 @@ class ChipStyle {
     );
     return ChipStyle(
       backgroundColor: background,
-      backgroundTintColor: null,
       labelColor: foreground,
       stateLayerColor: ButtonStyleButton.allOrNull(foregroundColor),
-      borderSide: null,
       md3Elevation: md3elevation,
     );
   }
@@ -276,7 +271,6 @@ abstract class MD3ChipStyleChip extends ButtonStyleButton {
           'If you wish to change more stuff, use style, otherwise stick to '
           'chipStyle, but never use both!',
         ),
-        assert(label != null, 'According to MD3, every chip needs an label'),
         super(
           key: key,
           onPressed: onPressed,
@@ -414,8 +408,9 @@ class MD3ChipPrimaryIcon extends StatelessWidget {
     final scope = _MD3ChipIconScope.of(context)!;
     return IconTheme.merge(
       data: IconThemeData(
-        color:
-            scope.isDisabled || isSelected! ? null : context.colorScheme.primary,
+        color: scope.isDisabled || isSelected!
+            ? null
+            : context.colorScheme.primary,
       ),
       child: icon,
     );
@@ -435,7 +430,8 @@ class MD3ChipIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) => IconTheme.merge(
         data: IconThemeData(
-          color: _MD3ChipIconScope.of(context)!.isDisabled ? null : enabledColor,
+          color:
+              _MD3ChipIconScope.of(context)!.isDisabled ? null : enabledColor,
         ),
         child: icon,
       );

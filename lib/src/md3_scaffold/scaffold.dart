@@ -1,9 +1,5 @@
-import 'package:material_widgets/src/navigation_drawer.dart';
-import 'package:material_widgets/src/standard_drawer_controller.dart';
-import 'package:material_you/material_you.dart';
 import 'package:flutter/material.dart';
-
-import '../shrinkable_drawer_controller.dart';
+import 'package:material_you/material_you.dart';
 
 class MD3AdaptativeScaffold extends StatelessWidget {
   const MD3AdaptativeScaffold({

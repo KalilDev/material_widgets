@@ -256,7 +256,7 @@ class TextAligner extends StatelessWidget {
     assert(debugCheckHasDirectionality(context));
 
     final defaultAlign =
-        DefaultTextStyle.of(context)?.textAlign ?? TextAlign.start;
+        DefaultTextStyle.of(context).textAlign ?? TextAlign.start;
 
     final painter = _TextAlignPainter(
       titleStyle: titleStyle ?? Theme.of(context).textTheme.headline6,

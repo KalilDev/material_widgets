@@ -9,9 +9,9 @@ typedef FloatingActionButtonBuilder = Widget Function(BuildContext, bool);
 Widget _removeFabElevation(BuildContext context, Widget fab) =>
     MD3FloatingActionButtonTheme(
       data: MD3FloatingActionButtonThemeData(
-        style:
-            (MD3FloatingActionButtonTheme.of(context)?.style ?? ButtonStyle())
-                .copyWith(elevation: MaterialStateProperty.all(0)),
+        style: (MD3FloatingActionButtonTheme.of(context).style ??
+                const ButtonStyle())
+            .copyWith(elevation: MaterialStateProperty.all(0)),
       ),
       child: fab,
     );
@@ -107,7 +107,7 @@ class MD3BottomNavigationDelegate extends MD3NavigationDelegate {
           canExpand: canExpand,
         ),
         buildScaffold: (context, child) => MD3AppBarSizeScope(
-          initialSize: appBar?.preferredSize ?? Size.fromHeight(0),
+          initialSize: appBar?.preferredSize ?? const Size.fromHeight(0),
           child: child,
         ),
       );
@@ -212,6 +212,7 @@ class _ExpandableRailState extends State<_ExpandableRail>
   final shrinkableDrawerController =
       GlobalKey<ShrinkableDrawerControllerState>();
   late AnimationController iconAnimController;
+  @override
   void initState() {
     super.initState();
     iconAnimController = AnimationController(
@@ -222,6 +223,7 @@ class _ExpandableRailState extends State<_ExpandableRail>
 
   bool _isOpen = false;
 
+  @override
   void didUpdateWidget(_ExpandableRail oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (!widget.canExpand && oldWidget.canExpand) {
@@ -230,6 +232,7 @@ class _ExpandableRailState extends State<_ExpandableRail>
     }
   }
 
+  @override
   void dispose() {
     iconAnimController.dispose();
     super.dispose();
@@ -264,12 +267,12 @@ class _ExpandableRailState extends State<_ExpandableRail>
       );
 
   Widget _fabHeader(BuildContext context) => Column(
-        mainAxisSize: MainAxisSize.max,
         children: [
           if (widget.floatingActionButtonBuilder != null)
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12),
               child: SizedBox(
+                width: double.infinity,
                 child: _removeFabElevation(
                   context,
                   Builder(
@@ -279,10 +282,9 @@ class _ExpandableRailState extends State<_ExpandableRail>
                     ),
                   ),
                 ),
-                width: double.infinity,
               ),
             ),
-          const Expanded(child: const SizedBox())
+          const Expanded(child: SizedBox())
         ],
       );
 
@@ -349,12 +351,12 @@ class _ExpandableRailState extends State<_ExpandableRail>
               height: appBarHeight,
               child: _appBarSizedHeader(context, appBarHeight),
             ),
-            Expanded(child: _fabHeader(context), flex: 4),
+            Expanded(flex: 4, child: _fabHeader(context)),
             ..._navigationDrawerItems(
               context,
               widget.spec,
             ),
-            const Expanded(child: const SizedBox(), flex: 7),
+            const Expanded(flex: 7, child: const SizedBox()),
           ],
         ),
       ),

@@ -58,6 +58,7 @@ class _MD3SliverAppBarState extends State<MD3SliverAppBar> {
   double get _bottomHeight => widget.expandable ? 88 : 0;
   double? _height;
 
+  @override
   void initState() {
     super.initState();
     _sizeScopeHandle = Handle(
@@ -69,16 +70,19 @@ class _MD3SliverAppBarState extends State<MD3SliverAppBar> {
     );
   }
 
+  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     _sizeScopeHandle.update(MD3AppBarSizeScopeState.maybeOf(context));
   }
 
+  @override
   void deactivate() {
     _sizeScopeHandle.detach();
     super.deactivate();
   }
 
+  @override
   void dispose() {
     _sizeScopeHandle.dispose();
     super.dispose();

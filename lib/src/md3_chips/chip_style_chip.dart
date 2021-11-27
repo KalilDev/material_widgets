@@ -226,13 +226,13 @@ class ChipStyle {
       isElevated ? elevatedElevation(elevation) : loweredElevation(elevation);
 
   ButtonStyle toButtonStyle(MD3StateLayerOpacityTheme stateLayerOpacityTheme) {
-    final MaterialStateProperty<Color>? background = backgroundTintColor != null
+    final background = backgroundTintColor != null
         ? MD3ElevationTintableColor(
             backgroundColor!.cast(),
-            backgroundTintColor!.cast(),
-            md3Elevation!,
+            backgroundTintColor?.cast(),
+            md3Elevation,
           )
-        : backgroundColor;
+        : backgroundColor!;
     final foregroundColor = labelColor;
     final side = borderSide;
 

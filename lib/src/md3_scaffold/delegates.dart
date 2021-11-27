@@ -198,7 +198,7 @@ class _ExpandableRail extends StatefulWidget {
     this.header,
     this.canExpand = true,
   }) : super(key: key);
-  final MD3NavigationSpec spec;
+  final MD3NavigationSpec/*!*/ spec;
   final FloatingActionButtonBuilder floatingActionButtonBuilder;
   final Widget header;
   final bool canExpand;

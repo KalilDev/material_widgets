@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-extension MonadicValueListenable<T> on ValueListenable<T> {
+extension MonadicValueListenable<T> on ValueListenable<T>/*!*/ {
   ValueListenable<T1> map<T1>(T1 Function(T) fn) =>
       _MappedValueListenable(this, fn);
   ValueListenable<T1> bind<T1>(ValueListenable<T1> Function(T) fn) =>
@@ -9,7 +9,7 @@ extension MonadicValueListenable<T> on ValueListenable<T> {
 }
 
 class _MappedValueListenable<T, T1> implements ValueListenable<T1> {
-  final ValueListenable<T> _base;
+  final ValueListenable<T>/*!*/ _base;
   final T1 Function(T) _mapper;
 
   _MappedValueListenable(this._base, this._mapper);
@@ -26,7 +26,7 @@ class _MappedValueListenable<T, T1> implements ValueListenable<T1> {
 
 class _BoundValueListenable<T, T1> extends ChangeNotifier
     implements ValueListenable<T1> {
-  final ValueListenable<T> _base;
+  final ValueListenable<T>/*!*/ _base;
   final ValueListenable<T1> Function(T) _mapper;
 
   _BoundValueListenable(this._base, this._mapper);

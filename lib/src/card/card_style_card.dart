@@ -24,7 +24,7 @@ class CardStyle {
 
   final MaterialStateProperty<MD3ElevationLevel> elevation;
   final MaterialStateProperty<Color> stateLayerColor;
-  final MaterialStateProperty<OutlinedBorder> shape;
+  final MaterialStateProperty<OutlinedBorder>/*?*//*?*/ shape;
   final MaterialStateProperty<Color> backgroundColor;
   final MaterialStateProperty<Color> shadowColor;
   final MaterialStateProperty<Color> elevationTintColor;
@@ -100,7 +100,7 @@ abstract class CardStyleCard extends StatefulWidget {
   }) : super(key: key);
 
   CardStyle defaultStyleOf(BuildContext context);
-  CardStyle themeStyleOf(BuildContext context);
+  CardStyle/*?*/ themeStyleOf(BuildContext context);
 
   @override
   State<CardStyleCard> createState() => _CardStyleCardState();

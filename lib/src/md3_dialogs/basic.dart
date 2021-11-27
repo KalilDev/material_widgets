@@ -162,7 +162,7 @@ class MD3DialogLayout extends StatelessWidget {
   }) : super(key: key);
 
   final MD3TabletDialogAlignment dialogAlignment;
-  final Widget child;
+  final Widget/*!*/ child;
 
   bool _isSmall(BuildContext context) =>
       context.sizeClass == MD3WindowSizeClass.compact;

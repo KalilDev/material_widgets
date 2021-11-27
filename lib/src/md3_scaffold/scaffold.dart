@@ -24,7 +24,7 @@ class MD3AdaptativeScaffold extends StatelessWidget {
   final GlobalKey<ScaffoldState> scaffoldKey;
   final PreferredSizeWidget appBar;
   final Widget bottomNavigationBar;
-  final Widget body;
+  final Widget/*!*/ body;
   final Widget startDrawer;
   final Widget endDrawer;
   final Widget startModalDrawer;
@@ -92,14 +92,14 @@ class _BodySection extends StatelessWidget {
   }) : super(key: key);
 
   final GlobalKey<ScaffoldState> scaffoldKey;
-  final double minMargin;
-  final double maxMargin;
+  final double/*!*/ minMargin;
+  final double/*!*/ maxMargin;
   final PreferredSizeWidget appBar;
   final Widget bottomNavigationBar;
-  final Widget body;
+  final Widget/*!*/ body;
   final Widget startDrawer;
   final Widget endDrawer;
-  final Color background;
+  final Color/*!*/ background;
   final Widget floatingActionButton;
 
   Widget _margin() => ConstrainedBox(

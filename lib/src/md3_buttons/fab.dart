@@ -233,7 +233,7 @@ class MD3FloatingActionButton extends ButtonStyleButton {
     @required Color backgroundColor,
     @required Color foregroundColor,
     @required MD3StateLayerOpacityTheme stateLayerOpacityTheme,
-    Color tintColor,
+    Color/*?*/ tintColor,
     Color shadowColor,
     TextStyle labelStyle,
     MouseCursor enabledCursor,

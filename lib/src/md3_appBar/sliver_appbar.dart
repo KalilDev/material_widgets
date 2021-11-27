@@ -48,7 +48,7 @@ class MD3SliverAppBar extends StatefulWidget {
 }
 
 class _MD3SliverAppBarState extends State<MD3SliverAppBar> {
-  Handle<MD3AppBarSizeScopeState> _sizeScopeHandle;
+  Handle<MD3AppBarSizeScopeState/*!*/> _sizeScopeHandle;
 
   static bool _shouldNotifySize(MD3RawAppBar widget) =>
       widget.primary && widget.notifySize;

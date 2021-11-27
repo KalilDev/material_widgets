@@ -10,7 +10,7 @@ class ThemeSwitcher extends StatelessWidget {
   final ThemeData highContrastDarkTheme;
   final ThemeData theme;
   final ThemeData darkTheme;
-  final Widget child;
+  final Widget/*!*/ child;
   const ThemeSwitcher({
     Key key,
     this.themeMode,

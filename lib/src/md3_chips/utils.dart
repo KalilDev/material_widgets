@@ -36,8 +36,8 @@ extension ColorMaterialState on Color {
   }
 }
 
-extension MaterialStatePropertyColor on MaterialStateProperty<Color> {
-  MaterialStateColor cast() {
+extension MaterialStatePropertyColor on MaterialStateProperty<Color>/*!*/ {
+  MaterialStateColor/*!*/ cast() {
     final self = this;
     if (self == null) {
       return null;

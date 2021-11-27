@@ -257,7 +257,7 @@ class MD3LargeOrMediumAppBar extends StatefulWidget
 class _MD3LargeOrMediumAppBarState extends State<MD3LargeOrMediumAppBar>
     with SingleTickerProviderStateMixin {
   AnimationController _expansionController;
-  ScrollController _primaryScrollController;
+  ScrollController/*!*/ _primaryScrollController;
 
   static const kDuration = Duration(milliseconds: 200);
 

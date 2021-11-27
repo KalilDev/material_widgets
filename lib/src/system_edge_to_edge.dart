@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 
 class SystemEdgeToEdge extends StatefulWidget {
   const SystemEdgeToEdge({Key key, this.child}) : super(key: key);
-  final Widget child;
+  final Widget/*!*//*!*/ child;
 
   @override
   _SystemEdgeToEdgeState createState() => _SystemEdgeToEdgeState();

@@ -54,7 +54,7 @@ class MD3RawAppBar extends StatefulWidget implements PreferredSizeWidget {
   final Widget leading;
   final bool automaticallyImplyLeading;
   final Widget title;
-  final List<Widget> actions;
+  final List<Widget/*!*/> actions;
   final Widget flexibleSpace;
   final PreferredSizeWidget bottom;
   final Color shadowColor;
@@ -86,12 +86,12 @@ class MD3RawAppBar extends StatefulWidget implements PreferredSizeWidget {
 
 class _MD3RawAppBarState extends State<MD3RawAppBar>
     with SingleTickerProviderStateMixin {
-  Handle<MD3AppBarSizeScopeState> _sizeScopeHandle;
+  Handle<MD3AppBarSizeScopeState/*!*/> _sizeScopeHandle;
 
   static bool _shouldNotifySize(MD3RawAppBar widget) =>
       widget.primary && widget.notifySize;
 
-  ScrollController primaryScrollController;
+  ScrollController/*!*/ primaryScrollController;
   AnimationController backgroundController;
   Tween<Color> get backgroundColorTween => ColorTween(
         begin: context.elevation.level0.overlaidColor(

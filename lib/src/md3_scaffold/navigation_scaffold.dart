@@ -6,27 +6,27 @@ abstract class MD3NavigationDelegate {
   const MD3NavigationDelegate();
   MD3AdaptativeScaffoldSpec buildCompact(
     BuildContext context,
-    MD3NavigationSpec spec,
-    Widget body,
+    MD3NavigationSpec/*!*/ spec,
+    Widget/*!*/ body,
   );
   MD3AdaptativeScaffoldSpec buildMedium(
     BuildContext context,
-    MD3NavigationSpec spec,
-    Widget body,
+    MD3NavigationSpec/*!*/ spec,
+    Widget/*!*/ body,
   );
   MD3AdaptativeScaffoldSpec buildExpanded(
     BuildContext context,
-    MD3NavigationSpec spec,
-    Widget body,
+    MD3NavigationSpec/*!*/ spec,
+    Widget/*!*/ body,
   );
 }
 
 class NavigationItem {
   final Widget label;
   final Widget icon;
-  final Widget activeIcon;
+  final Widget/*?*/ activeIcon;
   final Color backgroundColor;
-  final String labelText;
+  final String/*!*/ labelText;
 
   const NavigationItem({
     @required this.label,
@@ -40,7 +40,7 @@ class NavigationItem {
 class MD3NavigationSpec {
   final List<NavigationItem> items;
   final ValueChanged<int> onChanged;
-  final int selectedIndex;
+  final int/*!*/ selectedIndex;
 
   const MD3NavigationSpec({
     @required this.items,
@@ -60,8 +60,8 @@ class MD3NavigationScaffold extends StatelessWidget {
     this.body,
   }) : super(key: key);
   final GlobalKey<ScaffoldState> scaffoldKey;
-  final MD3NavigationSpec spec;
-  final MD3NavigationDelegate delegate;
+  final MD3NavigationSpec/*!*/ spec;
+  final MD3NavigationDelegate/*!*/ delegate;
   final bool surfaceTintBackground;
   final bool bodyMargin;
   final Widget body;
@@ -115,7 +115,7 @@ class MD3AdaptativeScaffoldSpec {
 
   final PreferredSizeWidget appBar;
   final Widget bottomNavigationBar;
-  final Widget body;
+  final Widget/*!*/ body;
   final Widget startDrawer;
   final Widget endDrawer;
   final Widget startModalDrawer;

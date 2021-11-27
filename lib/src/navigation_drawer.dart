@@ -67,7 +67,7 @@ class NavigationDrawerHeader extends StatelessWidget {
   // bottom to text baseline
   static const double kModalSubtitleOffset = 18;
 
-  bool _getIsStandardDrawer(BuildContext context) {
+  bool/*!*/ _getIsStandardDrawer(BuildContext context) {
     if (isStandardDrawer != null) {
       return isStandardDrawer;
     }
@@ -75,7 +75,7 @@ class NavigationDrawerHeader extends StatelessWidget {
     return NavigationDrawerTheme.of(context)?.isStandardDrawer ?? defaultVal;
   }
 
-  double _getbaseline(BuildContext context) {
+  double/*!*/ _getbaseline(BuildContext context) {
     if (baseline != null) {
       return baseline;
     }
@@ -129,7 +129,7 @@ class NavigationDrawerSpacer extends StatelessWidget {
   final double height;
 
   const NavigationDrawerSpacer({Key key, this.height}) : super(key: key);
-  double _getHeight(BuildContext context) {
+  double/*!*/ _getHeight(BuildContext context) {
     if (height != null) {
       return height;
     }
@@ -195,7 +195,7 @@ class NavigationDrawerItem extends StatelessWidget {
   final double kHeight = 56.0;
   bool get isDisabled => onTap == null;
 
-  Color _getSelectedColorBackground(BuildContext context) {
+  Color/*!*/ _getSelectedColorBackground(BuildContext context) {
     if (selectedColor != null) {
       return selectedColor;
     }
@@ -209,7 +209,7 @@ class NavigationDrawerItem extends StatelessWidget {
     return defaultVal;
   }
 
-  Color _getSelectedForegroundColor(BuildContext context) {
+  Color/*!*/ _getSelectedForegroundColor(BuildContext context) {
     if (selectedContentColor != null) {
       return selectedContentColor;
     }
@@ -225,7 +225,7 @@ class NavigationDrawerItem extends StatelessWidget {
     return context.colorScheme.onSecondaryContainer.withOpacity(0.24);
   }
 
-  Color _getUnselectedForegroundColor(BuildContext context) {
+  Color/*!*/ _getUnselectedForegroundColor(BuildContext context) {
     if (selectedContentColor != null) {
       return selectedContentColor;
     }
@@ -237,7 +237,7 @@ class NavigationDrawerItem extends StatelessWidget {
     return defaultVal;
   }
 
-  double _getIconTitleSpacing(BuildContext context) {
+  double/*!*/ _getIconTitleSpacing(BuildContext context) {
     if (iconTitleSpacing != null) {
       return iconTitleSpacing;
     }
@@ -252,7 +252,7 @@ class NavigationDrawerItem extends StatelessWidget {
     return baseline - padding.left;
   }
 
-  EdgeInsets _getPadding(BuildContext context) {
+  EdgeInsets/*!*/ _getPadding(BuildContext context) {
     if (padding != null) {
       return padding;
     }
@@ -263,7 +263,7 @@ class NavigationDrawerItem extends StatelessWidget {
         defaultVal;
   }
 
-  ShapeBorder _getShape(BuildContext context) {
+  ShapeBorder/*!*/ _getShape(BuildContext context) {
     if (shape != null) {
       return shape;
     }

@@ -15,7 +15,7 @@ class _TextAlignPainter extends CustomPainter {
   final TextAlign titleAlign;
   final TextAlign bodyAlign;
   final bool showBaselines;
-  final _metricsCache = <String, List<ui.LineMetrics>>{};
+  final _metricsCache = <String/*!*/, List<ui.LineMetrics>>{};
 
   _TextAlignPainter({
     @required this.titleStyle,
@@ -75,7 +75,7 @@ class _TextAlignPainter extends CustomPainter {
     return Size(width, height);
   }
 
-  TextPainter _painter(String text, {bool isTitle = false}) => TextPainter(
+  TextPainter _painter(String/*!*/ text, {bool isTitle = false}) => TextPainter(
         text: TextSpan(
           text: text,
           style: isTitle ? titleStyle : bodyStyle,
@@ -85,7 +85,7 @@ class _TextAlignPainter extends CustomPainter {
       );
 
   List<ui.LineMetrics> _layoutAndMetrics(
-    String key,
+    String/*!*/ key,
     TextPainter painter, {
     double minWidth = 0.0,
     double maxWidth = double.infinity,

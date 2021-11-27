@@ -71,7 +71,7 @@ class FilledTonalButtonTheme extends InheritedTheme {
 class FilledTonalButton extends ButtonStyleButton {
   const FilledTonalButton({
     Key key,
-    @required VoidCallback onPressed,
+    @required VoidCallback/*?*/ onPressed,
     VoidCallback onLongPress,
     ValueChanged<bool> onHover,
     ValueChanged<bool> onFocusChange,
@@ -95,7 +95,7 @@ class FilledTonalButton extends ButtonStyleButton {
 
   factory FilledTonalButton.icon({
     Key key,
-    @required VoidCallback onPressed,
+    @required VoidCallback/*?*/ onPressed,
     VoidCallback onLongPress,
     ValueChanged<bool> onHover,
     ValueChanged<bool> onFocusChange,
@@ -114,7 +114,7 @@ class FilledTonalButton extends ButtonStyleButton {
     @required Color disabledColor,
     @required MD3StateLayerOpacityTheme stateLayerOpacityTheme,
     Color shadowColor,
-    MaterialStateProperty<MD3ElevationLevel> md3Elevation,
+    MaterialStateProperty<MD3ElevationLevel>/*?*/ md3Elevation,
     TextStyle labelStyle,
     MouseCursor disabledCursor,
     MouseCursor enabledCursor,
@@ -203,7 +203,7 @@ class FilledTonalButton extends ButtonStyleButton {
 class _FilledTonalButtonWithIcon extends FilledTonalButton {
   _FilledTonalButtonWithIcon({
     Key key,
-    @required VoidCallback onPressed,
+    @required VoidCallback/*?*/ onPressed,
     VoidCallback onLongPress,
     ValueChanged<bool> onHover,
     ValueChanged<bool> onFocusChange,
@@ -253,7 +253,7 @@ class _FilledTonalButtonWithIconChild extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double scale = MediaQuery.maybeOf(context)?.textScaleFactor ?? 1;
-    final double gap =
+    final double/*!*/ gap =
         scale <= 1 ? 8 : lerpDouble(8, 4, math.min(scale - 1, 1));
     return Row(
       mainAxisSize: MainAxisSize.min,

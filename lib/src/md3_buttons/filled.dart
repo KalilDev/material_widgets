@@ -70,7 +70,7 @@ class FilledButtonTheme extends InheritedTheme {
 class FilledButton extends ButtonStyleButton {
   const FilledButton({
     Key key,
-    @required VoidCallback onPressed,
+    @required VoidCallback/*?*/ onPressed,
     VoidCallback onLongPress,
     ValueChanged<bool> onHover,
     ValueChanged<bool> onFocusChange,
@@ -94,7 +94,7 @@ class FilledButton extends ButtonStyleButton {
 
   factory FilledButton.icon({
     Key key,
-    @required VoidCallback onPressed,
+    @required VoidCallback/*?*/ onPressed,
     VoidCallback onLongPress,
     ValueChanged<bool> onHover,
     ValueChanged<bool> onFocusChange,
@@ -112,7 +112,7 @@ class FilledButton extends ButtonStyleButton {
     @required Color disabledColor,
     @required MD3StateLayerOpacityTheme stateLayerOpacityTheme,
     Color shadowColor,
-    MaterialStateProperty<MD3ElevationLevel> md3Elevation,
+    MaterialStateProperty<MD3ElevationLevel>/*?*/ md3Elevation,
     TextStyle labelStyle,
     MouseCursor disabledCursor,
     MouseCursor enabledCursor,
@@ -202,7 +202,7 @@ class FilledButton extends ButtonStyleButton {
 class _FilledButtonWithIcon extends FilledButton {
   _FilledButtonWithIcon({
     Key key,
-    @required VoidCallback onPressed,
+    @required VoidCallback/*?*/ onPressed,
     VoidCallback onLongPress,
     ValueChanged<bool> onHover,
     ValueChanged<bool> onFocusChange,
@@ -252,7 +252,7 @@ class _FilledButtonWithIconChild extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double scale = MediaQuery.maybeOf(context)?.textScaleFactor ?? 1;
-    final double gap =
+    final double/*!*/ gap =
         scale <= 1 ? 8 : lerpDouble(8, 4, math.min(scale - 1, 1));
     return Row(
       mainAxisSize: MainAxisSize.min,

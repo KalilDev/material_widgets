@@ -8,8 +8,8 @@ import 'package:material_you/material_you.dart';
 import 'text_aligner.dart';
 
 class _OnboardingPageScope extends InheritedWidget {
-  final bool isPortrait;
-  final bool isDesktop;
+  final bool/*!*/ isPortrait;
+  final bool/*!*/ isDesktop;
   const _OnboardingPageScope({this.isDesktop, this.isPortrait, Widget child})
       : super(child: child);
 
@@ -49,7 +49,7 @@ Size _buttonSize(BuildContext context) =>
     const Size(64, 36);
 
 class _PageText extends StatelessWidget {
-  final String text;
+  final String/*!*/ text;
   final String title;
   final TextAlign textAlign;
 
@@ -123,7 +123,7 @@ class _PageText extends StatelessWidget {
 
 class _OnboardingPageContent extends StatelessWidget {
   final Widget image;
-  final String text;
+  final String/*!*/ text;
   final String title;
 
   const _OnboardingPageContent({
@@ -183,7 +183,7 @@ typedef PageIndicatorBuilder = Widget Function(
 class MaterialOnboarding extends StatefulWidget {
   final Widget button;
   final PageIndicatorBuilder indicatorBuilder;
-  final List<Widget> pages;
+  final List<Widget>/*!*/ pages;
   final Duration autoSwitchInterval;
   final Duration pageTransitionDuration;
   final Curve pageTransitionCurve;
@@ -205,7 +205,7 @@ class MaterialOnboarding extends StatefulWidget {
 }
 
 class _MaterialOnboardingState extends State<MaterialOnboarding> {
-  PageController controller;
+  PageController/*!*/ controller;
   int _currentPage = 0;
   Stream<Null> _timer;
   StreamSubscription _timerSubs;
@@ -268,7 +268,7 @@ class _MaterialOnboardingState extends State<MaterialOnboarding> {
   bool get isPortrait =>
       isDesktop || MediaQuery.of(context).orientation == Orientation.portrait;
 
-  Color _desktopBg(BuildContext context) {
+  Color/*!*/ _desktopBg(BuildContext context) {
     if (widget.desktopBgColor != null) {
       return widget.desktopBgColor;
     }
@@ -411,9 +411,9 @@ class _MaterialOnboardingState extends State<MaterialOnboarding> {
 }
 
 class _LandscapeOnboardingBody extends StatelessWidget {
-  final Widget pageView;
-  final Widget getStartedButton;
-  final Widget pageIndicator;
+  final Widget/*!*/ pageView;
+  final Widget/*!*/ getStartedButton;
+  final Widget/*!*/ pageIndicator;
 
   const _LandscapeOnboardingBody(
       {Key key, this.pageView, this.getStartedButton, this.pageIndicator})
@@ -465,9 +465,9 @@ class _LandscapeOnboardingBody extends StatelessWidget {
 }
 
 class _PortraitOnboardingBody extends StatelessWidget {
-  final Widget pageView;
-  final Widget getStartedButton;
-  final Widget pageIndicator;
+  final Widget/*!*/ pageView;
+  final Widget/*!*/ getStartedButton;
+  final Widget/*!*/ pageIndicator;
 
   const _PortraitOnboardingBody(
       {Key key, this.pageView, this.getStartedButton, this.pageIndicator})
@@ -511,11 +511,11 @@ class _PortraitOnboardingBody extends StatelessWidget {
 }
 
 class _DesktopOnboardingBody extends StatelessWidget {
-  final Widget pageView;
-  final Widget getStartedButton;
-  final Widget pageIndicator;
-  final Widget previousPageButton;
-  final Widget nextPageButton;
+  final Widget/*!*/ pageView;
+  final Widget/*!*/ getStartedButton;
+  final Widget/*!*/ pageIndicator;
+  final Widget/*!*/ previousPageButton;
+  final Widget/*!*/ nextPageButton;
 
   const _DesktopOnboardingBody({
     Key key,

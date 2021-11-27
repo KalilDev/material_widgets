@@ -4,7 +4,7 @@ class Handle<T> {
   Handle(this._attach, this._detach);
 
   final void Function(T) _attach;
-  final void Function(T) _detach;
+  final void Function(T/*!*/) _detach;
 
   bool _disposed = false;
   void update(T value) {

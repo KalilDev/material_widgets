@@ -1,3 +1,7 @@
+## [0.4.0]
+
+- Start implementing MD3 widgets
+
 ## [0.2.0]
 
 ### BREAKING

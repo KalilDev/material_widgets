@@ -8,9 +8,9 @@ import '../monadic_value_listenable.dart';
 
 class InheritedDraggableCardInformation extends InheritedWidget {
   const InheritedDraggableCardInformation({
-    Key key,
-    @required this.isBeingDragged,
-    @required Widget child,
+    Key? key,
+    required this.isBeingDragged,
+    required Widget child,
   }) : super(key: key, child: child);
 
   final bool isBeingDragged;
@@ -19,21 +19,21 @@ class InheritedDraggableCardInformation extends InheritedWidget {
   bool updateShouldNotify(InheritedDraggableCardInformation oldWidget) =>
       isBeingDragged != oldWidget.isBeingDragged;
 
-  static Widget shadow({@required Widget child}) =>
+  static Widget shadow({required Widget child}) =>
       InheritedDraggableCardInformation(
         isBeingDragged: false,
         child: child,
       );
 
-  static bool maybeOf(BuildContext context) => context
+  static bool? maybeOf(BuildContext context) => context
       .dependOnInheritedWidgetOfExactType<InheritedDraggableCardInformation>()
       ?.isBeingDragged;
 }
 
 class DraggableCard<T extends Object> extends StatefulWidget {
   const DraggableCard({
-    Key key,
-    @required this.child,
+    Key? key,
+    required this.child,
     this.data,
     this.axis,
     this.dragAnchorStrategy,
@@ -51,27 +51,27 @@ class DraggableCard<T extends Object> extends StatefulWidget {
         assert(maxSimultaneousDrags == null || maxSimultaneousDrags >= 0),
         super(key: key);
 
-  final T data;
+  final T? data;
 
-  final Axis axis;
+  final Axis? axis;
 
   final Widget child;
 
-  final DragAnchorStrategy dragAnchorStrategy;
+  final DragAnchorStrategy? dragAnchorStrategy;
 
-  final Axis affinity;
+  final Axis? affinity;
 
-  final int maxSimultaneousDrags;
+  final int? maxSimultaneousDrags;
 
-  final VoidCallback onDragStarted;
+  final VoidCallback? onDragStarted;
 
-  final DragUpdateCallback onDragUpdate;
+  final DragUpdateCallback? onDragUpdate;
 
-  final DraggableCanceledCallback onDraggableCanceled;
+  final DraggableCanceledCallback? onDraggableCanceled;
 
-  final VoidCallback onDragCompleted;
+  final VoidCallback? onDragCompleted;
 
-  final DragEndCallback onDragEnd;
+  final DragEndCallback? onDragEnd;
 
   final bool rootOverlay;
 
@@ -84,11 +84,11 @@ class DraggableCard<T extends Object> extends StatefulWidget {
 
 class _DraggableSizedChild extends StatefulWidget {
   _DraggableSizedChild({
-    @required this.size,
-    @required this.duration,
-    @required this.child,
+    required this.size,
+    required this.duration,
+    required this.child,
   }) : super(key: ObjectKey(size));
-  final ValueNotifier<Size> size;
+  final ValueNotifier<Size?> size;
   final Duration duration;
   final Widget child;
 
@@ -98,9 +98,9 @@ class _DraggableSizedChild extends StatefulWidget {
 
 class __DraggableSizedChildState extends State<_DraggableSizedChild>
     with SingleTickerProviderStateMixin {
-  AnimationController _controller;
-  Size _size;
-  Animation<Size> _sizeAnimation;
+  late AnimationController _controller;
+  Size? _size;
+  late Animation<Size?> _sizeAnimation;
 
   void _onSizeChange() {
     if (_size == null) {
@@ -147,7 +147,7 @@ class __DraggableSizedChildState extends State<_DraggableSizedChild>
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder<Size>(
+    return ValueListenableBuilder<Size?>(
       valueListenable: _sizeAnimation,
       builder: (context, size, _) => SizedBox.fromSize(
         size: size ?? Size.zero,
@@ -159,12 +159,12 @@ class __DraggableSizedChildState extends State<_DraggableSizedChild>
 
 class _DraggableReturnFlightWidget extends StatefulWidget {
   const _DraggableReturnFlightWidget({
-    Key key,
-    @required this.initialOffset,
-    @required this.initialVelocity,
-    @required this.target,
-    @required this.close,
-    @required this.child,
+    Key? key,
+    required this.initialOffset,
+    required this.initialVelocity,
+    required this.target,
+    required this.close,
+    required this.child,
   }) : super(key: key);
   final Offset initialOffset;
   final Offset initialVelocity;
@@ -180,15 +180,15 @@ class _DraggableReturnFlightWidget extends StatefulWidget {
 class __DraggableReturnFlightWidgetState
     extends State<_DraggableReturnFlightWidget>
     with SingleTickerProviderStateMixin {
-  Offset velocity;
+  Offset? velocity;
 
-  AnimationController _controller;
+  late AnimationController _controller;
   static const double kPixelsPerSecond = 800;
   static const double kVelocityPerPixel = 1 / kPixelsPerSecond;
-  Animation<Offset> p0;
+  late Animation<Offset> p0;
   //Animation<Offset> p1;
-  Animation<Offset> p2;
-  ValueListenable<Offset> point;
+  late Animation<Offset> p2;
+  late ValueListenable<Offset> point;
 
   @override
   void initState() {
@@ -254,7 +254,7 @@ class _DraggableCardState<T extends Object> extends State<DraggableCard<T>>
   final _childKey = GlobalKey();
   final _referenceChildKey = GlobalKey();
   bool _isBeingDragged = false;
-  final _childSize = ValueNotifier<Size>(null);
+  final _childSize = ValueNotifier<Size?>(null);
 
   bool _isReturning = false;
 
@@ -267,13 +267,13 @@ class _DraggableCardState<T extends Object> extends State<DraggableCard<T>>
 
   Offset _getChildOrigin() {
     final childKey = _isBeingDragged ? _referenceChildKey : _childKey;
-    final renderBox = childKey.currentContext.findRenderObject() as RenderBox;
+    final renderBox = childKey.currentContext!.findRenderObject() as RenderBox;
     return renderBox.localToGlobal(Offset.zero);
   }
 
   Size _getChildSize() {
     final childKey = _isBeingDragged ? _referenceChildKey : _childKey;
-    final renderBox = childKey.currentContext.findRenderObject() as RenderBox;
+    final renderBox = childKey.currentContext!.findRenderObject() as RenderBox;
     return renderBox.size;
   }
 
@@ -286,8 +286,8 @@ class _DraggableCardState<T extends Object> extends State<DraggableCard<T>>
   void _startReturn(DraggableDetails details) {
     setState(() => _isReturning = true);
     final target = _getChildOrigin();
-    final manager = Overlay.of(context);
-    OverlayEntry overlay;
+    final manager = Overlay.of(context)!;
+    late OverlayEntry overlay;
     void close() {
       overlay.remove();
       setState(() => _isReturning = false);
@@ -337,7 +337,7 @@ class _DraggableCardState<T extends Object> extends State<DraggableCard<T>>
   }
 
   void _scheduleChildSizeUpdate() {
-    WidgetsBinding.instance.addPostFrameCallback((_) => _updateChildSize());
+    WidgetsBinding.instance!.addPostFrameCallback((_) => _updateChildSize());
   }
 
   @override

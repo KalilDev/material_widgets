@@ -4,15 +4,15 @@ class Handle<T> {
   Handle(this._attach, this._detach);
 
   final void Function(T) _attach;
-  final void Function(T/*!*/) _detach;
+  final void Function(T) _detach;
 
   bool _disposed = false;
-  void update(T value) {
+  void update(T? value) {
     if (_disposed) {
       throw StateError('Handle already disposed!');
     }
     if (_value != null && value != _value) {
-      _detach(_value);
+      _detach(_value!);
     }
     _value = value;
     if (value != null) {
@@ -26,7 +26,7 @@ class Handle<T> {
       throw StateError('Handle already disposed!');
     }
     if (_value != null) {
-      _detach(_value);
+      _detach(_value!);
     }
     _value = null;
   }
@@ -37,20 +37,20 @@ class Handle<T> {
     _disposed = true;
   }
 
-  T _value;
-  T get value => _value;
+  T? _value;
+  T? get value => _value;
 }
 
 class MD3AppBarSizeInfo extends InheritedWidget {
   const MD3AppBarSizeInfo({
-    Key key,
-    @required this.size,
-    @required Widget child,
+    Key? key,
+    required this.size,
+    required Widget child,
   }) : super(key: key, child: child);
 
-  final Size size;
+  final Size? size;
 
-  static MD3AppBarSizeInfo maybeOf(BuildContext context) =>
+  static MD3AppBarSizeInfo? maybeOf(BuildContext context) =>
       context.dependOnInheritedWidgetOfExactType<MD3AppBarSizeInfo>();
 
   @override
@@ -60,10 +60,10 @@ class MD3AppBarSizeInfo extends InheritedWidget {
 
 class MD3AppBarSizeScope extends StatefulWidget {
   const MD3AppBarSizeScope({
-    Key key,
-    @required this.initialSize,
+    Key? key,
+    required this.initialSize,
     this.duration = const Duration(milliseconds: 200),
-    @required this.child,
+    required this.child,
   }) : super(key: key);
   final Size initialSize;
   final Duration duration;
@@ -75,9 +75,9 @@ class MD3AppBarSizeScope extends StatefulWidget {
 
 class MD3AppBarSizeScopeState extends State<MD3AppBarSizeScope>
     with SingleTickerProviderStateMixin {
-  Animation<Size> _currentSize;
-  Animation<double> _curvedAnim;
-  AnimationController _animController;
+  late Animation<Size?> _currentSize;
+  late Animation<double> _curvedAnim;
+  late AnimationController _animController;
 
   void initState() {
     super.initState();
@@ -92,7 +92,7 @@ class MD3AppBarSizeScopeState extends State<MD3AppBarSizeScope>
     );
   }
 
-  static MD3AppBarSizeScopeState maybeOf(BuildContext context) => context
+  static MD3AppBarSizeScopeState? maybeOf(BuildContext context) => context
       .dependOnInheritedWidgetOfExactType<_InheritedMD3AppBarSizeScope>()
       ?.self;
 
@@ -103,7 +103,7 @@ class MD3AppBarSizeScopeState extends State<MD3AppBarSizeScope>
   // only stored in debug, so that there isn't any chance of leaking it.
   //
 
-  Object _debugCurrentAppbar;
+  Object? _debugCurrentAppbar;
   bool _debugCheckIsCurrent(Object target) {
     return _debugCurrentAppbar == target;
   }
@@ -112,7 +112,7 @@ class MD3AppBarSizeScopeState extends State<MD3AppBarSizeScope>
     return _debugCurrentAppbar == null;
   }
 
-  bool _debugSetCurrent(Object target) {
+  bool _debugSetCurrent(Object? target) {
     _debugCurrentAppbar = target;
     return true;
   }
@@ -154,7 +154,7 @@ class MD3AppBarSizeScopeState extends State<MD3AppBarSizeScope>
       'MD3AppBarSizeScope.',
     );
     assert(_debugSetCurrent(appbar));
-    WidgetsBinding.instance.addPostFrameCallback(
+    WidgetsBinding.instance!.addPostFrameCallback(
       (_) => _animateSizeTo(preferredSize),
     );
   }
@@ -166,7 +166,7 @@ class MD3AppBarSizeScopeState extends State<MD3AppBarSizeScope>
       'but $appbar tried to update the size! Check that only one MD3RawAppBar '
       'is primary inside this MD3AppBarSizeScope.',
     );
-    WidgetsBinding.instance.addPostFrameCallback(
+    WidgetsBinding.instance!.addPostFrameCallback(
       (_) => _setSize(preferredSize),
     );
   }
@@ -180,7 +180,7 @@ class MD3AppBarSizeScopeState extends State<MD3AppBarSizeScope>
       'MD3AppBarSizeScope.',
     );
     assert(_debugSetCurrent(null));
-    WidgetsBinding.instance.addPostFrameCallback(
+    WidgetsBinding.instance!.addPostFrameCallback(
       (_) => _animateSizeTo(widget.initialSize),
     );
   }
@@ -194,7 +194,7 @@ class MD3AppBarSizeScopeState extends State<MD3AppBarSizeScope>
   Widget build(BuildContext context) {
     return _InheritedMD3AppBarSizeScope(
       self: this,
-      child: ValueListenableBuilder<Size>(
+      child: ValueListenableBuilder<Size?>(
         valueListenable: _currentSize,
         builder: (context, size, _) => MD3AppBarSizeInfo(
           size: size,
@@ -207,9 +207,9 @@ class MD3AppBarSizeScopeState extends State<MD3AppBarSizeScope>
 
 class _InheritedMD3AppBarSizeScope extends InheritedWidget {
   const _InheritedMD3AppBarSizeScope({
-    Key key,
-    @required this.self,
-    @required Widget child,
+    Key? key,
+    required this.self,
+    required Widget child,
   }) : super(key: key, child: child);
 
   final MD3AppBarSizeScopeState self;

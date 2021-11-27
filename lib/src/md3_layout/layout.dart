@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:material_you/material_you.dart';
 
 abstract class MD3DeviceTypeWidget extends StatelessWidget {
-  const MD3DeviceTypeWidget({Key key}) : super(key: key);
+  const MD3DeviceTypeWidget({Key? key}) : super(key: key);
 
   @protected
   Widget buildWatch(BuildContext context);
@@ -34,12 +34,12 @@ abstract class MD3DeviceTypeWidget extends StatelessWidget {
 
 class MD3DeviceTypeBuilder extends MD3DeviceTypeWidget {
   const MD3DeviceTypeBuilder({
-    Key key,
-    @required WidgetBuilder watch,
-    @required WidgetBuilder mobile,
-    @required WidgetBuilder tablet,
-    @required WidgetBuilder desktop,
-    @required WidgetBuilder largeScreenTv,
+    Key? key,
+    required WidgetBuilder watch,
+    required WidgetBuilder mobile,
+    required WidgetBuilder tablet,
+    required WidgetBuilder desktop,
+    required WidgetBuilder largeScreenTv,
   })  : _watch = watch,
         _mobile = mobile,
         _tablet = tablet,
@@ -70,7 +70,7 @@ class MD3DeviceTypeBuilder extends MD3DeviceTypeWidget {
 }
 
 abstract class MD3SizeClassWidget extends StatelessWidget {
-  const MD3SizeClassWidget({Key key}) : super(key: key);
+  const MD3SizeClassWidget({Key? key}) : super(key: key);
 
   @protected
   Widget buildCompact(BuildContext context);
@@ -94,10 +94,10 @@ abstract class MD3SizeClassWidget extends StatelessWidget {
 
 class MD3SizeClassBuilder extends MD3SizeClassWidget {
   const MD3SizeClassBuilder({
-    Key key,
-    @required WidgetBuilder compact,
-    @required WidgetBuilder medium,
-    @required WidgetBuilder expanded,
+    Key? key,
+    required WidgetBuilder compact,
+    required WidgetBuilder medium,
+    required WidgetBuilder expanded,
   })  : _compact = compact,
         _medium = medium,
         _expanded = expanded,

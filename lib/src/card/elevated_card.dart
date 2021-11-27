@@ -5,14 +5,14 @@ import 'package:material_you/material_you.dart';
 
 class ElevatedCard extends CardStyleCard {
   const ElevatedCard({
-    Key key,
-    VoidCallback onPressed,
-    VoidCallback onLongPress,
-    ValueChanged<bool> onHover,
-    ValueChanged<bool> onFocusChange,
-    FocusNode focusNode,
-    CardStyle style,
-    @required Widget child,
+    Key? key,
+    VoidCallback? onPressed,
+    VoidCallback? onLongPress,
+    ValueChanged<bool>? onHover,
+    ValueChanged<bool>? onFocusChange,
+    FocusNode? focusNode,
+    CardStyle? style,
+    required Widget child,
   }) : super(
           key: key,
           onPressed: onPressed,
@@ -25,14 +25,14 @@ class ElevatedCard extends CardStyleCard {
         );
 
   static CardStyle styleFrom({
-    Color backgroundColor,
-    Color backgroundTintColor,
-    Color foregroundColor,
-    MaterialStateProperty<MD3ElevationLevel> elevation,
-    MD3StateLayerOpacityTheme stateLayerOpacity,
-    Color shadowColor,
-    EdgeInsetsGeometry padding,
-    OutlinedBorder shape,
+    Color? backgroundColor,
+    Color? backgroundTintColor,
+    Color? foregroundColor,
+    MaterialStateProperty<MD3ElevationLevel>? elevation,
+    MD3StateLayerOpacityTheme? stateLayerOpacity,
+    Color? shadowColor,
+    EdgeInsetsGeometry? padding,
+    OutlinedBorder? shape,
   }) {
     if (stateLayerOpacity != null) {
       ArgumentError.checkNotNull(foregroundColor, 'foregroundColor');
@@ -45,7 +45,7 @@ class ElevatedCard extends CardStyleCard {
       stateLayerColor: stateLayerOpacity == null
           ? null
           : MD3StateOverlayColor(
-              foregroundColor,
+              foregroundColor!,
               stateLayerOpacity,
             ),
       elevationTintColor: ButtonStyleButton.allOrNull(backgroundTintColor),
@@ -85,7 +85,7 @@ class ElevatedCard extends CardStyleCard {
 class ElevatedCardThemeData with Diagnosticable {
   const ElevatedCardThemeData({this.style});
 
-  final CardStyle style;
+  final CardStyle? style;
 
   /*static ElevatedCardThemeData lerp(
       ElevatedCardThemeData a, ElevatedCardThemeData b, double t) {
@@ -118,16 +118,16 @@ class ElevatedCardThemeData with Diagnosticable {
 
 class ElevatedCardTheme extends InheritedTheme {
   const ElevatedCardTheme({
-    Key key,
-    @required this.data,
-    @required Widget child,
+    Key? key,
+    required this.data,
+    required Widget child,
   })  : assert(data != null),
         super(key: key, child: child);
 
   final ElevatedCardThemeData data;
 
   static ElevatedCardThemeData of(BuildContext context) {
-    final ElevatedCardTheme buttonTheme =
+    final ElevatedCardTheme? buttonTheme =
         context.dependOnInheritedWidgetOfExactType<ElevatedCardTheme>();
     return buttonTheme?.data ?? const ElevatedCardThemeData();
   }

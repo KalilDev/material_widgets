@@ -36,9 +36,9 @@ class StandardDrawerController extends StatefulWidget {
   ///
   /// The [child] argument must not be null and is typically a [Drawer].
   const StandardDrawerController({
-    GlobalKey key,
-    @required this.child,
-    @required this.alignment,
+    GlobalKey? key,
+    required this.child,
+    required this.alignment,
     this.drawerCallback,
   })  : assert(child != null),
         assert(alignment != null),
@@ -56,7 +56,7 @@ class StandardDrawerController extends StatefulWidget {
   final DrawerAlignment alignment;
 
   /// Optional callback that is called when a [Drawer] is opened or closed.
-  final DrawerCallback drawerCallback;
+  final DrawerCallback? drawerCallback;
 
   @override
   StandardDrawerControllerState createState() =>
@@ -89,7 +89,7 @@ class StandardDrawerControllerState extends State<StandardDrawerController>
     });
   }
 
-  AnimationController _controller;
+  late AnimationController _controller;
 
   final GlobalKey _drawerKey = GlobalKey();
   final FocusScopeNode _focusScopeNode = FocusScopeNode();
@@ -99,16 +99,16 @@ class StandardDrawerControllerState extends State<StandardDrawerController>
   /// Typically called by [ScaffoldState.openDrawer].
   void open() {
     _controller.fling(velocity: 1.0);
-    if (widget.drawerCallback != null) widget.drawerCallback(true);
+    if (widget.drawerCallback != null) widget.drawerCallback!(true);
   }
 
   /// Starts an animation to close the drawer.
   void close() {
     _controller.fling(velocity: -1.0);
-    if (widget.drawerCallback != null) widget.drawerCallback(false);
+    if (widget.drawerCallback != null) widget.drawerCallback!(false);
   }
 
-  Tween<Offset> get _drawerTranslationTween {
+  Tween<Offset>? get _drawerTranslationTween {
     assert(widget.alignment != null);
     switch (widget.alignment) {
       case DrawerAlignment.start:
@@ -119,7 +119,7 @@ class StandardDrawerControllerState extends State<StandardDrawerController>
     return null;
   }
 
-  Alignment get _overflowBoxAlignment {
+  Alignment? get _overflowBoxAlignment {
     switch (widget.alignment) {
       case DrawerAlignment.start:
         return Alignment.centerRight;
@@ -129,7 +129,7 @@ class StandardDrawerControllerState extends State<StandardDrawerController>
     return null;
   }
 
-  Tween<double> get _drawerSizeTween {
+  Tween<double>? get _drawerSizeTween {
     assert(widget.alignment != null);
     switch (widget.alignment) {
       case DrawerAlignment.start:
@@ -149,9 +149,9 @@ class StandardDrawerControllerState extends State<StandardDrawerController>
           key: _drawerKey,
           node: _focusScopeNode,
           child: SizedBox(
-            width: _drawerSizeTween.evaluate(_controller),
+            width: _drawerSizeTween!.evaluate(_controller),
             child: OverflowBox(
-              alignment: _overflowBoxAlignment,
+              alignment: _overflowBoxAlignment!,
               minWidth: _kWidth,
               maxWidth: _kWidth,
               child: widget.child,

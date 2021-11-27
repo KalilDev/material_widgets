@@ -8,27 +8,27 @@ import 'package:material_you/material_you.dart';
 import 'text_aligner.dart';
 
 class _OnboardingPageScope extends InheritedWidget {
-  final bool/*!*/ isPortrait;
-  final bool/*!*/ isDesktop;
-  const _OnboardingPageScope({this.isDesktop, this.isPortrait, Widget child})
+  final bool isPortrait;
+  final bool isDesktop;
+  const _OnboardingPageScope({required this.isDesktop, required this.isPortrait, required Widget child})
       : super(child: child);
 
   @override
   bool updateShouldNotify(_OnboardingPageScope old) =>
       isPortrait != old.isPortrait || isDesktop != old.isDesktop;
 
-  static _OnboardingPageScope of(BuildContext context) =>
+  static _OnboardingPageScope? of(BuildContext context) =>
       context.dependOnInheritedWidgetOfExactType<_OnboardingPageScope>();
 }
 
 /// Implements the https://material.io/design/communication/onboarding.html spec
 class MaterialOnboardingPage extends StatelessWidget {
-  final Widget image;
-  final String text;
-  final String title;
+  final Widget? image;
+  final String? text;
+  final String? title;
 
   const MaterialOnboardingPage({
-    Key key,
+    Key? key,
     this.image,
     this.text,
     this.title,
@@ -38,7 +38,7 @@ class MaterialOnboardingPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return _OnboardingPageContent(
       image: image,
-      text: text,
+      text: text!,
       title: title,
     );
   }
@@ -49,27 +49,27 @@ Size _buttonSize(BuildContext context) =>
     const Size(64, 36);
 
 class _PageText extends StatelessWidget {
-  final String/*!*/ text;
-  final String title;
-  final TextAlign textAlign;
+  final String text;
+  final String? title;
+  final TextAlign? textAlign;
 
   const _PageText({
-    Key key,
-    this.text,
+    Key? key,
+    required this.text,
     this.title,
     this.textAlign,
   }) : super(key: key);
 
   List<Widget> _bodyAndSpacer(BuildContext context) {
     final textBody = text.split('\n');
-    final titleStyle = Theme.of(context).textTheme.headline6;
+    final titleStyle = Theme.of(context).textTheme.headline6!;
     final cs = Theme.of(context).colorScheme;
-    final bodyStyle = Theme.of(context).textTheme.subtitle1.copyWith(
+    final bodyStyle = Theme.of(context).textTheme.subtitle1!.copyWith(
           fontSize: 15.0,
           color: Color.alphaBlend(cs.surface.withOpacity(0.4), cs.onSurface),
         );
     final textHeight =
-        56 + 32 + (titleStyle.fontSize * (titleStyle.height ?? 1.0));
+        56 + 32 + (titleStyle.fontSize! * (titleStyle.height ?? 1.0));
     return [
       if (kIsWeb)
         SizedBox(
@@ -81,7 +81,7 @@ class _PageText extends StatelessWidget {
               children: [
                 if (title != null)
                   Text(
-                    title,
+                    title!,
                     style: titleStyle,
                     textAlign: textAlign,
                   ),
@@ -113,7 +113,7 @@ class _PageText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Column(
-        crossAxisAlignment: _OnboardingPageScope.of(context).isPortrait
+        crossAxisAlignment: _OnboardingPageScope.of(context)!.isPortrait
             ? CrossAxisAlignment.center
             : CrossAxisAlignment.start,
         children: _bodyAndSpacer(context),
@@ -122,23 +122,23 @@ class _PageText extends StatelessWidget {
 }
 
 class _OnboardingPageContent extends StatelessWidget {
-  final Widget image;
-  final String/*!*/ text;
-  final String title;
+  final Widget? image;
+  final String text;
+  final String? title;
 
   const _OnboardingPageContent({
-    Key key,
+    Key? key,
     this.image,
-    this.text,
+    required this.text,
     this.title,
   }) : super(key: key);
 
-  Widget get _image => image;
+  Widget? get _image => image;
 
   @override
   Widget build(BuildContext context) {
-    if (_OnboardingPageScope.of(context).isPortrait) {
-      final padding = _OnboardingPageScope.of(context).isDesktop
+    if (_OnboardingPageScope.of(context)!.isPortrait) {
+      final padding = _OnboardingPageScope.of(context)!.isDesktop
           ? EdgeInsets.zero
           : EdgeInsets.only(bottom: _PortraitOnboardingBody.bottomBarHeight);
       return Padding(
@@ -146,7 +146,7 @@ class _OnboardingPageContent extends StatelessWidget {
         child: SizedBox.expand(
           child: Column(
             children: [
-              Expanded(child: _image),
+              Expanded(child: _image!),
               _PageText(
                 text: text,
                 title: title,
@@ -161,7 +161,7 @@ class _OnboardingPageContent extends StatelessWidget {
       child: Row(
         children: [
           Expanded(
-            child: _image,
+            child: _image!,
           ),
           Expanded(
             child: _PageText(
@@ -182,18 +182,18 @@ typedef PageIndicatorBuilder = Widget Function(
 /// Implements the https://material.io/design/communication/onboarding.html spec
 class MaterialOnboarding extends StatefulWidget {
   final Widget button;
-  final PageIndicatorBuilder indicatorBuilder;
-  final List<Widget>/*!*/ pages;
+  final PageIndicatorBuilder? indicatorBuilder;
+  final List<Widget> pages;
   final Duration autoSwitchInterval;
   final Duration pageTransitionDuration;
   final Curve pageTransitionCurve;
-  final Color desktopBgColor;
+  final Color? desktopBgColor;
 
   const MaterialOnboarding({
-    Key key,
-    @required this.button,
+    Key? key,
+    required this.button,
     this.indicatorBuilder,
-    this.pages,
+    required this.pages,
     this.autoSwitchInterval = const Duration(seconds: 2),
     this.pageTransitionDuration = const Duration(milliseconds: 400),
     this.pageTransitionCurve = Curves.easeInOut,
@@ -205,16 +205,16 @@ class MaterialOnboarding extends StatefulWidget {
 }
 
 class _MaterialOnboardingState extends State<MaterialOnboarding> {
-  PageController/*!*/ controller;
+  PageController controller;
   int _currentPage = 0;
-  Stream<Null> _timer;
-  StreamSubscription _timerSubs;
+  Stream<Null>? _timer;
+  late StreamSubscription _timerSubs;
 
   void _pageListener() {
     if (!isDesktop) {
       return;
     }
-    final next = controller.page.round();
+    final next = controller.page!.round();
     if (next == _currentPage) {
       return;
     }
@@ -222,7 +222,7 @@ class _MaterialOnboardingState extends State<MaterialOnboarding> {
   }
 
   void _onTimer(void _) {
-    if (controller.page.toInt() == widget.pages.length - 1) {
+    if (controller.page!.toInt() == widget.pages.length - 1) {
       controller.animateToPage(
         0,
         duration: widget.pageTransitionDuration,
@@ -235,7 +235,7 @@ class _MaterialOnboardingState extends State<MaterialOnboarding> {
 
   void _createTimer() {
     _timer = Stream<Null>.periodic(widget.autoSwitchInterval);
-    _timerSubs = _timer.listen(_onTimer);
+    _timerSubs = _timer!.listen(_onTimer);
   }
 
   void _destroyTimer() async {
@@ -268,9 +268,9 @@ class _MaterialOnboardingState extends State<MaterialOnboarding> {
   bool get isPortrait =>
       isDesktop || MediaQuery.of(context).orientation == Orientation.portrait;
 
-  Color/*!*/ _desktopBg(BuildContext context) {
+  Color _desktopBg(BuildContext context) {
     if (widget.desktopBgColor != null) {
-      return widget.desktopBgColor;
+      return widget.desktopBgColor!;
     }
     final cs = Theme.of(context).colorScheme;
     if (cs.brightness == Brightness.dark) {
@@ -298,7 +298,7 @@ class _MaterialOnboardingState extends State<MaterialOnboarding> {
     }
   }
 
-  Widget _pointerListener({Widget child}) {
+  Widget _pointerListener({Widget? child}) {
     return Listener(
       behavior: HitTestBehavior.translucent,
       onPointerDown: _addPointer,
@@ -308,7 +308,7 @@ class _MaterialOnboardingState extends State<MaterialOnboarding> {
     );
   }
 
-  Widget _pageView(BuildContext context, {List<Widget> pages}) =>
+  Widget _pageView(BuildContext context, {required List<Widget> pages}) =>
       _pointerListener(
         child: _OnboardingPageScope(
           child: PageView(
@@ -327,7 +327,7 @@ class _MaterialOnboardingState extends State<MaterialOnboarding> {
 
   Widget _pageIndicator(BuildContext context) {
     if (widget.indicatorBuilder != null) {
-      return widget.indicatorBuilder(context, controller);
+      return widget.indicatorBuilder!(context, controller);
     }
     final cs = Theme.of(context).colorScheme;
     final whiteish = cs.brightness == Brightness.dark
@@ -361,7 +361,7 @@ class _MaterialOnboardingState extends State<MaterialOnboarding> {
         curve: widget.pageTransitionCurve,
       );
 
-  Widget _pageButton(BuildContext context, {bool previous}) {
+  Widget _pageButton(BuildContext context, {required bool previous}) {
     final icon = IconButton(
       icon: Icon(previous ? Icons.arrow_back : Icons.arrow_forward),
       onPressed: () => _recreateTimer(previous ? _previousPage : _nextPage),
@@ -411,12 +411,12 @@ class _MaterialOnboardingState extends State<MaterialOnboarding> {
 }
 
 class _LandscapeOnboardingBody extends StatelessWidget {
-  final Widget/*!*/ pageView;
-  final Widget/*!*/ getStartedButton;
-  final Widget/*!*/ pageIndicator;
+  final Widget pageView;
+  final Widget getStartedButton;
+  final Widget pageIndicator;
 
   const _LandscapeOnboardingBody(
-      {Key key, this.pageView, this.getStartedButton, this.pageIndicator})
+      {Key? key, required this.pageView, required this.getStartedButton, required this.pageIndicator})
       : super(key: key);
 
   static const double bottomBarHeight = 48.0;
@@ -445,7 +445,7 @@ class _LandscapeOnboardingBody extends StatelessWidget {
     );
   }
 
-  Widget _pageViewWrapper(BuildContext context, {Widget child}) {
+  Widget _pageViewWrapper(BuildContext context, {required Widget child}) {
     return Stack(
       alignment: Alignment.centerRight,
       children: [
@@ -465,12 +465,12 @@ class _LandscapeOnboardingBody extends StatelessWidget {
 }
 
 class _PortraitOnboardingBody extends StatelessWidget {
-  final Widget/*!*/ pageView;
-  final Widget/*!*/ getStartedButton;
-  final Widget/*!*/ pageIndicator;
+  final Widget pageView;
+  final Widget getStartedButton;
+  final Widget pageIndicator;
 
   const _PortraitOnboardingBody(
-      {Key key, this.pageView, this.getStartedButton, this.pageIndicator})
+      {Key? key, required this.pageView, required this.getStartedButton, required this.pageIndicator})
       : super(key: key);
 
   static const double bottomBarHeight = 48.0;
@@ -482,7 +482,7 @@ class _PortraitOnboardingBody extends StatelessWidget {
         ),
       );
 
-  Widget _pageViewWrapper(BuildContext context, {Widget child}) {
+  Widget _pageViewWrapper(BuildContext context, {required Widget child}) {
     final positionedButton = Positioned(
       child: getStartedButton,
       bottom: 24 + bottomBarHeight,
@@ -511,22 +511,22 @@ class _PortraitOnboardingBody extends StatelessWidget {
 }
 
 class _DesktopOnboardingBody extends StatelessWidget {
-  final Widget/*!*/ pageView;
-  final Widget/*!*/ getStartedButton;
-  final Widget/*!*/ pageIndicator;
-  final Widget/*!*/ previousPageButton;
-  final Widget/*!*/ nextPageButton;
+  final Widget pageView;
+  final Widget getStartedButton;
+  final Widget pageIndicator;
+  final Widget previousPageButton;
+  final Widget nextPageButton;
 
   const _DesktopOnboardingBody({
-    Key key,
-    this.pageView,
-    this.getStartedButton,
-    this.pageIndicator,
-    this.previousPageButton,
-    this.nextPageButton,
+    Key? key,
+    required this.pageView,
+    required this.getStartedButton,
+    required this.pageIndicator,
+    required this.previousPageButton,
+    required this.nextPageButton,
   }) : super(key: key);
 
-  Widget _desktopCard(BuildContext context, {Widget child}) => ConstrainedBox(
+  Widget _desktopCard(BuildContext context, {Widget? child}) => ConstrainedBox(
         constraints: BoxConstraints(
           maxWidth: 390 * 1.5,
           maxHeight: 430 * 1.5,
@@ -537,7 +537,7 @@ class _DesktopOnboardingBody extends StatelessWidget {
         ),
       );
 
-  Widget _pageViewWrapper(BuildContext context, {Widget child}) {
+  Widget _pageViewWrapper(BuildContext context, {required Widget child}) {
     final positionedButton = Positioned(
       child: getStartedButton,
       bottom: 24,
@@ -551,7 +551,7 @@ class _DesktopOnboardingBody extends StatelessWidget {
     );
   }
 
-  Widget _pageIndicatorWrapper(BuildContext context, {Widget child}) {
+  Widget _pageIndicatorWrapper(BuildContext context, {required Widget child}) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [

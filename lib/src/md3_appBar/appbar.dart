@@ -9,11 +9,11 @@ import '../monadic_value_listenable.dart';
 
 class _MD3AppBarTrailingIconContainer extends StatelessWidget {
   const _MD3AppBarTrailingIconContainer({
-    Key key,
+    Key? key,
     this.child,
   }) : super(key: key);
 
-  final Widget child;
+  final Widget? child;
 
   @override
   Widget build(BuildContext context) => IconTheme.merge(
@@ -31,7 +31,7 @@ class _MD3AppBarTrailingIconContainer extends StatelessWidget {
 class MD3CenterAlignedAppBar extends StatelessWidget
     implements PreferredSizeWidget {
   const MD3CenterAlignedAppBar({
-    Key key,
+    Key? key,
     this.leading,
     this.trailing,
     this.title,
@@ -39,12 +39,12 @@ class MD3CenterAlignedAppBar extends StatelessWidget
     this.notifySize = true,
     this.isElevated,
   }) : super(key: key);
-  final Widget leading;
-  final Widget trailing;
-  final Widget title;
+  final Widget? leading;
+  final Widget? trailing;
+  final Widget? title;
   final bool primary;
   final bool notifySize;
-  final bool isElevated;
+  final bool? isElevated;
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +70,7 @@ class MD3CenterAlignedAppBar extends StatelessWidget
   final Size preferredSize = const Size.fromHeight(64);
 }
 
-Widget _appBarNavigationItemOrPlaceholder(
+Widget? _appBarNavigationItemOrPlaceholder(
   BuildContext context, [
   bool end = false,
 ]) {
@@ -78,7 +78,7 @@ Widget _appBarNavigationItemOrPlaceholder(
   if (end && (scaffold?.hasEndDrawer ?? false)) {
     // the AppBar widget will not add the hamburger menu automatically
     return IconButton(
-      onPressed: scaffold.openEndDrawer,
+      onPressed: scaffold!.openEndDrawer,
       icon: Icon(Icons.menu),
     );
   }
@@ -86,7 +86,7 @@ Widget _appBarNavigationItemOrPlaceholder(
     // the AppBar widget will add the hamburger menu automatically
     return null;
   }
-  if (ModalRoute.of(context).canPop && !end) {
+  if (ModalRoute.of(context)!.canPop && !end) {
     return const BackButton();
   }
   return const Icon(null);
@@ -96,7 +96,7 @@ Widget _appBarNavigationItemOrPlaceholder(
 /// https://m3.material.io/m3/pages/top-app-bar/specs/#14e23895-ac2e-40d8-b0f7-8d016c10a225
 class MD3SmallAppBar extends StatelessWidget implements PreferredSizeWidget {
   const MD3SmallAppBar({
-    Key key,
+    Key? key,
     this.leading,
     this.actions,
     this.title,
@@ -104,12 +104,12 @@ class MD3SmallAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.notifySize = true,
     this.isElevated,
   }) : super(key: key);
-  final Widget leading;
-  final List<Widget> actions;
-  final Widget title;
+  final Widget? leading;
+  final List<Widget>? actions;
+  final Widget? title;
   final bool primary;
   final bool notifySize;
-  final bool isElevated;
+  final bool? isElevated;
 
   @override
   Widget build(BuildContext context) {
@@ -155,13 +155,13 @@ class MD3SmallAppBar extends StatelessWidget implements PreferredSizeWidget {
 /// https://m3.material.io/m3/pages/top-app-bar/specs/#e3fd3eba-0444-437c-9a82-071ef03d85b1
 class MD3MediumAppBar extends _MD3LargeOrMediumAppBar {
   const MD3MediumAppBar({
-    Key key,
-    Widget leading,
-    List<Widget> actions,
-    Widget title,
+    Key? key,
+    Widget? leading,
+    List<Widget>? actions,
+    Widget? title,
     bool primary = true,
     bool notifySize = true,
-    bool isElevated,
+    bool? isElevated,
   }) : super(
           key: key,
           titleStyleBuilder: titleStyle,
@@ -194,13 +194,13 @@ Widget _topPadding(Widget child, double padding) => child == null
 /// https://m3.material.io/m3/pages/top-app-bar/specs/#8140aaaf-5729-4368-a0f5-baef8d576dbf
 class MD3LargeAppBar extends _MD3LargeOrMediumAppBar {
   const MD3LargeAppBar({
-    Key key,
-    Widget leading,
-    List<Widget> actions,
-    Widget title,
+    Key? key,
+    Widget? leading,
+    List<Widget>? actions,
+    Widget? title,
     bool primary = true,
     bool notifySize = true,
-    bool isElevated,
+    bool? isElevated,
   }) : super(
           key: key,
           titleStyleBuilder: titleStyle,
@@ -229,7 +229,7 @@ class MD3LargeAppBar extends _MD3LargeOrMediumAppBar {
 class MD3LargeOrMediumAppBar extends StatefulWidget
     implements PreferredSizeWidget {
   const MD3LargeOrMediumAppBar({
-    Key key,
+    Key? key,
     this.leading,
     this.actions,
     this.title,
@@ -237,12 +237,12 @@ class MD3LargeOrMediumAppBar extends StatefulWidget
     this.notifySize = true,
     this.isElevated,
   }) : super(key: key);
-  final Widget leading;
-  final List<Widget> actions;
-  final Widget title;
+  final Widget? leading;
+  final List<Widget>? actions;
+  final Widget? title;
   final bool primary;
   final bool notifySize;
-  final bool isElevated;
+  final bool? isElevated;
 
   @override
   // ignore: avoid_field_initializers_in_const_classes
@@ -256,8 +256,8 @@ class MD3LargeOrMediumAppBar extends StatefulWidget
 
 class _MD3LargeOrMediumAppBarState extends State<MD3LargeOrMediumAppBar>
     with SingleTickerProviderStateMixin {
-  AnimationController _expansionController;
-  ScrollController/*!*/ _primaryScrollController;
+  late AnimationController _expansionController;
+  ScrollController _primaryScrollController;
 
   static const kDuration = Duration(milliseconds: 200);
 
@@ -280,12 +280,12 @@ class _MD3LargeOrMediumAppBarState extends State<MD3LargeOrMediumAppBar>
     _maybeUpdateScrollAnimation();
   }
 
-  void _maybeUpdateScrollController(ScrollController controller) {
+  void _maybeUpdateScrollController(ScrollController? controller) {
     if (_primaryScrollController == controller) {
       return;
     }
     _primaryScrollController?.removeListener(_onScroll);
-    _primaryScrollController = controller;
+    _primaryScrollController = controller!;
     if (controller == null) {
       return;
     }
@@ -297,7 +297,7 @@ class _MD3LargeOrMediumAppBarState extends State<MD3LargeOrMediumAppBar>
   // is common on desktops, when the Scroll Wheel jumps more than kHeightDelta
   // pixels in one go
   bool _maybeAnimateHandleDesktopJump(double prev, double next) {
-    Future<void> move([Duration duration]) => _expansionController.animateTo(
+    Future<void> move([Duration? duration]) => _expansionController.animateTo(
           next,
           duration: duration,
         );
@@ -429,28 +429,28 @@ class _MD3LargeOrMediumAppBarState extends State<MD3LargeOrMediumAppBar>
 class _MD3LargeOrMediumAppBar extends StatelessWidget
     implements PreferredSizeWidget {
   const _MD3LargeOrMediumAppBar({
-    Key key,
+    Key? key,
     this.leading,
     this.actions,
     this.title,
-    @required this.titleStyleBuilder,
-    @required this.bottomHeight,
-    @required this.bottomPadding,
+    required this.titleStyleBuilder,
+    required this.bottomHeight,
+    required this.bottomPadding,
     this.topAdditionalPaddding = 4.0,
     this.primary = true,
     this.notifySize = true,
     this.isElevated,
   }) : super(key: key);
-  final Widget leading;
-  final List<Widget> actions;
-  final Widget title;
+  final Widget? leading;
+  final List<Widget>? actions;
+  final Widget? title;
   final TextStyle Function(BuildContext) titleStyleBuilder;
   final double bottomHeight;
   final double bottomPadding;
   final double topAdditionalPaddding;
   final bool primary;
   final bool notifySize;
-  final bool isElevated;
+  final bool? isElevated;
 
   @override
   Widget build(BuildContext context) {
@@ -486,7 +486,7 @@ class _MD3LargeOrMediumAppBar extends StatelessWidget
           left: 16,
           child: DefaultTextStyle(
             style: titleStyleBuilder(context),
-            child: title,
+            child: title!,
           ),
         ),
       ],
@@ -500,8 +500,8 @@ class _MD3LargeOrMediumAppBar extends StatelessWidget
 class _MD3LargerAppBarBottom extends StatelessWidget
     implements PreferredSizeWidget {
   _MD3LargerAppBarBottom({
-    Key key,
-    double height,
+    Key? key,
+    required double height,
   })  : preferredSize = Size.fromHeight(height),
         super(key: key);
   final Size preferredSize;

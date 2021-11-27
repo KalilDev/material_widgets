@@ -6,78 +6,78 @@ abstract class MD3NavigationDelegate {
   const MD3NavigationDelegate();
   MD3AdaptativeScaffoldSpec buildCompact(
     BuildContext context,
-    MD3NavigationSpec/*!*/ spec,
-    Widget/*!*/ body,
+    MD3NavigationSpec spec,
+    Widget body,
   );
   MD3AdaptativeScaffoldSpec buildMedium(
     BuildContext context,
-    MD3NavigationSpec/*!*/ spec,
-    Widget/*!*/ body,
+    MD3NavigationSpec spec,
+    Widget body,
   );
   MD3AdaptativeScaffoldSpec buildExpanded(
     BuildContext context,
-    MD3NavigationSpec/*!*/ spec,
-    Widget/*!*/ body,
+    MD3NavigationSpec spec,
+    Widget body,
   );
 }
 
 class NavigationItem {
   final Widget label;
   final Widget icon;
-  final Widget/*?*/ activeIcon;
-  final Color backgroundColor;
-  final String/*!*/ labelText;
+  final Widget? activeIcon;
+  final Color? backgroundColor;
+  final String labelText;
 
   const NavigationItem({
-    @required this.label,
-    @required this.icon,
-    @required this.activeIcon,
+    required this.label,
+    required this.icon,
+    required this.activeIcon,
     this.backgroundColor,
-    this.labelText,
+    required this.labelText,
   });
 }
 
 class MD3NavigationSpec {
   final List<NavigationItem> items;
   final ValueChanged<int> onChanged;
-  final int/*!*/ selectedIndex;
+  final int selectedIndex;
 
   const MD3NavigationSpec({
-    @required this.items,
-    @required this.onChanged,
-    this.selectedIndex,
+    required this.items,
+    required this.onChanged,
+    required this.selectedIndex,
   });
 }
 
 class MD3NavigationScaffold extends StatelessWidget {
   const MD3NavigationScaffold({
-    Key key,
+    Key? key,
     this.scaffoldKey,
-    this.spec,
-    this.delegate,
+    required this.spec,
+    required this.delegate,
     this.surfaceTintBackground = true,
     this.bodyMargin = true,
     this.body,
   }) : super(key: key);
-  final GlobalKey<ScaffoldState> scaffoldKey;
-  final MD3NavigationSpec/*!*/ spec;
-  final MD3NavigationDelegate/*!*/ delegate;
+  final GlobalKey<ScaffoldState>? scaffoldKey;
+  final MD3NavigationSpec spec;
+  final MD3NavigationDelegate delegate;
   final bool surfaceTintBackground;
   final bool bodyMargin;
-  final Widget body;
+  final Widget? body;
 
   @override
   Widget build(BuildContext context) {
-    MD3AdaptativeScaffoldSpec scaffoldSpec;
+    late MD3AdaptativeScaffoldSpec scaffoldSpec;
     switch (context.sizeClass) {
       case MD3WindowSizeClass.compact:
-        scaffoldSpec = delegate.buildCompact(context, spec, body);
+        scaffoldSpec = delegate.buildCompact(context, spec, body!);
         break;
       case MD3WindowSizeClass.medium:
-        scaffoldSpec = delegate.buildMedium(context, spec, body);
+        scaffoldSpec = delegate.buildMedium(context, spec, body!);
         break;
       case MD3WindowSizeClass.expanded:
-        scaffoldSpec = delegate.buildExpanded(context, spec, body);
+        scaffoldSpec = delegate.buildExpanded(context, spec, body!);
         break;
     }
     final scaffold = MD3AdaptativeScaffold(
@@ -94,7 +94,7 @@ class MD3NavigationScaffold extends StatelessWidget {
       bodyMargin: bodyMargin,
     );
     if (scaffoldSpec.buildScaffold != null) {
-      return scaffoldSpec.buildScaffold(context, scaffold);
+      return scaffoldSpec.buildScaffold!(context, scaffold);
     }
     return scaffold;
   }
@@ -104,7 +104,7 @@ class MD3AdaptativeScaffoldSpec {
   const MD3AdaptativeScaffoldSpec({
     this.appBar,
     this.bottomNavigationBar,
-    this.body,
+    required this.body,
     this.startDrawer,
     this.endDrawer,
     this.startModalDrawer,
@@ -113,13 +113,13 @@ class MD3AdaptativeScaffoldSpec {
     this.buildScaffold,
   });
 
-  final PreferredSizeWidget appBar;
-  final Widget bottomNavigationBar;
-  final Widget/*!*/ body;
-  final Widget startDrawer;
-  final Widget endDrawer;
-  final Widget startModalDrawer;
-  final Widget endModalDrawer;
-  final Widget floatingActionButton;
-  final Widget Function(BuildContext, Widget) buildScaffold;
+  final PreferredSizeWidget? appBar;
+  final Widget? bottomNavigationBar;
+  final Widget body;
+  final Widget? startDrawer;
+  final Widget? endDrawer;
+  final Widget? startModalDrawer;
+  final Widget? endModalDrawer;
+  final Widget? floatingActionButton;
+  final Widget Function(BuildContext, Widget)? buildScaffold;
 }

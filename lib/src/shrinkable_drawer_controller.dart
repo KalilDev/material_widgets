@@ -36,9 +36,9 @@ class ShrinkableDrawerController extends StatefulWidget {
   ///
   /// The [child] argument must not be null and is typically a [Drawer].
   const ShrinkableDrawerController({
-    GlobalKey key,
-    @required this.child,
-    @required this.alignment,
+    GlobalKey? key,
+    required this.child,
+    required this.alignment,
     this.drawerCallback,
     this.shrunkWidth = 56,
   })  : assert(child != null),
@@ -57,7 +57,7 @@ class ShrinkableDrawerController extends StatefulWidget {
   final DrawerAlignment alignment;
 
   /// Optional callback that is called when a [Drawer] is opened or closed.
-  final DrawerCallback drawerCallback;
+  final DrawerCallback? drawerCallback;
 
   final double shrunkWidth;
 
@@ -92,7 +92,7 @@ class ShrinkableDrawerControllerState extends State<ShrinkableDrawerController>
     });
   }
 
-  AnimationController _controller;
+  late AnimationController _controller;
 
   final GlobalKey _drawerKey = GlobalKey();
   final FocusScopeNode _focusScopeNode = FocusScopeNode();
@@ -102,16 +102,16 @@ class ShrinkableDrawerControllerState extends State<ShrinkableDrawerController>
   /// Typically called by [ScaffoldState.openDrawer].
   void open() {
     _controller.fling(velocity: 1.0);
-    if (widget.drawerCallback != null) widget.drawerCallback(true);
+    if (widget.drawerCallback != null) widget.drawerCallback!(true);
   }
 
   /// Starts an animation to close the drawer.
   void close() {
     _controller.fling(velocity: -1.0);
-    if (widget.drawerCallback != null) widget.drawerCallback(false);
+    if (widget.drawerCallback != null) widget.drawerCallback!(false);
   }
 
-  Tween<Offset> get _drawerTranslationTween {
+  Tween<Offset>? get _drawerTranslationTween {
     assert(widget.alignment != null);
     switch (widget.alignment) {
       case DrawerAlignment.start:
@@ -122,7 +122,7 @@ class ShrinkableDrawerControllerState extends State<ShrinkableDrawerController>
     return null;
   }
 
-  Alignment get _overflowBoxAlignment {
+  Alignment? get _overflowBoxAlignment {
     switch (widget.alignment) {
       case DrawerAlignment.start:
         return Alignment.centerRight;
@@ -132,7 +132,7 @@ class ShrinkableDrawerControllerState extends State<ShrinkableDrawerController>
     return null;
   }
 
-  Tween<double> get _drawerSizeTween {
+  Tween<double>? get _drawerSizeTween {
     assert(widget.alignment != null);
     switch (widget.alignment) {
       case DrawerAlignment.start:
@@ -149,7 +149,7 @@ class ShrinkableDrawerControllerState extends State<ShrinkableDrawerController>
         key: _drawerKey,
         node: _focusScopeNode,
         child: SizedBox(
-          width: _drawerSizeTween.evaluate(_controller),
+          width: _drawerSizeTween!.evaluate(_controller),
           child: widget.child,
         ),
       ),

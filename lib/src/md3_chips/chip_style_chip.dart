@@ -12,9 +12,9 @@ import 'utils.dart';
 class MD3ChipThemeData with Diagnosticable {
   const MD3ChipThemeData({this.style});
 
-  final ButtonStyle style;
+  final ButtonStyle? style;
 
-  static MD3ChipThemeData lerp(
+  static MD3ChipThemeData? lerp(
       MD3ChipThemeData a, MD3ChipThemeData b, double t) {
     assert(t != null);
     if (a == null && b == null) return null;
@@ -46,16 +46,16 @@ class MD3ChipThemeData with Diagnosticable {
 
 class MD3ChipTheme extends InheritedTheme {
   const MD3ChipTheme({
-    Key key,
-    @required this.data,
-    @required Widget child,
+    Key? key,
+    required this.data,
+    required Widget child,
   })  : assert(data != null),
         super(key: key, child: child);
 
   final MD3ChipThemeData data;
 
   static MD3ChipThemeData of(BuildContext context) {
-    final MD3ChipTheme buttonTheme =
+    final MD3ChipTheme? buttonTheme =
         context.dependOnInheritedWidgetOfExactType<MD3ChipTheme>();
     return buttonTheme?.data ?? const MD3ChipThemeData(style: ButtonStyle());
   }
@@ -79,12 +79,12 @@ class ChipStyle {
     this.md3Elevation,
   });
 
-  final MaterialStateProperty<Color> backgroundColor;
-  final MaterialStateProperty<Color> backgroundTintColor;
-  final MaterialStateProperty<Color> labelColor;
-  final MaterialStateProperty<Color> stateLayerColor;
-  final MaterialStateProperty<BorderSide> borderSide;
-  final MaterialStateProperty<MD3ElevationLevel> md3Elevation;
+  final MaterialStateProperty<Color>? backgroundColor;
+  final MaterialStateProperty<Color>? backgroundTintColor;
+  final MaterialStateProperty<Color>? labelColor;
+  final MaterialStateProperty<Color>? stateLayerColor;
+  final MaterialStateProperty<BorderSide>? borderSide;
+  final MaterialStateProperty<MD3ElevationLevel>? md3Elevation;
 
   static const double paddingBetweenElements = 8.0;
 
@@ -98,12 +98,12 @@ class ChipStyle {
       );
 
   ChipStyle copyWith({
-    MaterialStateProperty<Color> backgroundColor,
-    MaterialStateProperty<Color> backgroundTintColor,
-    MaterialStateProperty<Color> labelColor,
-    MaterialStateProperty<Color> stateLayerColor,
-    MaterialStateProperty<BorderSide> borderSide,
-    MaterialStateProperty<MD3ElevationLevel> md3Elevation,
+    MaterialStateProperty<Color>? backgroundColor,
+    MaterialStateProperty<Color>? backgroundTintColor,
+    MaterialStateProperty<Color>? labelColor,
+    MaterialStateProperty<Color>? stateLayerColor,
+    MaterialStateProperty<BorderSide>? borderSide,
+    MaterialStateProperty<MD3ElevationLevel>? md3Elevation,
   }) =>
       ChipStyle(
         backgroundColor: backgroundColor ?? this.backgroundColor,
@@ -115,10 +115,10 @@ class ChipStyle {
       );
 
   static ChipStyle selected({
-    Color backgroundColor,
-    Color foregroundColor,
-    Color disabledColor,
-    MaterialStateProperty<MD3ElevationLevel> md3elevation,
+    required Color backgroundColor,
+    required Color foregroundColor,
+    Color? disabledColor,
+    MaterialStateProperty<MD3ElevationLevel>? md3elevation,
   }) {
     final background = MD3DisablableColor(
       backgroundColor,
@@ -140,13 +140,13 @@ class ChipStyle {
   }
 
   static ChipStyle normal({
-    Color backgroundColor,
-    Color backgroundTintColor,
-    Color foregroundColor,
-    Color disabledColor,
-    Color outlineColor,
-    double outlineWidth,
-    MaterialStateProperty<MD3ElevationLevel> md3elevation,
+    required Color backgroundColor,
+    Color? backgroundTintColor,
+    required Color foregroundColor,
+    Color? disabledColor,
+    required Color outlineColor,
+    required double outlineWidth,
+    MaterialStateProperty<MD3ElevationLevel>? md3elevation,
   }) {
     final hasOutline = outlineWidth <= 0.0;
     final background = MD3DisablableColor(
@@ -196,15 +196,15 @@ class ChipStyle {
       );
   static MD3MaterialStateElevation elevationFor(
     MD3ElevationTheme elevation, {
-    @required bool isElevated,
+    required bool isElevated,
   }) =>
       isElevated ? elevatedElevation(elevation) : loweredElevation(elevation);
 
   static ChipStyle chipStyleFor(
     MonetColorScheme scheme,
     MD3ElevationTheme elevation, {
-    bool elevated,
-    bool selected,
+    required bool elevated,
+    required bool selected,
   }) {
     final md3Elevation = elevationFor(
       elevation,
@@ -231,11 +231,11 @@ class ChipStyle {
   }
 
   ButtonStyle toButtonStyle(MD3StateLayerOpacityTheme stateLayerOpacityTheme) {
-    final MaterialStateProperty<Color> background = backgroundTintColor != null
+    final MaterialStateProperty<Color>? background = backgroundTintColor != null
         ? MD3ElevationTintableColor(
-            backgroundColor.cast(),
-            backgroundTintColor.cast(),
-            md3Elevation,
+            backgroundColor!.cast(),
+            backgroundTintColor!.cast(),
+            md3Elevation!,
           )
         : backgroundColor;
     final foregroundColor = labelColor;
@@ -245,9 +245,9 @@ class ChipStyle {
       side: side,
       backgroundColor: background,
       foregroundColor: foregroundColor,
-      elevation: md3Elevation.value,
+      elevation: md3Elevation!.value,
       overlayColor: MD3StateOverlayColor(
-        stateLayerColor.cast(),
+        stateLayerColor!.cast(),
         stateLayerOpacityTheme,
       ),
     );
@@ -256,19 +256,19 @@ class ChipStyle {
 
 abstract class MD3ChipStyleChip extends ButtonStyleButton {
   MD3ChipStyleChip({
-    Key key,
-    @required VoidCallback onPressed,
-    VoidCallback onLongPress,
-    ValueChanged<bool> onHover,
-    ValueChanged<bool> onFocusChange,
-    ButtonStyle style,
-    FocusNode focusNode,
+    Key? key,
+    required VoidCallback onPressed,
+    VoidCallback? onLongPress,
+    ValueChanged<bool>? onHover,
+    ValueChanged<bool>? onFocusChange,
+    ButtonStyle? style,
+    FocusNode? focusNode,
     bool autofocus = false,
     Clip clipBehavior = Clip.none,
     this.chipStyle,
-    Widget leading,
-    @required Widget label,
-    Widget trailing,
+    Widget? leading,
+    required Widget label,
+    Widget? trailing,
     this.leadingAvatar = false,
   })  : assert(
           chipStyle == null || style == null,
@@ -294,20 +294,20 @@ abstract class MD3ChipStyleChip extends ButtonStyleButton {
             isDisabled: onPressed == null && onLongPress == null,
           ),
         );
-  final ChipStyle chipStyle;
+  final ChipStyle? chipStyle;
   final bool leadingAvatar;
 
   ButtonStyle styleFrom({
-    @required ChipStyle chipStyle,
-    @required MD3StateLayerOpacityTheme stateLayerOpacityTheme,
-    Color shadowColor,
-    TextStyle labelStyle,
-    MouseCursor disabledCursor,
-    MouseCursor enabledCursor,
-    VisualDensity visualDensity,
-    MaterialTapTargetSize tapTargetSize,
-    InteractiveInkFeatureFactory splashFactory,
-    OutlinedBorder shape,
+    required ChipStyle chipStyle,
+    required MD3StateLayerOpacityTheme stateLayerOpacityTheme,
+    Color? shadowColor,
+    TextStyle? labelStyle,
+    MouseCursor? disabledCursor,
+    MouseCursor? enabledCursor,
+    VisualDensity? visualDensity,
+    MaterialTapTargetSize? tapTargetSize,
+    InteractiveInkFeatureFactory? splashFactory,
+    OutlinedBorder? shape,
   }) {
     ArgumentError.checkNotNull(chipStyle);
     ArgumentError.checkNotNull(stateLayerOpacityTheme);
@@ -367,7 +367,7 @@ abstract class MD3ChipStyleChip extends ButtonStyleButton {
     final theme = context.theme;
     var effectiveChipStyle = defaultChipStyleOf(context);
     if (chipStyle != null) {
-      effectiveChipStyle = effectiveChipStyle.merge(chipStyle);
+      effectiveChipStyle = effectiveChipStyle.merge(chipStyle!);
     }
     return styleFrom(
       chipStyle: effectiveChipStyle,
@@ -386,20 +386,20 @@ abstract class MD3ChipStyleChip extends ButtonStyleButton {
   }
 
   @override
-  ChipStyle themeChipStyleOf(BuildContext context);
+  ChipStyle? themeChipStyleOf(BuildContext context);
   @override
-  ButtonStyle themeStyleOf(BuildContext context) =>
+  ButtonStyle? themeStyleOf(BuildContext context) =>
       MD3ChipTheme.of(context).style;
 }
 
 class MD3ChipPrimaryIcon extends StatelessWidget {
   const MD3ChipPrimaryIcon(
     this.icon, {
-    Key key,
-    @required this.isSelected,
+    Key? key,
+    required this.isSelected,
   }) : super(key: key);
 
-  static Widget wrap({Widget child, bool isSelected}) => child == null
+  static Widget? wrap({Widget? child, bool? isSelected}) => child == null
       ? null
       : MD3ChipPrimaryIcon(
           child,
@@ -407,15 +407,15 @@ class MD3ChipPrimaryIcon extends StatelessWidget {
         );
 
   final Widget icon;
-  final bool isSelected;
+  final bool? isSelected;
 
   @override
   Widget build(BuildContext context) {
-    final scope = _MD3ChipIconScope.of(context);
+    final scope = _MD3ChipIconScope.of(context)!;
     return IconTheme.merge(
       data: IconThemeData(
         color:
-            scope.isDisabled || isSelected ? null : context.colorScheme.primary,
+            scope.isDisabled || isSelected! ? null : context.colorScheme.primary,
       ),
       child: icon,
     );
@@ -425,8 +425,8 @@ class MD3ChipPrimaryIcon extends StatelessWidget {
 class MD3ChipIcon extends StatelessWidget {
   const MD3ChipIcon(
     this.icon, {
-    Key key,
-    @required this.enabledColor,
+    Key? key,
+    required this.enabledColor,
   }) : super(key: key);
 
   final Widget icon;
@@ -435,7 +435,7 @@ class MD3ChipIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) => IconTheme.merge(
         data: IconThemeData(
-          color: _MD3ChipIconScope.of(context).isDisabled ? null : enabledColor,
+          color: _MD3ChipIconScope.of(context)!.isDisabled ? null : enabledColor,
         ),
         child: icon,
       );
@@ -443,9 +443,9 @@ class MD3ChipIcon extends StatelessWidget {
 
 class _MD3ChipIconScope extends InheritedWidget {
   const _MD3ChipIconScope({
-    Key key,
-    @required this.isDisabled,
-    @required Widget child,
+    Key? key,
+    required this.isDisabled,
+    required Widget child,
   }) : super(key: key, child: child);
 
   final bool isDisabled;
@@ -454,25 +454,25 @@ class _MD3ChipIconScope extends InheritedWidget {
   bool updateShouldNotify(_MD3ChipIconScope oldWidget) =>
       oldWidget.isDisabled != isDisabled;
 
-  static _MD3ChipIconScope of(BuildContext context) =>
+  static _MD3ChipIconScope? of(BuildContext context) =>
       context.dependOnInheritedWidgetOfExactType<_MD3ChipIconScope>();
 }
 
 class _MD3ChipStyleChipChild extends StatelessWidget {
   const _MD3ChipStyleChipChild({
-    Key key,
-    @required this.leading,
-    @required this.label,
-    @required this.trailing,
-    @required this.isDisabled,
+    Key? key,
+    required this.leading,
+    required this.label,
+    required this.trailing,
+    required this.isDisabled,
   }) : super(key: key);
 
-  final Widget leading;
+  final Widget? leading;
   final Widget label;
-  final Widget trailing;
+  final Widget? trailing;
   final bool isDisabled;
 
-  Widget _wrapIcon({Widget child}) => IconTheme.merge(
+  Widget _wrapIcon({required Widget child}) => IconTheme.merge(
         data: const IconThemeData(size: 18),
         child: child,
       );
@@ -487,14 +487,14 @@ class _MD3ChipStyleChipChild extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          if (leading != null) _wrapIcon(child: leading),
+          if (leading != null) _wrapIcon(child: leading!),
           Flexible(
             child: Padding(
               padding: scaledPadding,
               child: label,
             ),
           ),
-          if (trailing != null) _wrapIcon(child: trailing),
+          if (trailing != null) _wrapIcon(child: trailing!),
         ],
       ),
     );

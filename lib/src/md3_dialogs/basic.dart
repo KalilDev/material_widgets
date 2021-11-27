@@ -5,7 +5,7 @@ import 'package:material_you/material_you.dart';
 
 class MD3DialogDivider extends StatelessWidget {
   const MD3DialogDivider({
-    Key key,
+    Key? key,
     this.isVisible = true,
     this.height = 16.0,
   }) : super(key: key);
@@ -29,22 +29,22 @@ class MD3DialogDivider extends StatelessWidget {
 
 class MD3BasicDialog extends StatelessWidget {
   const MD3BasicDialog({
-    Key key,
+    Key? key,
     this.dialogAlignment = MD3TabletDialogAlignment.end,
     this.dividerAfterTitle = true,
     this.icon,
-    @required this.title,
-    @required this.content,
+    required this.title,
+    required this.content,
     this.extraContent,
     this.actions = const [],
   }) : super(key: key);
 
   final MD3TabletDialogAlignment dialogAlignment;
   final bool dividerAfterTitle;
-  final Widget icon;
+  final Widget? icon;
   final Widget title;
   final Widget content;
-  final Widget extraContent;
+  final Widget? extraContent;
   final List<Widget> actions;
 
   @override
@@ -65,23 +65,23 @@ class MD3BasicDialog extends StatelessWidget {
 
 class _MD3BasicDialog extends StatelessWidget {
   const _MD3BasicDialog({
-    Key key,
+    Key? key,
     this.dividerAfterTitle = true,
     this.icon,
-    @required this.title,
-    @required this.content,
+    required this.title,
+    required this.content,
     this.extraContent,
     this.actions = const [],
   }) : super(key: key);
 
   final bool dividerAfterTitle;
-  final Widget icon;
+  final Widget? icon;
   final Widget title;
   final Widget content;
-  final Widget extraContent;
+  final Widget? extraContent;
   final List<Widget> actions;
 
-  Widget _wrapContent(BuildContext context, {Widget content}) =>
+  Widget _wrapContent(BuildContext context, {required Widget content}) =>
       DefaultTextStyle(
         style: context.textTheme.bodyMedium.copyWith(
           color: context.colorScheme.onSurfaceVariant,
@@ -99,7 +99,7 @@ class _MD3BasicDialog extends StatelessWidget {
   List<Widget> _iconAndTitle(BuildContext context) => [
         IconTheme.merge(
           data: const IconThemeData(size: 24),
-          child: icon,
+          child: icon!,
         ),
         const SizedBox(height: 16),
         _title(context, true),
@@ -139,7 +139,7 @@ class _MD3BasicDialog extends StatelessWidget {
               _wrapContent(context, content: content),
               if (extraContent != null) ...[
                 const MD3DialogDivider(),
-                _wrapContent(context, content: extraContent),
+                _wrapContent(context, content: extraContent!),
                 const MD3DialogDivider(height: 24),
               ] else
                 const SizedBox(height: 8.0),
@@ -156,13 +156,13 @@ enum MD3TabletDialogAlignment { start, center, end }
 
 class MD3DialogLayout extends StatelessWidget {
   const MD3DialogLayout({
-    Key key,
+    Key? key,
     this.dialogAlignment = MD3TabletDialogAlignment.start,
-    this.child,
+    required this.child,
   }) : super(key: key);
 
   final MD3TabletDialogAlignment dialogAlignment;
-  final Widget/*!*/ child;
+  final Widget child;
 
   bool _isSmall(BuildContext context) =>
       context.sizeClass == MD3WindowSizeClass.compact;
@@ -244,8 +244,8 @@ class MD3DialogLayout extends StatelessWidget {
 
 class MD3DialogAnimation extends StatefulWidget {
   const MD3DialogAnimation({
-    Key key,
-    @required this.child,
+    Key? key,
+    required this.child,
   }) : super(key: key);
   final Widget child;
   static const Duration kDuration = Duration(milliseconds: 200);
@@ -256,8 +256,8 @@ class MD3DialogAnimation extends StatefulWidget {
 
 class _MD3DialogAnimationState extends State<MD3DialogAnimation>
     with SingleTickerProviderStateMixin {
-  AnimationController controller;
-  Animation<double> animation;
+  late AnimationController controller;
+  Animation<double>? animation;
 
   @override
   void initState() {
@@ -288,18 +288,18 @@ class _MD3DialogAnimationState extends State<MD3DialogAnimation>
 
 class MD3DialogTransition extends StatelessWidget {
   const MD3DialogTransition({
-    Key key,
-    @required this.child,
-    @required this.animation,
+    Key? key,
+    required this.child,
+    required this.animation,
   }) : super(key: key);
   final Widget child;
-  final Animation<double> animation;
+  final Animation<double>? animation;
 
   @override
   Widget build(BuildContext context) => FadeTransition(
-        opacity: animation,
+        opacity: animation!,
         child: ScaleTransition(
-          scale: Tween(begin: 0.8, end: 1.0).animate(animation),
+          scale: Tween(begin: 0.8, end: 1.0).animate(animation!),
           child: child,
         ),
       );

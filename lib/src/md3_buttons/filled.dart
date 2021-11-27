@@ -10,9 +10,9 @@ import 'package:material_you/material_you.dart';
 class FilledButtonThemeData with Diagnosticable {
   const FilledButtonThemeData({this.style});
 
-  final ButtonStyle style;
+  final ButtonStyle? style;
 
-  static FilledButtonThemeData lerp(
+  static FilledButtonThemeData? lerp(
       FilledButtonThemeData a, FilledButtonThemeData b, double t) {
     assert(t != null);
     if (a == null && b == null) return null;
@@ -43,16 +43,16 @@ class FilledButtonThemeData with Diagnosticable {
 
 class FilledButtonTheme extends InheritedTheme {
   const FilledButtonTheme({
-    Key key,
-    @required this.data,
-    @required Widget child,
+    Key? key,
+    required this.data,
+    required Widget child,
   })  : assert(data != null),
         super(key: key, child: child);
 
   final FilledButtonThemeData data;
 
   static FilledButtonThemeData of(BuildContext context) {
-    final FilledButtonTheme buttonTheme =
+    final FilledButtonTheme? buttonTheme =
         context.dependOnInheritedWidgetOfExactType<FilledButtonTheme>();
     return buttonTheme?.data ?? FilledButtonThemeData(style: ButtonStyle());
   }
@@ -69,16 +69,16 @@ class FilledButtonTheme extends InheritedTheme {
 
 class FilledButton extends ButtonStyleButton {
   const FilledButton({
-    Key key,
-    @required VoidCallback/*?*/ onPressed,
-    VoidCallback onLongPress,
-    ValueChanged<bool> onHover,
-    ValueChanged<bool> onFocusChange,
-    ButtonStyle style,
-    FocusNode focusNode,
+    Key? key,
+    required VoidCallback? onPressed,
+    VoidCallback? onLongPress,
+    ValueChanged<bool>? onHover,
+    ValueChanged<bool>? onFocusChange,
+    ButtonStyle? style,
+    FocusNode? focusNode,
     bool autofocus = false,
     Clip clipBehavior = Clip.none,
-    @required Widget child,
+    required Widget child,
   }) : super(
           key: key,
           onPressed: onPressed,
@@ -94,7 +94,7 @@ class FilledButton extends ButtonStyleButton {
 
   factory FilledButton.icon({
     Key key,
-    @required VoidCallback/*?*/ onPressed,
+    required VoidCallback? onPressed,
     VoidCallback onLongPress,
     ValueChanged<bool> onHover,
     ValueChanged<bool> onFocusChange,
@@ -107,19 +107,19 @@ class FilledButton extends ButtonStyleButton {
   }) = _FilledButtonWithIcon;
 
   static ButtonStyle styleFrom({
-    @required Color backgroundColor,
-    @required Color foregroundColor,
-    @required Color disabledColor,
-    @required MD3StateLayerOpacityTheme stateLayerOpacityTheme,
-    Color shadowColor,
-    MaterialStateProperty<MD3ElevationLevel>/*?*/ md3Elevation,
-    TextStyle labelStyle,
-    MouseCursor disabledCursor,
-    MouseCursor enabledCursor,
-    VisualDensity visualDensity,
-    MaterialTapTargetSize tapTargetSize,
-    InteractiveInkFeatureFactory splashFactory,
-    OutlinedBorder shape,
+    required Color backgroundColor,
+    required Color foregroundColor,
+    required Color disabledColor,
+    required MD3StateLayerOpacityTheme stateLayerOpacityTheme,
+    Color? shadowColor,
+    MaterialStateProperty<MD3ElevationLevel>? md3Elevation,
+    TextStyle? labelStyle,
+    MouseCursor? disabledCursor,
+    MouseCursor? enabledCursor,
+    VisualDensity? visualDensity,
+    MaterialTapTargetSize? tapTargetSize,
+    InteractiveInkFeatureFactory? splashFactory,
+    OutlinedBorder? shape,
   }) {
     ArgumentError.checkNotNull(backgroundColor);
     ArgumentError.checkNotNull(foregroundColor);
@@ -194,24 +194,24 @@ class FilledButton extends ButtonStyleButton {
   }
 
   @override
-  ButtonStyle themeStyleOf(BuildContext context) {
+  ButtonStyle? themeStyleOf(BuildContext context) {
     return FilledButtonTheme.of(context).style;
   }
 }
 
 class _FilledButtonWithIcon extends FilledButton {
   _FilledButtonWithIcon({
-    Key key,
-    @required VoidCallback/*?*/ onPressed,
-    VoidCallback onLongPress,
-    ValueChanged<bool> onHover,
-    ValueChanged<bool> onFocusChange,
-    ButtonStyle style,
-    FocusNode focusNode,
-    bool autofocus,
-    Clip clipBehavior,
-    @required Widget icon,
-    @required Widget label,
+    Key? key,
+    required VoidCallback? onPressed,
+    VoidCallback? onLongPress,
+    ValueChanged<bool>? onHover,
+    ValueChanged<bool>? onFocusChange,
+    ButtonStyle? style,
+    FocusNode? focusNode,
+    bool? autofocus,
+    Clip? clipBehavior,
+    required Widget icon,
+    required Widget label,
   })  : assert(icon != null),
         assert(label != null),
         super(
@@ -243,7 +243,7 @@ class _FilledButtonWithIcon extends FilledButton {
 
 class _FilledButtonWithIconChild extends StatelessWidget {
   const _FilledButtonWithIconChild(
-      {Key key, @required this.label, @required this.icon})
+      {Key? key, required this.label, required this.icon})
       : super(key: key);
 
   final Widget label;
@@ -252,8 +252,8 @@ class _FilledButtonWithIconChild extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double scale = MediaQuery.maybeOf(context)?.textScaleFactor ?? 1;
-    final double/*!*/ gap =
-        scale <= 1 ? 8 : lerpDouble(8, 4, math.min(scale - 1, 1));
+    final double gap =
+        scale <= 1 ? 8 : lerpDouble(8, 4, math.min(scale - 1, 1))!;
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[icon, SizedBox(width: gap), Flexible(child: label)],

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class SystemEdgeToEdge extends StatefulWidget {
-  const SystemEdgeToEdge({Key key, this.child}) : super(key: key);
-  final Widget/*!*//*!*/ child;
+  const SystemEdgeToEdge({Key? key, required this.child}) : super(key: key);
+  final Widget/*!*/ child;
 
   @override
   _SystemEdgeToEdgeState createState() => _SystemEdgeToEdgeState();
@@ -15,12 +15,12 @@ class _SystemEdgeToEdgeState extends State<SystemEdgeToEdge>
   void initState() {
     super.initState();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-    WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance!.addObserver(this);
   }
 
   @override
   void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
+    WidgetsBinding.instance!.removeObserver(this);
     super.dispose();
   }
 

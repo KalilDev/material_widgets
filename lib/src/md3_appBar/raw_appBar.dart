@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:material_widgets/src/md3_appBar/size_scope.dart';
 import 'package:material_you/material_you.dart';
 
-Size _preferredAppBarSize(double toolbarHeight, double bottomHeight) {
+Size _preferredAppBarSize(double? toolbarHeight, double? bottomHeight) {
   toolbarHeight ??= kToolbarHeight;
   bottomHeight ??= 0;
   return Size.fromHeight(toolbarHeight + bottomHeight);
@@ -16,7 +16,7 @@ Size _preferredAppBarSize(double toolbarHeight, double bottomHeight) {
 /// background color to the elevation level2.
 class MD3RawAppBar extends StatefulWidget implements PreferredSizeWidget {
   MD3RawAppBar({
-    Key key,
+    Key? key,
     this.leading,
     this.automaticallyImplyLeading = true,
     this.title,
@@ -51,32 +51,32 @@ class MD3RawAppBar extends StatefulWidget implements PreferredSizeWidget {
   static Size prefferedAppBarSize(double appBarHeight, double bottomHeight) =>
       _preferredAppBarSize(appBarHeight, bottomHeight);
 
-  final Widget leading;
+  final Widget? leading;
   final bool automaticallyImplyLeading;
-  final Widget title;
-  final List<Widget/*!*/> actions;
-  final Widget flexibleSpace;
-  final PreferredSizeWidget bottom;
-  final Color shadowColor;
-  final ShapeBorder shape;
-  final IconThemeData iconTheme;
-  final IconThemeData actionsIconTheme;
+  final Widget? title;
+  final List<Widget>? actions;
+  final Widget? flexibleSpace;
+  final PreferredSizeWidget? bottom;
+  final Color? shadowColor;
+  final ShapeBorder? shape;
+  final IconThemeData? iconTheme;
+  final IconThemeData? actionsIconTheme;
   final bool primary;
-  final bool centerTitle;
+  final bool? centerTitle;
   final bool excludeHeaderSemantics;
-  final double titleSpacing;
+  final double? titleSpacing;
   final double toolbarOpacity;
   final double bottomOpacity;
   @override
   final Size preferredSize;
-  final double appBarHeight;
-  final double leadingWidth;
-  final TextStyle toolbarTextStyle;
-  final TextStyle titleTextStyle;
+  final double? appBarHeight;
+  final double? leadingWidth;
+  final TextStyle? toolbarTextStyle;
+  final TextStyle? titleTextStyle;
 
   /// Whether or not the AppBar is elevated. When it is null, the
   /// [PrimaryScrollController] is checked. Otherwise this value is used.
-  final bool isElevated;
+  final bool? isElevated;
   final Duration elevationDuration;
   final bool notifySize;
 
@@ -86,14 +86,14 @@ class MD3RawAppBar extends StatefulWidget implements PreferredSizeWidget {
 
 class _MD3RawAppBarState extends State<MD3RawAppBar>
     with SingleTickerProviderStateMixin {
-  Handle<MD3AppBarSizeScopeState/*!*/> _sizeScopeHandle;
+  late Handle<MD3AppBarSizeScopeState> _sizeScopeHandle;
 
   static bool _shouldNotifySize(MD3RawAppBar widget) =>
       widget.primary && widget.notifySize;
 
-  ScrollController/*!*/ primaryScrollController;
-  AnimationController backgroundController;
-  Tween<Color> get backgroundColorTween => ColorTween(
+  ScrollController primaryScrollController;
+  late AnimationController backgroundController;
+  Tween<Color?> get backgroundColorTween => ColorTween(
         begin: context.elevation.level0.overlaidColor(
           context.colorScheme.surface,
           MD3ElevationLevel.surfaceTint(context.colorScheme),
@@ -104,7 +104,7 @@ class _MD3RawAppBarState extends State<MD3RawAppBar>
         ),
       );
 
-  Animation<double> backgroundColorAnimation;
+  late Animation<double> backgroundColorAnimation;
 
   @override
   void initState() {
@@ -150,7 +150,7 @@ class _MD3RawAppBarState extends State<MD3RawAppBar>
     }
   }
 
-  void _updateIsElevated(bool curr) {
+  void _updateIsElevated(bool? curr) {
     if (curr == null) {
       _updateIsScrolled();
       return;
@@ -175,12 +175,12 @@ class _MD3RawAppBarState extends State<MD3RawAppBar>
     super.dispose();
   }
 
-  void _updatePrimaryScrollController(ScrollController controller) {
+  void _updatePrimaryScrollController(ScrollController? controller) {
     if (controller == primaryScrollController) {
       return;
     }
     primaryScrollController?.removeListener(_onScroll);
-    primaryScrollController = controller;
+    primaryScrollController = controller!;
     controller.addListener(_onScroll);
     _updateIsScrolled();
   }
@@ -218,7 +218,7 @@ class _MD3RawAppBarState extends State<MD3RawAppBar>
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder<Color>(
+    return ValueListenableBuilder<Color?>(
       valueListenable: backgroundColorTween.animate(backgroundColorAnimation),
       builder: (context, backgroundColor, _) => AppBar(
         backgroundColor: backgroundColor,
@@ -242,7 +242,7 @@ class _MD3RawAppBarState extends State<MD3RawAppBar>
         leadingWidth: widget.leadingWidth,
         toolbarTextStyle: widget.toolbarTextStyle,
         titleTextStyle: widget.titleTextStyle,
-        systemOverlayStyle: _systemUiOverlayStyle(context, backgroundColor),
+        systemOverlayStyle: _systemUiOverlayStyle(context, backgroundColor!),
       ),
     );
   }

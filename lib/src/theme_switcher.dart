@@ -5,20 +5,20 @@ import 'package:material_you/material_you.dart';
 import 'package:shape_theme_switcher/shape_theme_switcher.dart';
 
 class ThemeSwitcher extends StatelessWidget {
-  final ThemeMode themeMode;
-  final ThemeData highContrastTheme;
-  final ThemeData highContrastDarkTheme;
-  final ThemeData theme;
-  final ThemeData darkTheme;
-  final Widget/*!*/ child;
+  final ThemeMode? themeMode;
+  final ThemeData? highContrastTheme;
+  final ThemeData? highContrastDarkTheme;
+  final ThemeData? theme;
+  final ThemeData? darkTheme;
+  final Widget child;
   const ThemeSwitcher({
-    Key key,
+    Key? key,
     this.themeMode,
     this.highContrastTheme,
     this.highContrastDarkTheme,
     this.theme,
     this.darkTheme,
-    this.child,
+    required this.child,
   }) : super(key: key);
 
   @override
@@ -29,7 +29,7 @@ class ThemeSwitcher extends StatelessWidget {
     final useDarkTheme = mode == ThemeMode.dark ||
         (mode == ThemeMode.system && platformBrightness == Brightness.dark);
     final highContrast = MediaQuery.highContrastOf(context);
-    ThemeData theme;
+    ThemeData? theme;
 
     if (useDarkTheme && highContrast && highContrastDarkTheme != null) {
       theme = highContrastDarkTheme;

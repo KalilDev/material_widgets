@@ -5,14 +5,14 @@ import 'package:material_you/material_you.dart';
 
 class OutlinedCard extends CardStyleCard {
   const OutlinedCard({
-    Key key,
-    VoidCallback onPressed,
-    VoidCallback onLongPress,
-    ValueChanged<bool> onHover,
-    ValueChanged<bool> onFocusChange,
-    FocusNode focusNode,
-    CardStyle style,
-    @required Widget child,
+    Key? key,
+    VoidCallback? onPressed,
+    VoidCallback? onLongPress,
+    ValueChanged<bool>? onHover,
+    ValueChanged<bool>? onFocusChange,
+    FocusNode? focusNode,
+    CardStyle? style,
+    required Widget child,
   }) : super(
           key: key,
           onPressed: onPressed,
@@ -25,15 +25,15 @@ class OutlinedCard extends CardStyleCard {
         );
 
   static CardStyle styleFrom({
-    Color backgroundColor,
-    Color backgroundTintColor,
-    Color foregroundColor,
-    BorderSide borderSide,
-    MaterialStateProperty<MD3ElevationLevel> elevation,
-    MD3StateLayerOpacityTheme stateLayerOpacity,
-    Color shadowColor,
-    EdgeInsetsGeometry padding,
-    OutlinedBorder shape,
+    Color? backgroundColor,
+    Color? backgroundTintColor,
+    Color? foregroundColor,
+    BorderSide? borderSide,
+    MaterialStateProperty<MD3ElevationLevel>? elevation,
+    MD3StateLayerOpacityTheme? stateLayerOpacity,
+    Color? shadowColor,
+    EdgeInsetsGeometry? padding,
+    OutlinedBorder? shape,
   }) {
     if (stateLayerOpacity != null) {
       ArgumentError.checkNotNull(foregroundColor, 'foregroundColor');
@@ -46,7 +46,7 @@ class OutlinedCard extends CardStyleCard {
       stateLayerColor: stateLayerOpacity == null
           ? null
           : MD3StateOverlayColor(
-              foregroundColor,
+              foregroundColor!,
               stateLayerOpacity,
             ),
       elevationTintColor: ButtonStyleButton.allOrNull(backgroundTintColor),
@@ -94,7 +94,7 @@ class OutlinedCard extends CardStyleCard {
 class OutlinedCardThemeData with Diagnosticable {
   const OutlinedCardThemeData({this.style});
 
-  final CardStyle style;
+  final CardStyle? style;
 
   /*static OutlinedCardThemeData lerp(
       OutlinedCardThemeData a, OutlinedCardThemeData b, double t) {
@@ -127,16 +127,16 @@ class OutlinedCardThemeData with Diagnosticable {
 
 class OutlinedCardTheme extends InheritedTheme {
   const OutlinedCardTheme({
-    Key key,
-    @required this.data,
-    @required Widget child,
+    Key? key,
+    required this.data,
+    required Widget child,
   })  : assert(data != null),
         super(key: key, child: child);
 
   final OutlinedCardThemeData data;
 
   static OutlinedCardThemeData of(BuildContext context) {
-    final OutlinedCardTheme buttonTheme =
+    final OutlinedCardTheme? buttonTheme =
         context.dependOnInheritedWidgetOfExactType<OutlinedCardTheme>();
     return buttonTheme?.data ?? const OutlinedCardThemeData();
   }

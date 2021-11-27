@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:material_you/material_you.dart';
 
 class NavigationDrawerThemeData {
-  final bool isStandardDrawer;
-  final double headerBaseline;
-  final EdgeInsetsGeometry itemPadding;
-  final ShapeBorder itemShape;
-  final Color itemSelectedColor;
-  final Color itemUnselectedColor;
-  final Color itemSelectedColorBackground;
-  final double iconTitleSpacing;
-  final double spacerHeight;
+  final bool? isStandardDrawer;
+  final double? headerBaseline;
+  final EdgeInsetsGeometry? itemPadding;
+  final ShapeBorder? itemShape;
+  final Color? itemSelectedColor;
+  final Color? itemUnselectedColor;
+  final Color? itemSelectedColorBackground;
+  final double? iconTitleSpacing;
+  final double? spacerHeight;
 
   const NavigationDrawerThemeData({
     this.isStandardDrawer,
@@ -26,14 +26,14 @@ class NavigationDrawerThemeData {
 }
 
 class NavigationDrawerTheme extends InheritedWidget {
-  final NavigationDrawerThemeData data;
+  final NavigationDrawerThemeData? data;
 
-  NavigationDrawerTheme({this.data, Widget child}) : super(child: child);
+  NavigationDrawerTheme({this.data, required Widget child}) : super(child: child);
   @override
   bool updateShouldNotify(NavigationDrawerTheme oldWidget) =>
       data != oldWidget.data;
 
-  static NavigationDrawerThemeData of(BuildContext context) {
+  static NavigationDrawerThemeData? of(BuildContext context) {
     return context
         .dependOnInheritedWidgetOfExactType<NavigationDrawerTheme>()
         ?.data;
@@ -41,14 +41,14 @@ class NavigationDrawerTheme extends InheritedWidget {
 }
 
 class NavigationDrawerHeader extends StatelessWidget {
-  final Widget title;
-  final Widget subtitle;
-  final TextStyle textStyle;
-  final double baseline;
-  final bool isStandardDrawer;
+  final Widget? title;
+  final Widget? subtitle;
+  final TextStyle? textStyle;
+  final double? baseline;
+  final bool? isStandardDrawer;
 
   const NavigationDrawerHeader({
-    Key key,
+    Key? key,
     this.title,
     @Deprecated('Deprecated on MD3') this.subtitle,
     this.textStyle,
@@ -67,17 +67,17 @@ class NavigationDrawerHeader extends StatelessWidget {
   // bottom to text baseline
   static const double kModalSubtitleOffset = 18;
 
-  bool/*!*/ _getIsStandardDrawer(BuildContext context) {
+  bool _getIsStandardDrawer(BuildContext context) {
     if (isStandardDrawer != null) {
-      return isStandardDrawer;
+      return isStandardDrawer!;
     }
     const defaultVal = false;
     return NavigationDrawerTheme.of(context)?.isStandardDrawer ?? defaultVal;
   }
 
-  double/*!*/ _getbaseline(BuildContext context) {
+  double _getbaseline(BuildContext context) {
     if (baseline != null) {
-      return baseline;
+      return baseline!;
     }
 
     const defaultVal = 28.0;
@@ -93,7 +93,7 @@ class NavigationDrawerHeader extends StatelessWidget {
       style: style.copyWith(
         color: context.colorScheme.onSurfaceVariant,
       ),
-      child: title,
+      child: title!,
     );
     return widget;
   }
@@ -101,7 +101,7 @@ class NavigationDrawerHeader extends StatelessWidget {
   Widget buildSubtitle(BuildContext context) {
     final offset = kModalSubtitleOffset;
     var widget = DefaultTextStyle(
-        style: Theme.of(context).textTheme.caption, child: subtitle);
+        style: Theme.of(context).textTheme.caption!, child: subtitle!);
     return Positioned(
       child: widget,
       left: _getbaseline(context),
@@ -126,12 +126,12 @@ class NavigationDrawerHeader extends StatelessWidget {
 }
 
 class NavigationDrawerSpacer extends StatelessWidget {
-  final double height;
+  final double? height;
 
-  const NavigationDrawerSpacer({Key key, this.height}) : super(key: key);
-  double/*!*/ _getHeight(BuildContext context) {
+  const NavigationDrawerSpacer({Key? key, this.height}) : super(key: key);
+  double _getHeight(BuildContext context) {
     if (height != null) {
-      return height;
+      return height!;
     }
     const defaultVal = 32.0;
     return NavigationDrawerTheme.of(context)?.spacerHeight ?? defaultVal;
@@ -148,11 +148,11 @@ class NavigationDrawerSpacer extends StatelessWidget {
 }
 
 class NavigationDrawerGroupHeader extends StatelessWidget {
-  final Widget subtitle;
-  final double baseline;
+  final Widget? subtitle;
+  final double? baseline;
 
   const NavigationDrawerGroupHeader({
-    Key key,
+    Key? key,
     this.subtitle,
     this.baseline,
   }) : super(key: key);
@@ -169,18 +169,18 @@ class NavigationDrawerGroupHeader extends StatelessWidget {
 }
 
 class NavigationDrawerItem extends StatelessWidget {
-  final Widget title;
-  final Widget icon;
+  final Widget? title;
+  final Widget? icon;
   final bool selected;
-  final EdgeInsets padding;
-  final VoidCallback onTap;
-  final ShapeBorder shape;
-  final Color selectedColor;
-  final Color selectedContentColor;
-  final double iconTitleSpacing;
+  final EdgeInsets? padding;
+  final VoidCallback? onTap;
+  final ShapeBorder? shape;
+  final Color? selectedColor;
+  final Color? selectedContentColor;
+  final double? iconTitleSpacing;
 
   const NavigationDrawerItem(
-      {Key key,
+      {Key? key,
       this.title,
       this.icon,
       this.selected = false,
@@ -195,9 +195,9 @@ class NavigationDrawerItem extends StatelessWidget {
   final double kHeight = 56.0;
   bool get isDisabled => onTap == null;
 
-  Color/*!*/ _getSelectedColorBackground(BuildContext context) {
+  Color _getSelectedColorBackground(BuildContext context) {
     if (selectedColor != null) {
-      return selectedColor;
+      return selectedColor!;
     }
     final inherited =
         NavigationDrawerTheme.of(context)?.itemSelectedColorBackground;
@@ -209,9 +209,9 @@ class NavigationDrawerItem extends StatelessWidget {
     return defaultVal;
   }
 
-  Color/*!*/ _getSelectedForegroundColor(BuildContext context) {
+  Color _getSelectedForegroundColor(BuildContext context) {
     if (selectedContentColor != null) {
-      return selectedContentColor;
+      return selectedContentColor!;
     }
     final inherited = NavigationDrawerTheme.of(context)?.itemSelectedColor;
     if (inherited != null) {
@@ -225,9 +225,9 @@ class NavigationDrawerItem extends StatelessWidget {
     return context.colorScheme.onSecondaryContainer.withOpacity(0.24);
   }
 
-  Color/*!*/ _getUnselectedForegroundColor(BuildContext context) {
+  Color _getUnselectedForegroundColor(BuildContext context) {
     if (selectedContentColor != null) {
-      return selectedContentColor;
+      return selectedContentColor!;
     }
     final inherited = NavigationDrawerTheme.of(context)?.itemUnselectedColor;
     if (inherited != null) {
@@ -237,9 +237,9 @@ class NavigationDrawerItem extends StatelessWidget {
     return defaultVal;
   }
 
-  double/*!*/ _getIconTitleSpacing(BuildContext context) {
+  double _getIconTitleSpacing(BuildContext context) {
     if (iconTitleSpacing != null) {
-      return iconTitleSpacing;
+      return iconTitleSpacing!;
     }
     const defaultVal = 12.0;
     return NavigationDrawerTheme.of(context)?.iconTitleSpacing ?? defaultVal;
@@ -252,9 +252,9 @@ class NavigationDrawerItem extends StatelessWidget {
     return baseline - padding.left;
   }
 
-  EdgeInsets/*!*/ _getPadding(BuildContext context) {
+  EdgeInsets _getPadding(BuildContext context) {
     if (padding != null) {
-      return padding;
+      return padding!;
     }
     const defaultVal = EdgeInsets.symmetric(horizontal: 12.0, vertical: 0.0);
     return NavigationDrawerTheme.of(context)
@@ -263,9 +263,9 @@ class NavigationDrawerItem extends StatelessWidget {
         defaultVal;
   }
 
-  ShapeBorder/*!*/ _getShape(BuildContext context) {
+  ShapeBorder _getShape(BuildContext context) {
     if (shape != null) {
-      return shape;
+      return shape!;
     }
     if (isDisabled) {
       return RoundedRectangleBorder(borderRadius: BorderRadius.circular(8));
@@ -275,7 +275,7 @@ class NavigationDrawerItem extends StatelessWidget {
   }
 
   Widget _buildIcon(BuildContext context) {
-    var icon = this.icon;
+    var icon = this.icon!;
     icon = IconTheme(
       data: IconTheme.of(context).copyWith(
         color: selected
@@ -294,7 +294,7 @@ class NavigationDrawerItem extends StatelessWidget {
             ? _getSelectedForegroundColor(context)
             : _getUnselectedForegroundColor(context),
       ),
-      child: title,
+      child: title!,
     );
   }
 

@@ -14,10 +14,10 @@ abstract class ResponsiveAppbarAction {
       VoidCallback onPressed}) = MD3ResponsiveAppBarAction;
   @Deprecated('Use MD3ResponsiveAppBarAction')
   static MD3ResponsiveAppBarAction create(
-          {Widget icon,
-          String tooltip,
-          Widget title,
-          VoidCallback onPressed}) =>
+          {Widget? icon,
+          String? tooltip,
+          Widget? title,
+          VoidCallback? onPressed}) =>
       MD3ResponsiveAppBarAction(
         icon: icon,
         tooltip: tooltip,
@@ -32,10 +32,10 @@ abstract class ResponsiveAppbarAction {
 }
 
 class MD3ResponsiveAppBarAction implements ResponsiveAppbarAction {
-  final Widget icon;
-  final String tooltip;
-  final Widget title;
-  final VoidCallback onPressed;
+  final Widget? icon;
+  final String? tooltip;
+  final Widget? title;
+  final VoidCallback? onPressed;
 
   const MD3ResponsiveAppBarAction({
     this.icon,
@@ -62,13 +62,13 @@ enum _MD3AppBarType {
 class ResponsiveAppbar extends StatelessWidget implements PreferredSizeWidget {
   @Deprecated('Use one of the named ResponsiveAppbar constructors')
   ResponsiveAppbar({
-    Key key,
-    @Deprecated('Removed on MD3') PreferredSizeWidget bottom,
-    @Deprecated('Depends on the app bar type') double toolbarHeight,
+    Key? key,
+    @Deprecated('Removed on MD3') PreferredSizeWidget? bottom,
+    @Deprecated('Depends on the app bar type') double? toolbarHeight,
     this.title,
     this.leading,
-    @Deprecated('use buildActions') List<ResponsiveAppbarAction> actions,
-    List<ResponsiveAppbarAction> Function(BuildContext) buildActions,
+    @Deprecated('use buildActions') List<ResponsiveAppbarAction>? actions,
+    List<ResponsiveAppbarAction> Function(BuildContext)? buildActions,
     this.primary = true,
     this.notifySize = true,
     this.isElevated,
@@ -78,7 +78,7 @@ class ResponsiveAppbar extends StatelessWidget implements PreferredSizeWidget {
         super(key: key);
 
   const ResponsiveAppbar.center({
-    Key key,
+    Key? key,
     this.title,
     this.leading,
     this.buildActions,
@@ -90,7 +90,7 @@ class ResponsiveAppbar extends StatelessWidget implements PreferredSizeWidget {
         super(key: key);
 
   const ResponsiveAppbar.small({
-    Key key,
+    Key? key,
     this.title,
     this.leading,
     this.buildActions,
@@ -102,7 +102,7 @@ class ResponsiveAppbar extends StatelessWidget implements PreferredSizeWidget {
         super(key: key);
 
   const ResponsiveAppbar.medium({
-    Key key,
+    Key? key,
     this.title,
     this.leading,
     this.buildActions,
@@ -114,7 +114,7 @@ class ResponsiveAppbar extends StatelessWidget implements PreferredSizeWidget {
         super(key: key);
 
   const ResponsiveAppbar.large({
-    Key key,
+    Key? key,
     this.title,
     this.leading,
     this.buildActions,
@@ -126,7 +126,7 @@ class ResponsiveAppbar extends StatelessWidget implements PreferredSizeWidget {
         super(key: key);
 
   const ResponsiveAppbar.mediumOrLarge({
-    Key key,
+    Key? key,
     this.title,
     this.leading,
     this.buildActions,
@@ -137,19 +137,19 @@ class ResponsiveAppbar extends StatelessWidget implements PreferredSizeWidget {
         preferredSize = const Size.fromHeight(MD3LargeOrMediumAppBar.kHeight),
         super(key: key);
 
-  final Widget title;
-  final Widget leading;
-  final List<ResponsiveAppbarAction> Function(BuildContext) buildActions;
+  final Widget? title;
+  final Widget? leading;
+  final List<ResponsiveAppbarAction> Function(BuildContext)? buildActions;
   final _MD3AppBarType _appBarType;
   final bool primary;
   final bool notifySize;
-  final bool isElevated;
+  final bool? isElevated;
   @override
   final Size preferredSize;
 
-  Widget _actionToActionWidget(MD3ResponsiveAppBarAction action) {
+  Widget _actionToActionWidget(MD3ResponsiveAppBarAction? action) {
     return IconButton(
-      icon: action.icon,
+      icon: action!.icon!,
       onPressed: action.onPressed,
       tooltip: action.tooltip,
     );
@@ -168,13 +168,13 @@ class ResponsiveAppbar extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 
-  WidgetBuilder _moreButtonBuilder(List<MD3ResponsiveAppBarAction> hidden) =>
+  WidgetBuilder _moreButtonBuilder(List<MD3ResponsiveAppBarAction?> hidden) =>
       (context) {
         void open() {
-          final items = hidden.map((e) => _actionToPopupMenuItem(context, e));
+          final items = hidden.map((e) => _actionToPopupMenuItem(context, e!));
           final button = context.findRenderObject() as RenderBox;
           final overlay =
-              Overlay.of(context).context.findRenderObject() as RenderBox;
+              Overlay.of(context)!.context.findRenderObject() as RenderBox;
           final position = RelativeRect.fromRect(
             Rect.fromPoints(
               button.localToGlobal(Offset.zero, ancestor: overlay),
@@ -198,7 +198,7 @@ class ResponsiveAppbar extends StatelessWidget implements PreferredSizeWidget {
         );
       };
 
-  List<Widget> _buildActions(BuildContext context) {
+  List<Widget>? _buildActions(BuildContext context) {
     final builtActions = this.buildActions?.call(context) ?? [];
     if (builtActions == null || builtActions.isEmpty) {
       return null;
@@ -246,7 +246,7 @@ class ResponsiveAppbar extends StatelessWidget implements PreferredSizeWidget {
           leading: leading,
           title: title,
           trailing:
-              (actionWidgets?.isEmpty ?? true) ? null : actionWidgets.single,
+              (actionWidgets?.isEmpty ?? true) ? null : actionWidgets!.single,
           primary: primary,
           notifySize: notifySize,
           isElevated: isElevated,

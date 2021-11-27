@@ -10,7 +10,7 @@ import 'package:material_you/material_you.dart';
 class MD3InputChipThemeData with Diagnosticable {
   const MD3InputChipThemeData({this.style});
 
-  final ChipStyle style;
+  final ChipStyle? style;
 
   /*static MD3InputChipThemeData lerp(
       MD3InputChipThemeData a, MD3InputChipThemeData b, double t) {
@@ -44,16 +44,16 @@ class MD3InputChipThemeData with Diagnosticable {
 
 class MD3InputChipTheme extends InheritedTheme {
   const MD3InputChipTheme({
-    Key key,
-    @required this.data,
-    @required Widget child,
+    Key? key,
+    required this.data,
+    required Widget child,
   })  : assert(data != null),
         super(key: key, child: child);
 
   final MD3InputChipThemeData data;
 
   static MD3InputChipThemeData of(BuildContext context) {
-    final MD3InputChipTheme buttonTheme =
+    final MD3InputChipTheme? buttonTheme =
         context.dependOnInheritedWidgetOfExactType<MD3InputChipTheme>();
     return buttonTheme?.data ?? MD3InputChipThemeData(style: ChipStyle());
   }
@@ -72,21 +72,21 @@ class MD3InputChip extends MD3ChipStyleChip {
   final bool selected;
 
   MD3InputChip({
-    Key key,
-    @required VoidCallback onPressed,
-    VoidCallback onLongPress,
-    ValueChanged<bool> onHover,
-    ValueChanged<bool> onFocusChange,
-    ButtonStyle style,
-    FocusNode focusNode,
+    Key? key,
+    required VoidCallback onPressed,
+    VoidCallback? onLongPress,
+    ValueChanged<bool>? onHover,
+    ValueChanged<bool>? onFocusChange,
+    ButtonStyle? style,
+    FocusNode? focusNode,
     bool autofocus = false,
     Clip clipBehavior = Clip.none,
-    ChipStyle chipStyle,
+    ChipStyle? chipStyle,
     this.selected = false,
     bool leadingAvatar = false,
-    Widget leading,
-    @required Widget label,
-    Widget trailing,
+    Widget? leading,
+    required Widget label,
+    Widget? trailing,
   })  : assert(label != null),
         super(
           key: key,
@@ -117,6 +117,6 @@ class MD3InputChip extends MD3ChipStyleChip {
       );
 
   @override
-  ChipStyle themeChipStyleOf(BuildContext context) =>
+  ChipStyle? themeChipStyleOf(BuildContext context) =>
       MD3InputChipTheme.of(context).style;
 }

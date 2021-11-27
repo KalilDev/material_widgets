@@ -10,7 +10,7 @@ import 'package:material_you/material_you.dart';
 class MD3SuggestionChipThemeData with Diagnosticable {
   const MD3SuggestionChipThemeData({this.style});
 
-  final ChipStyle style;
+  final ChipStyle? style;
 
   /*static MD3SuggestionChipThemeData lerp(
       MD3SuggestionChipThemeData a, MD3SuggestionChipThemeData b, double t) {
@@ -44,16 +44,16 @@ class MD3SuggestionChipThemeData with Diagnosticable {
 
 class MD3SuggestionChipTheme extends InheritedTheme {
   const MD3SuggestionChipTheme({
-    Key key,
-    @required this.data,
-    @required Widget child,
+    Key? key,
+    required this.data,
+    required Widget child,
   })  : assert(data != null),
         super(key: key, child: child);
 
   final MD3SuggestionChipThemeData data;
 
   static MD3SuggestionChipThemeData of(BuildContext context) {
-    final MD3SuggestionChipTheme buttonTheme =
+    final MD3SuggestionChipTheme? buttonTheme =
         context.dependOnInheritedWidgetOfExactType<MD3SuggestionChipTheme>();
     return buttonTheme?.data ?? MD3SuggestionChipThemeData(style: ChipStyle());
   }
@@ -73,20 +73,20 @@ class MD3SuggestionChip extends MD3ChipStyleChip {
   final bool selected;
 
   MD3SuggestionChip({
-    Key key,
-    @required VoidCallback onPressed,
-    VoidCallback onLongPress,
-    ValueChanged<bool> onHover,
-    ValueChanged<bool> onFocusChange,
-    ButtonStyle style,
-    FocusNode focusNode,
+    Key? key,
+    required VoidCallback onPressed,
+    VoidCallback? onLongPress,
+    ValueChanged<bool>? onHover,
+    ValueChanged<bool>? onFocusChange,
+    ButtonStyle? style,
+    FocusNode? focusNode,
     bool autofocus = false,
     Clip clipBehavior = Clip.none,
-    ChipStyle chipStyle,
+    ChipStyle? chipStyle,
     this.elevated = false,
     this.selected = false,
-    Widget leading,
-    @required Widget label,
+    Widget? leading,
+    required Widget label,
   })  : assert(label != null),
         super(
           key: key,
@@ -115,6 +115,6 @@ class MD3SuggestionChip extends MD3ChipStyleChip {
       );
 
   @override
-  ChipStyle themeChipStyleOf(BuildContext context) =>
+  ChipStyle? themeChipStyleOf(BuildContext context) =>
       MD3SuggestionChipTheme.of(context).style;
 }

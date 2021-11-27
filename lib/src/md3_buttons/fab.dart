@@ -11,19 +11,19 @@ enum MD3FABColorScheme {
 
 class MD3FloatingActionButton extends ButtonStyleButton {
   const MD3FloatingActionButton({
-    Key key,
+    Key? key,
     this.fabColorScheme = MD3FABColorScheme.primary,
     this.isLowered = false,
-    @required VoidCallback onPressed,
-    VoidCallback onLongPress,
-    ValueChanged<bool> onHover,
-    ValueChanged<bool> onFocusChange,
-    ButtonStyle style,
-    FocusNode focusNode,
+    required VoidCallback onPressed,
+    VoidCallback? onLongPress,
+    ValueChanged<bool>? onHover,
+    ValueChanged<bool>? onFocusChange,
+    ButtonStyle? style,
+    FocusNode? focusNode,
     bool autofocus = false,
     Clip clipBehavior = Clip.none,
     this.colorScheme,
-    @required Widget child,
+    required Widget? child,
   }) : super(
           key: key,
           onPressed: onPressed,
@@ -89,7 +89,7 @@ class MD3FloatingActionButton extends ButtonStyleButton {
 
   final MD3FABColorScheme fabColorScheme;
   final bool isLowered;
-  final CustomColorScheme colorScheme;
+  final CustomColorScheme? colorScheme;
 
   CustomColorScheme _customColorFromFABScheme(BuildContext context) {
     final scheme = context.colorScheme;
@@ -114,16 +114,16 @@ class MD3FloatingActionButton extends ButtonStyleButton {
 
   static ButtonStyle primaryStyle(
     BuildContext context, {
-    Color shadowColor,
-    TextStyle labelStyle,
-    MouseCursor enabledCursor,
-    MouseCursor disabledCursor,
-    MaterialStateProperty<MD3ElevationLevel> md3Elevation,
-    bool enableFeedback,
-    VisualDensity visualDensity,
-    MaterialTapTargetSize tapTargetSize,
-    InteractiveInkFeatureFactory splashFactory,
-    OutlinedBorder shape,
+    Color? shadowColor,
+    TextStyle? labelStyle,
+    MouseCursor? enabledCursor,
+    MouseCursor? disabledCursor,
+    required MaterialStateProperty<MD3ElevationLevel> md3Elevation,
+    bool? enableFeedback,
+    VisualDensity? visualDensity,
+    MaterialTapTargetSize? tapTargetSize,
+    InteractiveInkFeatureFactory? splashFactory,
+    OutlinedBorder? shape,
   }) =>
       styleFrom(
         backgroundColor: context.colorScheme.primaryContainer,
@@ -143,16 +143,16 @@ class MD3FloatingActionButton extends ButtonStyleButton {
 
   static ButtonStyle secondaryStyle(
     BuildContext context, {
-    Color shadowColor,
-    TextStyle labelStyle,
-    MouseCursor enabledCursor,
-    MouseCursor disabledCursor,
-    MaterialStateProperty<MD3ElevationLevel> md3Elevation,
-    bool enableFeedback,
-    VisualDensity visualDensity,
-    MaterialTapTargetSize tapTargetSize,
-    InteractiveInkFeatureFactory splashFactory,
-    OutlinedBorder shape,
+    Color? shadowColor,
+    TextStyle? labelStyle,
+    MouseCursor? enabledCursor,
+    MouseCursor? disabledCursor,
+    required MaterialStateProperty<MD3ElevationLevel> md3Elevation,
+    bool? enableFeedback,
+    VisualDensity? visualDensity,
+    MaterialTapTargetSize? tapTargetSize,
+    InteractiveInkFeatureFactory? splashFactory,
+    OutlinedBorder? shape,
   }) =>
       styleFrom(
         backgroundColor: context.colorScheme.secondaryContainer,
@@ -172,16 +172,16 @@ class MD3FloatingActionButton extends ButtonStyleButton {
 
   static ButtonStyle tertiaryStyle(
     BuildContext context, {
-    Color shadowColor,
-    TextStyle labelStyle,
-    MouseCursor enabledCursor,
-    MouseCursor disabledCursor,
-    MaterialStateProperty<MD3ElevationLevel> md3Elevation,
-    bool enableFeedback,
-    VisualDensity visualDensity,
-    MaterialTapTargetSize tapTargetSize,
-    InteractiveInkFeatureFactory splashFactory,
-    OutlinedBorder shape,
+    Color? shadowColor,
+    TextStyle? labelStyle,
+    MouseCursor? enabledCursor,
+    MouseCursor? disabledCursor,
+    required MaterialStateProperty<MD3ElevationLevel> md3Elevation,
+    bool? enableFeedback,
+    VisualDensity? visualDensity,
+    MaterialTapTargetSize? tapTargetSize,
+    InteractiveInkFeatureFactory? splashFactory,
+    OutlinedBorder? shape,
   }) =>
       styleFrom(
         backgroundColor: context.colorScheme.tertiaryContainer,
@@ -201,16 +201,16 @@ class MD3FloatingActionButton extends ButtonStyleButton {
 
   static ButtonStyle surfaceStyle(
     BuildContext context, {
-    Color shadowColor,
-    TextStyle labelStyle,
-    MouseCursor enabledCursor,
-    MouseCursor disabledCursor,
-    MaterialStateProperty<MD3ElevationLevel> md3Elevation,
-    bool enableFeedback,
-    VisualDensity visualDensity,
-    MaterialTapTargetSize tapTargetSize,
-    InteractiveInkFeatureFactory splashFactory,
-    OutlinedBorder shape,
+    Color? shadowColor,
+    TextStyle? labelStyle,
+    MouseCursor? enabledCursor,
+    MouseCursor? disabledCursor,
+    required MaterialStateProperty<MD3ElevationLevel> md3Elevation,
+    bool? enableFeedback,
+    VisualDensity? visualDensity,
+    MaterialTapTargetSize? tapTargetSize,
+    InteractiveInkFeatureFactory? splashFactory,
+    OutlinedBorder? shape,
   }) =>
       styleFrom(
         backgroundColor: context.colorScheme.surface,
@@ -230,20 +230,20 @@ class MD3FloatingActionButton extends ButtonStyleButton {
       );
 
   static ButtonStyle styleFrom({
-    @required Color backgroundColor,
-    @required Color foregroundColor,
-    @required MD3StateLayerOpacityTheme stateLayerOpacityTheme,
-    Color/*?*/ tintColor,
-    Color shadowColor,
-    TextStyle labelStyle,
-    MouseCursor enabledCursor,
-    MouseCursor disabledCursor,
-    MaterialStateProperty<MD3ElevationLevel> md3Elevation,
-    bool enableFeedback,
-    VisualDensity visualDensity,
-    MaterialTapTargetSize tapTargetSize,
-    InteractiveInkFeatureFactory splashFactory,
-    OutlinedBorder shape,
+    required Color backgroundColor,
+    required Color foregroundColor,
+    required MD3StateLayerOpacityTheme stateLayerOpacityTheme,
+    Color? tintColor,
+    Color? shadowColor,
+    TextStyle? labelStyle,
+    MouseCursor? enabledCursor,
+    MouseCursor? disabledCursor,
+    required MaterialStateProperty<MD3ElevationLevel> md3Elevation,
+    bool? enableFeedback,
+    VisualDensity? visualDensity,
+    MaterialTapTargetSize? tapTargetSize,
+    InteractiveInkFeatureFactory? splashFactory,
+    OutlinedBorder? shape,
   }) {
     ArgumentError.checkNotNull(backgroundColor);
     ArgumentError.checkNotNull(foregroundColor);
@@ -258,7 +258,7 @@ class MD3FloatingActionButton extends ButtonStyleButton {
       maximumSize: MaterialStateProperty.all(Size.infinite),
       backgroundColor: MD3ElevationTintableColor(
         backgroundColor,
-        tintColor,
+        tintColor!,
         md3Elevation,
       ),
       foregroundColor: MaterialStateProperty.all(foregroundColor),
@@ -319,7 +319,7 @@ class MD3FloatingActionButton extends ButtonStyleButton {
   }
 
   @override
-  ButtonStyle themeStyleOf(BuildContext context) {
+  ButtonStyle? themeStyleOf(BuildContext context) {
     return MD3FloatingActionButtonTheme.of(context).style;
   }
 }
@@ -328,9 +328,9 @@ class MD3FloatingActionButton extends ButtonStyleButton {
 class MD3FloatingActionButtonThemeData with Diagnosticable {
   const MD3FloatingActionButtonThemeData({this.style});
 
-  final ButtonStyle style;
+  final ButtonStyle? style;
 
-  static MD3FloatingActionButtonThemeData lerp(
+  static MD3FloatingActionButtonThemeData? lerp(
       MD3FloatingActionButtonThemeData a,
       MD3FloatingActionButtonThemeData b,
       double t) {
@@ -363,16 +363,16 @@ class MD3FloatingActionButtonThemeData with Diagnosticable {
 
 class MD3FloatingActionButtonTheme extends InheritedTheme {
   const MD3FloatingActionButtonTheme({
-    Key key,
-    @required this.data,
-    @required Widget child,
+    Key? key,
+    required this.data,
+    required Widget child,
   })  : assert(data != null),
         super(key: key, child: child);
 
   final MD3FloatingActionButtonThemeData data;
 
   static MD3FloatingActionButtonThemeData of(BuildContext context) {
-    final MD3FloatingActionButtonTheme buttonTheme = context
+    final MD3FloatingActionButtonTheme? buttonTheme = context
         .dependOnInheritedWidgetOfExactType<MD3FloatingActionButtonTheme>();
     return buttonTheme?.data ?? const MD3FloatingActionButtonThemeData();
   }
@@ -389,19 +389,19 @@ class MD3FloatingActionButtonTheme extends InheritedTheme {
 
 class _SmallFAB extends MD3FloatingActionButton {
   const _SmallFAB({
-    Key key,
+    Key? key,
     MD3FABColorScheme fabColorScheme = MD3FABColorScheme.primary,
     bool isLowered = false,
-    @required VoidCallback onPressed,
-    VoidCallback onLongPress,
-    ValueChanged<bool> onHover,
-    ValueChanged<bool> onFocusChange,
-    ButtonStyle style,
-    FocusNode focusNode,
-    bool autofocus,
-    Clip clipBehavior,
-    CustomColorScheme colorScheme,
-    Widget child,
+    required VoidCallback onPressed,
+    VoidCallback? onLongPress,
+    ValueChanged<bool>? onHover,
+    ValueChanged<bool>? onFocusChange,
+    ButtonStyle? style,
+    FocusNode? focusNode,
+    bool? autofocus,
+    Clip? clipBehavior,
+    CustomColorScheme? colorScheme,
+    Widget? child,
   }) : super(
           key: key,
           fabColorScheme: fabColorScheme,
@@ -432,19 +432,19 @@ class _SmallFAB extends MD3FloatingActionButton {
 
 class _LargeFAB extends MD3FloatingActionButton {
   _LargeFAB({
-    Key key,
+    Key? key,
     MD3FABColorScheme fabColorScheme = MD3FABColorScheme.primary,
     bool isLowered = false,
-    @required VoidCallback onPressed,
-    VoidCallback onLongPress,
-    ValueChanged<bool> onHover,
-    ValueChanged<bool> onFocusChange,
-    ButtonStyle style,
-    FocusNode focusNode,
-    bool autofocus,
-    Clip clipBehavior,
-    CustomColorScheme colorScheme,
-    Widget child,
+    required VoidCallback onPressed,
+    VoidCallback? onLongPress,
+    ValueChanged<bool>? onHover,
+    ValueChanged<bool>? onFocusChange,
+    ButtonStyle? style,
+    FocusNode? focusNode,
+    bool? autofocus,
+    Clip? clipBehavior,
+    CustomColorScheme? colorScheme,
+    required Widget child,
   }) : super(
           key: key,
           fabColorScheme: fabColorScheme,
@@ -477,21 +477,21 @@ class _LargeFAB extends MD3FloatingActionButton {
 
 class _ExpandedFAB extends MD3FloatingActionButton {
   _ExpandedFAB({
-    Key key,
+    Key? key,
     bool isLowered = false,
     MD3FABColorScheme fabColorScheme = MD3FABColorScheme.primary,
     this.isExpanded = true,
-    @required VoidCallback onPressed,
-    VoidCallback onLongPress,
-    ValueChanged<bool> onHover,
-    ValueChanged<bool> onFocusChange,
-    ButtonStyle style,
-    FocusNode focusNode,
-    bool autofocus,
-    Clip clipBehavior,
-    CustomColorScheme colorScheme,
-    Widget icon,
-    @required Widget label,
+    required VoidCallback onPressed,
+    VoidCallback? onLongPress,
+    ValueChanged<bool>? onHover,
+    ValueChanged<bool>? onFocusChange,
+    ButtonStyle? style,
+    FocusNode? focusNode,
+    bool? autofocus,
+    Clip? clipBehavior,
+    CustomColorScheme? colorScheme,
+    Widget? icon,
+    required Widget label,
   })  : assert(label != null),
         assert(isExpanded || icon != null),
         super(
@@ -530,15 +530,15 @@ class _ExpandedFAB extends MD3FloatingActionButton {
 
 class _ExpandedFabChild extends StatefulWidget {
   const _ExpandedFabChild({
-    Key key,
-    @required this.isExpanded,
-    @required this.label,
-    @required this.icon,
+    Key? key,
+    required this.isExpanded,
+    required this.label,
+    required this.icon,
   }) : super(key: key);
 
   final bool isExpanded;
   final Widget label;
-  final Widget icon;
+  final Widget? icon;
 
   @override
   State<_ExpandedFabChild> createState() => _ExpandedFabChildState();
@@ -551,7 +551,7 @@ class _ExpandedFabChildState extends State<_ExpandedFabChild>
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        if (widget.icon != null) widget.icon,
+        if (widget.icon != null) widget.icon!,
         Flexible(
           child: AnimatedSize(
             duration: Duration(milliseconds: 200),

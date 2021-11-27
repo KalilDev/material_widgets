@@ -10,9 +10,9 @@ import 'package:material_you/material_you.dart';
 class FilledTonalButtonThemeData with Diagnosticable {
   const FilledTonalButtonThemeData({this.style});
 
-  final ButtonStyle style;
+  final ButtonStyle? style;
 
-  static FilledTonalButtonThemeData lerp(
+  static FilledTonalButtonThemeData? lerp(
       FilledTonalButtonThemeData a, FilledTonalButtonThemeData b, double t) {
     assert(t != null);
     if (a == null && b == null) return null;
@@ -43,16 +43,16 @@ class FilledTonalButtonThemeData with Diagnosticable {
 
 class FilledTonalButtonTheme extends InheritedTheme {
   const FilledTonalButtonTheme({
-    Key key,
-    @required this.data,
-    @required Widget child,
+    Key? key,
+    required this.data,
+    required Widget child,
   })  : assert(data != null),
         super(key: key, child: child);
 
   final FilledTonalButtonThemeData data;
 
   static FilledTonalButtonThemeData of(BuildContext context) {
-    final FilledTonalButtonTheme buttonTheme =
+    final FilledTonalButtonTheme? buttonTheme =
         context.dependOnInheritedWidgetOfExactType<FilledTonalButtonTheme>();
     return buttonTheme?.data ??
         FilledTonalButtonThemeData(style: ButtonStyle());
@@ -70,16 +70,16 @@ class FilledTonalButtonTheme extends InheritedTheme {
 
 class FilledTonalButton extends ButtonStyleButton {
   const FilledTonalButton({
-    Key key,
-    @required VoidCallback/*?*/ onPressed,
-    VoidCallback onLongPress,
-    ValueChanged<bool> onHover,
-    ValueChanged<bool> onFocusChange,
-    ButtonStyle style,
-    FocusNode focusNode,
+    Key? key,
+    required VoidCallback? onPressed,
+    VoidCallback? onLongPress,
+    ValueChanged<bool>? onHover,
+    ValueChanged<bool>? onFocusChange,
+    ButtonStyle? style,
+    FocusNode? focusNode,
     bool autofocus = false,
     Clip clipBehavior = Clip.none,
-    @required Widget child,
+    required Widget child,
   }) : super(
           key: key,
           onPressed: onPressed,
@@ -95,7 +95,7 @@ class FilledTonalButton extends ButtonStyleButton {
 
   factory FilledTonalButton.icon({
     Key key,
-    @required VoidCallback/*?*/ onPressed,
+    required VoidCallback? onPressed,
     VoidCallback onLongPress,
     ValueChanged<bool> onHover,
     ValueChanged<bool> onFocusChange,
@@ -109,19 +109,19 @@ class FilledTonalButton extends ButtonStyleButton {
 
   @override
   static ButtonStyle styleFrom({
-    @required Color backgroundColor,
-    @required Color foregroundColor,
-    @required Color disabledColor,
-    @required MD3StateLayerOpacityTheme stateLayerOpacityTheme,
-    Color shadowColor,
-    MaterialStateProperty<MD3ElevationLevel>/*?*/ md3Elevation,
-    TextStyle labelStyle,
-    MouseCursor disabledCursor,
-    MouseCursor enabledCursor,
-    VisualDensity visualDensity,
-    MaterialTapTargetSize tapTargetSize,
-    InteractiveInkFeatureFactory splashFactory,
-    OutlinedBorder shape,
+    required Color backgroundColor,
+    required Color foregroundColor,
+    required Color disabledColor,
+    required MD3StateLayerOpacityTheme stateLayerOpacityTheme,
+    Color? shadowColor,
+    MaterialStateProperty<MD3ElevationLevel>? md3Elevation,
+    TextStyle? labelStyle,
+    MouseCursor? disabledCursor,
+    MouseCursor? enabledCursor,
+    VisualDensity? visualDensity,
+    MaterialTapTargetSize? tapTargetSize,
+    InteractiveInkFeatureFactory? splashFactory,
+    OutlinedBorder? shape,
   }) {
     ArgumentError.checkNotNull(backgroundColor);
     ArgumentError.checkNotNull(foregroundColor);
@@ -195,24 +195,24 @@ class FilledTonalButton extends ButtonStyleButton {
   }
 
   @override
-  ButtonStyle themeStyleOf(BuildContext context) {
+  ButtonStyle? themeStyleOf(BuildContext context) {
     return FilledTonalButtonTheme.of(context).style;
   }
 }
 
 class _FilledTonalButtonWithIcon extends FilledTonalButton {
   _FilledTonalButtonWithIcon({
-    Key key,
-    @required VoidCallback/*?*/ onPressed,
-    VoidCallback onLongPress,
-    ValueChanged<bool> onHover,
-    ValueChanged<bool> onFocusChange,
-    ButtonStyle style,
-    FocusNode focusNode,
-    bool autofocus,
-    Clip clipBehavior,
-    @required Widget icon,
-    @required Widget label,
+    Key? key,
+    required VoidCallback? onPressed,
+    VoidCallback? onLongPress,
+    ValueChanged<bool>? onHover,
+    ValueChanged<bool>? onFocusChange,
+    ButtonStyle? style,
+    FocusNode? focusNode,
+    bool? autofocus,
+    Clip? clipBehavior,
+    required Widget icon,
+    required Widget label,
   })  : assert(icon != null),
         assert(label != null),
         super(
@@ -244,7 +244,7 @@ class _FilledTonalButtonWithIcon extends FilledTonalButton {
 
 class _FilledTonalButtonWithIconChild extends StatelessWidget {
   const _FilledTonalButtonWithIconChild(
-      {Key key, @required this.label, @required this.icon})
+      {Key? key, required this.label, required this.icon})
       : super(key: key);
 
   final Widget label;
@@ -253,8 +253,8 @@ class _FilledTonalButtonWithIconChild extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double scale = MediaQuery.maybeOf(context)?.textScaleFactor ?? 1;
-    final double/*!*/ gap =
-        scale <= 1 ? 8 : lerpDouble(8, 4, math.min(scale - 1, 1));
+    final double gap =
+        scale <= 1 ? 8 : lerpDouble(8, 4, math.min(scale - 1, 1))!;
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[icon, SizedBox(width: gap), Flexible(child: label)],

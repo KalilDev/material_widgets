@@ -10,7 +10,7 @@ import 'package:material_you/material_you.dart';
 class MD3FilterChipThemeData with Diagnosticable {
   const MD3FilterChipThemeData({this.style});
 
-  final ChipStyle style;
+  final ChipStyle? style;
 
   /*static MD3FilterChipThemeData lerp(
       MD3FilterChipThemeData a, MD3FilterChipThemeData b, double t) {
@@ -44,16 +44,16 @@ class MD3FilterChipThemeData with Diagnosticable {
 
 class MD3FilterChipTheme extends InheritedTheme {
   const MD3FilterChipTheme({
-    Key key,
-    @required this.data,
-    @required Widget child,
+    Key? key,
+    required this.data,
+    required Widget child,
   })  : assert(data != null),
         super(key: key, child: child);
 
   final MD3FilterChipThemeData data;
 
   static MD3FilterChipThemeData of(BuildContext context) {
-    final MD3FilterChipTheme buttonTheme =
+    final MD3FilterChipTheme? buttonTheme =
         context.dependOnInheritedWidgetOfExactType<MD3FilterChipTheme>();
     return buttonTheme?.data ?? MD3FilterChipThemeData(style: ChipStyle());
   }
@@ -73,21 +73,21 @@ class MD3FilterChip extends MD3ChipStyleChip {
   final bool elevated;
 
   MD3FilterChip({
-    Key key,
-    @required VoidCallback onPressed,
-    VoidCallback onLongPress,
-    ValueChanged<bool> onHover,
-    ValueChanged<bool> onFocusChange,
-    ButtonStyle style,
-    FocusNode focusNode,
+    Key? key,
+    required VoidCallback onPressed,
+    VoidCallback? onLongPress,
+    ValueChanged<bool>? onHover,
+    ValueChanged<bool>? onFocusChange,
+    ButtonStyle? style,
+    FocusNode? focusNode,
     bool autofocus = false,
     Clip clipBehavior = Clip.none,
-    ChipStyle chipStyle,
+    ChipStyle? chipStyle,
     this.selected = false,
     this.elevated = false,
-    Widget leading,
-    @required Widget label,
-    Widget trailing,
+    Widget? leading,
+    required Widget label,
+    Widget? trailing,
   })  : assert(label != null),
         super(
           key: key,
@@ -114,6 +114,6 @@ class MD3FilterChip extends MD3ChipStyleChip {
       );
 
   @override
-  ChipStyle themeChipStyleOf(BuildContext context) =>
+  ChipStyle? themeChipStyleOf(BuildContext context) =>
       MD3FilterChipTheme.of(context).style;
 }

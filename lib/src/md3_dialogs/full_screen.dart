@@ -5,13 +5,13 @@ import 'package:material_you/material_you.dart';
 
 class MD3FullScreenDialog extends StatelessWidget {
   const MD3FullScreenDialog({
-    Key key,
+    Key? key,
     this.title,
-    @required this.action,
-    @required this.body,
+    required this.action,
+    required this.body,
   }) : super(key: key);
 
-  final Widget title;
+  final Widget? title;
   final Widget action;
   final Widget body;
 
@@ -26,7 +26,7 @@ class MD3FullScreenDialog extends StatelessWidget {
         style: context.textTheme.titleLarge.copyWith(
           color: context.colorScheme.onSurface,
         ),
-        child: title,
+        child: title!,
       );
 
   @override

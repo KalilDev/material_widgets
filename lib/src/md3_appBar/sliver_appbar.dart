@@ -9,7 +9,7 @@ import 'size_scope.dart';
 
 class MD3SliverAppBar extends StatefulWidget {
   const MD3SliverAppBar({
-    Key key,
+    Key? key,
     this.title,
     this.leading,
     this.actions = const [],
@@ -21,18 +21,18 @@ class MD3SliverAppBar extends StatefulWidget {
 
   /// Not on the spec, but may be useful.
   MD3SliverAppBar.center({
-    Key key,
+    Key? key,
     this.title,
     this.leading,
-    Widget action,
+    Widget? action,
     this.expandable = true,
     this.primary = true,
     this.pinned = true,
   })  : _center = true,
         actions = action == null ? [] : [action],
         super(key: key);
-  final Widget title;
-  final Widget leading;
+  final Widget? title;
+  final Widget? leading;
   final List<Widget> actions;
 
   /// Whether or not this [MD3SliverAppBar] can expand from an small appbar to
@@ -48,7 +48,7 @@ class MD3SliverAppBar extends StatefulWidget {
 }
 
 class _MD3SliverAppBarState extends State<MD3SliverAppBar> {
-  Handle<MD3AppBarSizeScopeState/*!*/> _sizeScopeHandle;
+  late Handle<MD3AppBarSizeScopeState> _sizeScopeHandle;
 
   static bool _shouldNotifySize(MD3RawAppBar widget) =>
       widget.primary && widget.notifySize;
@@ -56,7 +56,7 @@ class _MD3SliverAppBarState extends State<MD3SliverAppBar> {
   double get _bottomPadding => 28;
 
   double get _bottomHeight => widget.expandable ? 88 : 0;
-  double _height;
+  double? _height;
 
   void initState() {
     super.initState();
@@ -128,26 +128,26 @@ class _MD3SliverAppBarState extends State<MD3SliverAppBar> {
 
 class _MD3SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   _MD3SliverAppBarDelegate({
-    @required this.bottomTitleTextStyle,
-    @required this.titleTextStyle,
-    @required this.title,
-    @required this.bottomHeight,
-    @required this.bottomPadding,
-    @required this.topPadding,
-    @required this.leading,
-    @required this.actions,
-    @required this.primary,
-    @required this.notifySize,
-    @required this.center,
+    required this.bottomTitleTextStyle,
+    required this.titleTextStyle,
+    required this.title,
+    required this.bottomHeight,
+    required this.bottomPadding,
+    required this.topPadding,
+    required this.leading,
+    required this.actions,
+    required this.primary,
+    required this.notifySize,
+    required this.center,
   });
 
   final TextStyle bottomTitleTextStyle;
   final TextStyle titleTextStyle;
-  final Widget title;
+  final Widget? title;
   final double bottomHeight;
   final EdgeInsetsGeometry bottomPadding;
   final double topPadding;
-  final Widget leading;
+  final Widget? leading;
   final List<Widget> actions;
   final bool primary;
   final ValueChanged<double> notifySize;
@@ -161,8 +161,8 @@ class _MD3SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   ) {
     final bottomPadding =
         this.bottomPadding.resolve(Directionality.of(context));
-    final titleHeight = bottomTitleTextStyle.fontSize *
-        (MediaQuery.maybeOf(context).textScaleFactor ?? 1) *
+    final titleHeight = bottomTitleTextStyle.fontSize! *
+        (MediaQuery.maybeOf(context)!.textScaleFactor ?? 1) *
         (bottomTitleTextStyle.height ?? 1);
     final bottomTitleTopPaddding =
         bottomHeight - titleHeight - bottomPadding.bottom;
@@ -170,10 +170,10 @@ class _MD3SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
     var bottomTitleOpacity =
         (shrinkOffset - bottomTitleTopPaddding) / titleHeight;
     bottomTitleOpacity = 1 - bottomTitleOpacity;
-    bottomTitleOpacity = bottomTitleOpacity.clamp(0.0, 1.0) as double;
+    bottomTitleOpacity = bottomTitleOpacity.clamp(0.0, 1.0);
     var topTitleOpacity =
         (shrinkOffset - bottomTitleAndTopPadddingHeight) / bottomPadding.bottom;
-    topTitleOpacity = topTitleOpacity.clamp(0.0, 1.0) as double;
+    topTitleOpacity = topTitleOpacity.clamp(0.0, 1.0);
     final fullHeight =
         (maxExtent - shrinkOffset).clamp(minExtent, maxExtent).toDouble();
     notifySize(fullHeight);
@@ -253,9 +253,9 @@ class _MD3SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   }
 
   DefaultTextStyle _opacityTextStyle({
-    double opacity,
-    TextStyle style,
-    Widget child,
+    required double opacity,
+    required TextStyle style,
+    Widget? child,
   }) =>
       DefaultTextStyle(
         style: style,

@@ -5,14 +5,14 @@ import 'package:material_you/material_you.dart';
 
 class FilledCard extends CardStyleCard {
   const FilledCard({
-    Key key,
-    VoidCallback onPressed,
-    VoidCallback onLongPress,
-    ValueChanged<bool> onHover,
-    ValueChanged<bool> onFocusChange,
-    FocusNode focusNode,
-    CardStyle style,
-    @required Widget child,
+    Key? key,
+    VoidCallback? onPressed,
+    VoidCallback? onLongPress,
+    ValueChanged<bool>? onHover,
+    ValueChanged<bool>? onFocusChange,
+    FocusNode? focusNode,
+    CardStyle? style,
+    required Widget child,
   }) : super(
           key: key,
           onPressed: onPressed,
@@ -25,13 +25,13 @@ class FilledCard extends CardStyleCard {
         );
 
   static CardStyle styleFrom({
-    Color backgroundColor,
-    Color foregroundColor,
-    MaterialStateProperty<MD3ElevationLevel> elevation,
-    MD3StateLayerOpacityTheme stateLayerOpacity,
-    Color shadowColor,
-    EdgeInsetsGeometry padding,
-    OutlinedBorder shape,
+    Color? backgroundColor,
+    Color? foregroundColor,
+    MaterialStateProperty<MD3ElevationLevel>? elevation,
+    MD3StateLayerOpacityTheme? stateLayerOpacity,
+    Color? shadowColor,
+    EdgeInsetsGeometry? padding,
+    OutlinedBorder? shape,
   }) {
     if (stateLayerOpacity != null) {
       ArgumentError.checkNotNull(foregroundColor, 'foregroundColor');
@@ -44,7 +44,7 @@ class FilledCard extends CardStyleCard {
       stateLayerColor: stateLayerOpacity == null
           ? null
           : MD3StateOverlayColor(
-              foregroundColor,
+              foregroundColor!,
               stateLayerOpacity,
             ),
       elevationTintColor: null,
@@ -84,7 +84,7 @@ class FilledCard extends CardStyleCard {
 class FilledCardThemeData with Diagnosticable {
   const FilledCardThemeData({this.style});
 
-  final CardStyle style;
+  final CardStyle? style;
 
   /*static FilledCardThemeData lerp(
       FilledCardThemeData a, FilledCardThemeData b, double t) {
@@ -117,16 +117,16 @@ class FilledCardThemeData with Diagnosticable {
 
 class FilledCardTheme extends InheritedTheme {
   const FilledCardTheme({
-    Key key,
-    @required this.data,
-    @required Widget child,
+    Key? key,
+    required this.data,
+    required Widget child,
   })  : assert(data != null),
         super(key: key, child: child);
 
   final FilledCardThemeData data;
 
   static FilledCardThemeData of(BuildContext context) {
-    final FilledCardTheme buttonTheme =
+    final FilledCardTheme? buttonTheme =
         context.dependOnInheritedWidgetOfExactType<FilledCardTheme>();
     return buttonTheme?.data ?? const FilledCardThemeData();
   }

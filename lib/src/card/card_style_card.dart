@@ -22,17 +22,17 @@ class CardStyle {
     this.clipBehavior,
   });
 
-  final MaterialStateProperty<MD3ElevationLevel> elevation;
-  final MaterialStateProperty<Color> stateLayerColor;
-  final MaterialStateProperty<OutlinedBorder>/*?*//*?*/ shape;
-  final MaterialStateProperty<Color> backgroundColor;
-  final MaterialStateProperty<Color> shadowColor;
-  final MaterialStateProperty<Color> elevationTintColor;
-  final MaterialStateProperty<Color> foregroundColor;
-  final MaterialStateProperty<EdgeInsetsGeometry> padding;
-  final MaterialStateProperty<MouseCursor> mouseCursor;
-  final MaterialStateProperty<BorderSide> borderSide;
-  final Clip clipBehavior;
+  final MaterialStateProperty<MD3ElevationLevel>? elevation;
+  final MaterialStateProperty<Color>? stateLayerColor;
+  final MaterialStateProperty<OutlinedBorder>?/*?*/ shape;
+  final MaterialStateProperty<Color>? backgroundColor;
+  final MaterialStateProperty<Color>? shadowColor;
+  final MaterialStateProperty<Color>? elevationTintColor;
+  final MaterialStateProperty<Color>? foregroundColor;
+  final MaterialStateProperty<EdgeInsetsGeometry>? padding;
+  final MaterialStateProperty<MouseCursor>? mouseCursor;
+  final MaterialStateProperty<BorderSide>? borderSide;
+  final Clip? clipBehavior;
 
   CardStyle merge(CardStyle other) => CardStyle(
         elevation: other.elevation ?? elevation,
@@ -52,17 +52,17 @@ class CardStyle {
   static const double kMaxCardSpacing = 8;
 
   CardStyle copyWith({
-    MaterialStateProperty<MD3ElevationLevel> elevation,
-    MaterialStateProperty<Color> stateLayerColor,
-    MaterialStateProperty<OutlinedBorder> shape,
-    MaterialStateProperty<Color> backgroundColor,
-    MaterialStateProperty<Color> shadowColor,
-    MaterialStateProperty<Color> elevationTintColor,
-    MaterialStateProperty<Color> foregroundColor,
-    MaterialStateProperty<EdgeInsetsGeometry> padding,
-    MaterialStateProperty<MouseCursor> mouseCursor,
-    MaterialStateProperty<BorderSide> borderSide,
-    Clip clipBehavior,
+    MaterialStateProperty<MD3ElevationLevel>? elevation,
+    MaterialStateProperty<Color>? stateLayerColor,
+    MaterialStateProperty<OutlinedBorder>? shape,
+    MaterialStateProperty<Color>? backgroundColor,
+    MaterialStateProperty<Color>? shadowColor,
+    MaterialStateProperty<Color>? elevationTintColor,
+    MaterialStateProperty<Color>? foregroundColor,
+    MaterialStateProperty<EdgeInsetsGeometry>? padding,
+    MaterialStateProperty<MouseCursor>? mouseCursor,
+    MaterialStateProperty<BorderSide>? borderSide,
+    Clip? clipBehavior,
   }) =>
       CardStyle(
         elevation: elevation ?? this.elevation,
@@ -80,34 +80,34 @@ class CardStyle {
 }
 
 abstract class CardStyleCard extends StatefulWidget {
-  final VoidCallback onPressed;
-  final VoidCallback onLongPress;
-  final ValueChanged<bool> onHover;
-  final ValueChanged<bool> onFocusChange;
-  final FocusNode focusNode;
-  final CardStyle style;
+  final VoidCallback? onPressed;
+  final VoidCallback? onLongPress;
+  final ValueChanged<bool>? onHover;
+  final ValueChanged<bool>? onFocusChange;
+  final FocusNode? focusNode;
+  final CardStyle? style;
   final Widget child;
 
   const CardStyleCard({
-    Key key,
+    Key? key,
     this.onPressed,
     this.onLongPress,
     this.onHover,
     this.onFocusChange,
     this.focusNode,
     this.style,
-    @required this.child,
+    required this.child,
   }) : super(key: key);
 
   CardStyle defaultStyleOf(BuildContext context);
-  CardStyle/*?*/ themeStyleOf(BuildContext context);
+  CardStyle? themeStyleOf(BuildContext context);
 
   @override
   State<CardStyleCard> createState() => _CardStyleCardState();
 }
 
 class _CardStyleCardState extends State<CardStyleCard> with MaterialStateMixin {
-  FocusNode focus;
+  FocusNode? focus;
 
   void initState() {
     super.initState();
@@ -119,7 +119,7 @@ class _CardStyleCardState extends State<CardStyleCard> with MaterialStateMixin {
     if (oldWidget.focusNode == widget.focusNode) {
       return;
     }
-    focus.dispose();
+    focus!.dispose();
     focus = widget.focusNode ?? FocusNode();
   }
 
@@ -194,7 +194,7 @@ class _CardStyleCardState extends State<CardStyleCard> with MaterialStateMixin {
   Widget build(BuildContext context) {
     final style = widget
         .defaultStyleOf(context)
-        .merge(widget.themeStyleOf(context))
+        .merge(widget.themeStyleOf(context)!)
         .merge(widget.style ?? CardStyle());
     return GestureDetector(
       onLongPressStart: _onLongPressDown,
@@ -213,7 +213,7 @@ class _CardStyleCardState extends State<CardStyleCard> with MaterialStateMixin {
     );
   }
 
-  Widget _foreground(Color color, {Widget child}) => DefaultTextStyle.merge(
+  Widget _foreground(Color color, {required Widget child}) => DefaultTextStyle.merge(
         style: TextStyle(color: color),
         child: IconTheme.merge(
           data: IconThemeData(
@@ -224,10 +224,10 @@ class _CardStyleCardState extends State<CardStyleCard> with MaterialStateMixin {
       );
 
   Card _buildCard(CardStyle style) {
-    final shape = style.shape.resolve(materialStates);
-    final elevation = style.elevation.resolve(materialStates);
-    final foreground = style.foregroundColor.resolve(materialStates);
-    final backgroundColor = style.backgroundColor.resolve(materialStates);
+    final shape = style.shape!.resolve(materialStates);
+    final elevation = style.elevation!.resolve(materialStates);
+    final foreground = style.foregroundColor!.resolve(materialStates);
+    final backgroundColor = style.backgroundColor!.resolve(materialStates);
     final tintColor = style.elevationTintColor?.resolve(materialStates);
     final borderSide = style.borderSide?.resolve(materialStates);
 
@@ -240,7 +240,7 @@ class _CardStyleCardState extends State<CardStyleCard> with MaterialStateMixin {
             ),
       elevation: elevation.value,
       shape: shape?.copyWith(side: borderSide),
-      shadowColor: style.shadowColor.resolve(materialStates),
+      shadowColor: style.shadowColor!.resolve(materialStates),
       margin: EdgeInsets.zero,
       clipBehavior: style.clipBehavior ?? Clip.none,
       child: InkWell(

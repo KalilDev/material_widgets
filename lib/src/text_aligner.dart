@@ -5,38 +5,38 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 
 class _TextAlignPainter extends CustomPainter {
-  final TextStyle titleStyle;
-  final String title;
+  final TextStyle? titleStyle;
+  final String? title;
   final double titleBodyBaselineDistance;
   final List<String> body;
   final double bodyBaselineHeight;
-  final TextStyle bodyStyle;
+  final TextStyle? bodyStyle;
   final TextDirection textDirection;
   final TextAlign titleAlign;
   final TextAlign bodyAlign;
   final bool showBaselines;
-  final _metricsCache = <String/*!*/, List<ui.LineMetrics>>{};
+  final _metricsCache = <String, List<ui.LineMetrics>>{};
 
   _TextAlignPainter({
-    @required this.titleStyle,
-    @required this.title,
-    @required this.titleBodyBaselineDistance,
-    @required this.body,
-    @required this.bodyBaselineHeight,
-    @required this.bodyStyle,
-    @required this.textDirection,
-    @required this.titleAlign,
-    @required this.bodyAlign,
-    @required this.showBaselines,
+    required this.titleStyle,
+    required this.title,
+    required this.titleBodyBaselineDistance,
+    required this.body,
+    required this.bodyBaselineHeight,
+    required this.bodyStyle,
+    required this.textDirection,
+    required this.titleAlign,
+    required this.bodyAlign,
+    required this.showBaselines,
   });
 
   Size layoutSize(BoxConstraints constraints) {
     final titlePainter = _painter(
-      title,
+      title!,
       isTitle: true,
     );
     final titleMetrics = _layoutAndMetrics(
-      title,
+      title!,
       titlePainter,
       minWidth: constraints.minWidth,
       maxWidth: constraints.maxWidth,
@@ -75,7 +75,7 @@ class _TextAlignPainter extends CustomPainter {
     return Size(width, height);
   }
 
-  TextPainter _painter(String/*!*/ text, {bool isTitle = false}) => TextPainter(
+  TextPainter _painter(String text, {bool isTitle = false}) => TextPainter(
         text: TextSpan(
           text: text,
           style: isTitle ? titleStyle : bodyStyle,
@@ -85,7 +85,7 @@ class _TextAlignPainter extends CustomPainter {
       );
 
   List<ui.LineMetrics> _layoutAndMetrics(
-    String/*!*/ key,
+    String key,
     TextPainter painter, {
     double minWidth = 0.0,
     double maxWidth = double.infinity,
@@ -133,7 +133,7 @@ class _TextAlignPainter extends CustomPainter {
     // if start is null, it will be Offset.zero, otherwise it will be the
     // previous baseline
     Offset paintTitle(TextPainter painter) {
-      final metrics = _layoutAndMetrics(title, painter, maxWidth: size.width);
+      final metrics = _layoutAndMetrics(title!, painter, maxWidth: size.width);
       alignedPaint(painter, Offset.zero);
       return Offset(0, metrics.last.baseline);
     }
@@ -155,8 +155,8 @@ class _TextAlignPainter extends CustomPainter {
     void paintBodyPart(
       String text,
       Offset startOffset, {
-      Offset previousStart,
-      bool drawOnBaseline,
+      Offset? previousStart,
+      required bool drawOnBaseline,
     }) {
       final painter = _painter(text);
       final metrics = _layoutAndMetrics(text, painter, maxWidth: size.width);
@@ -229,21 +229,21 @@ class _TextAlignPainter extends CustomPainter {
 /// body[1]                    |  -> [bodyBaselineHeight]
 /// ___________________________ -> body[1] baseline
 class TextAligner extends StatelessWidget {
-  final TextStyle titleStyle;
-  final String title;
+  final TextStyle? titleStyle;
+  final String? title;
   final double titleBodyBaselineDistance;
   final List<String> body;
   final double bodyBaselineHeight;
-  final TextStyle bodyStyle;
-  final TextAlign titleAlign;
-  final TextAlign bodyAlign;
+  final TextStyle? bodyStyle;
+  final TextAlign? titleAlign;
+  final TextAlign? bodyAlign;
 
   TextAligner({
-    Key key,
+    Key? key,
     this.titleStyle,
-    @required this.title,
+    required this.title,
     this.titleBodyBaselineDistance = 32.0,
-    @required this.body,
+    required this.body,
     this.bodyBaselineHeight = 24.0,
     this.bodyStyle,
     this.titleAlign,

@@ -7,15 +7,15 @@ import 'filled_card.dart';
 
 class ColoredCard extends FilledCard {
   const ColoredCard({
-    Key key,
-    @required this.color,
-    VoidCallback onPressed,
-    VoidCallback onLongPress,
-    ValueChanged<bool> onHover,
-    ValueChanged<bool> onFocusChange,
-    FocusNode focusNode,
-    CardStyle style,
-    @required Widget child,
+    Key? key,
+    required this.color,
+    VoidCallback? onPressed,
+    VoidCallback? onLongPress,
+    ValueChanged<bool>? onHover,
+    ValueChanged<bool>? onFocusChange,
+    FocusNode? focusNode,
+    CardStyle? style,
+    required Widget child,
   }) : super(
           key: key,
           onPressed: onPressed,
@@ -30,9 +30,9 @@ class ColoredCard extends FilledCard {
   final CustomColorScheme color;
 
   static CardStyle styleFrom({
-    Color backgroundColor,
-    Color foregroundColor,
-    MD3StateLayerOpacityTheme stateLayerOpacity,
+    Color? backgroundColor,
+    Color? foregroundColor,
+    MD3StateLayerOpacityTheme? stateLayerOpacity,
   }) {
     if (stateLayerOpacity != null) {
       ArgumentError.checkNotNull(foregroundColor, 'foregroundColor');
@@ -42,7 +42,7 @@ class ColoredCard extends FilledCard {
       stateLayerColor: stateLayerOpacity == null
           ? null
           : MD3StateOverlayColor(
-              foregroundColor,
+              foregroundColor!,
               stateLayerOpacity,
             ),
       foregroundColor: ButtonStyleButton.allOrNull(foregroundColor),

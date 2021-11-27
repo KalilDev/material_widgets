@@ -27,12 +27,12 @@ class MD3BottomNavigationDelegate extends MD3NavigationDelegate {
     this.showModalDrawerOnCompact = true,
   });
 
-  final PreferredSizeWidget appBar;
-  final Widget drawerHeader;
-  final Widget endDrawer;
-  final Widget endModalDrawer;
-  final Widget floatingActionButton;
-  final FloatingActionButtonBuilder navigationFabBuilder;
+  final PreferredSizeWidget? appBar;
+  final Widget? drawerHeader;
+  final Widget? endDrawer;
+  final Widget? endModalDrawer;
+  final Widget? floatingActionButton;
+  final FloatingActionButtonBuilder? navigationFabBuilder;
   final bool showModalDrawerOnCompact;
 
   @override
@@ -125,12 +125,12 @@ class MD3DrawersNavigationDelegate extends MD3NavigationDelegate {
     this.floatingActionButton,
   });
 
-  final PreferredSizeWidget appBar;
-  final Widget drawerHeader;
-  final Widget bottomNavigationBar;
-  final Widget endDrawer;
-  final Widget endModalDrawer;
-  final Widget floatingActionButton;
+  final PreferredSizeWidget? appBar;
+  final Widget? drawerHeader;
+  final Widget? bottomNavigationBar;
+  final Widget? endDrawer;
+  final Widget? endModalDrawer;
+  final Widget? floatingActionButton;
 
   @override
   MD3AdaptativeScaffoldSpec buildCompact(
@@ -192,15 +192,15 @@ extension _<T> on Iterable<T> {
 
 class _ExpandableRail extends StatefulWidget {
   const _ExpandableRail({
-    Key key,
-    this.spec,
+    Key? key,
+    required this.spec,
     this.floatingActionButtonBuilder,
     this.header,
     this.canExpand = true,
   }) : super(key: key);
-  final MD3NavigationSpec/*!*/ spec;
-  final FloatingActionButtonBuilder floatingActionButtonBuilder;
-  final Widget header;
+  final MD3NavigationSpec spec;
+  final FloatingActionButtonBuilder? floatingActionButtonBuilder;
+  final Widget? header;
   final bool canExpand;
 
   @override
@@ -211,7 +211,7 @@ class _ExpandableRailState extends State<_ExpandableRail>
     with SingleTickerProviderStateMixin {
   final shrinkableDrawerController =
       GlobalKey<ShrinkableDrawerControllerState>();
-  AnimationController iconAnimController;
+  late AnimationController iconAnimController;
   void initState() {
     super.initState();
     iconAnimController = AnimationController(
@@ -226,7 +226,7 @@ class _ExpandableRailState extends State<_ExpandableRail>
     super.didUpdateWidget(oldWidget);
     if (!widget.canExpand && oldWidget.canExpand) {
       // Close it if it was open
-      shrinkableDrawerController.currentState.close();
+      shrinkableDrawerController.currentState!.close();
     }
   }
 
@@ -246,8 +246,8 @@ class _ExpandableRailState extends State<_ExpandableRail>
   }
 
   void _toggleDrawer() => _isOpen
-      ? shrinkableDrawerController.currentState.close()
-      : shrinkableDrawerController.currentState.open();
+      ? shrinkableDrawerController.currentState!.close()
+      : shrinkableDrawerController.currentState!.open();
 
   Widget _menuButton(BuildContext context) => SizedBox(
         height: 64,
@@ -273,7 +273,7 @@ class _ExpandableRailState extends State<_ExpandableRail>
                 child: _removeFabElevation(
                   context,
                   Builder(
-                    builder: (context) => widget.floatingActionButtonBuilder(
+                    builder: (context) => widget.floatingActionButtonBuilder!(
                       context,
                       _isOpen,
                     ),
@@ -286,7 +286,7 @@ class _ExpandableRailState extends State<_ExpandableRail>
         ],
       );
 
-  Widget _shrinkable(BuildContext context, Widget child) => SizeTransition(
+  Widget _shrinkable(BuildContext context, Widget? child) => SizeTransition(
         sizeFactor: iconAnimController,
         axis: Axis.horizontal,
         axisAlignment: -1,
@@ -317,7 +317,7 @@ class _ExpandableRailState extends State<_ExpandableRail>
           );
         },
       );
-  Widget _appBarSizedHeader(BuildContext context, double appBarHeight) =>
+  Widget _appBarSizedHeader(BuildContext context, double? appBarHeight) =>
       ConstrainedBox(
         constraints: BoxConstraints(
           maxHeight: appBarHeight ?? double.infinity,
@@ -363,7 +363,7 @@ class _ExpandableRailState extends State<_ExpandableRail>
 }
 
 Widget _drawer(BuildContext context,
-        {Widget child, bool level0Elevation = false}) =>
+        {Widget? child, bool level0Elevation = false}) =>
     Drawer(
       backgroundColor: context.elevation.level0.overlaidColor(
         context.colorScheme.surface,
@@ -375,7 +375,7 @@ Widget _drawer(BuildContext context,
 Widget _buildDrawer(
   BuildContext context,
   MD3NavigationSpec spec,
-  Widget drawerHeader, {
+  Widget? drawerHeader, {
   bool noLabel = false,
   bool tooltip = false,
   bool level0Elevation = false,

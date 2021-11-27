@@ -7,11 +7,11 @@ import '../shrinkable_drawer_controller.dart';
 
 class MD3AdaptativeScaffold extends StatelessWidget {
   const MD3AdaptativeScaffold({
-    Key key,
+    Key? key,
     this.scaffoldKey,
     this.appBar,
     this.bottomNavigationBar,
-    this.body,
+    required this.body,
     this.startDrawer,
     this.endDrawer,
     this.startModalDrawer,
@@ -21,15 +21,15 @@ class MD3AdaptativeScaffold extends StatelessWidget {
     this.bodyMargin = true,
   }) : super(key: key);
 
-  final GlobalKey<ScaffoldState> scaffoldKey;
-  final PreferredSizeWidget appBar;
-  final Widget bottomNavigationBar;
-  final Widget/*!*/ body;
-  final Widget startDrawer;
-  final Widget endDrawer;
-  final Widget startModalDrawer;
-  final Widget endModalDrawer;
-  final Widget floatingActionButton;
+  final GlobalKey<ScaffoldState>? scaffoldKey;
+  final PreferredSizeWidget? appBar;
+  final Widget? bottomNavigationBar;
+  final Widget body;
+  final Widget? startDrawer;
+  final Widget? endDrawer;
+  final Widget? startModalDrawer;
+  final Widget? endModalDrawer;
+  final Widget? floatingActionButton;
   final bool surfaceTintBackground;
   final bool bodyMargin;
 
@@ -78,29 +78,29 @@ class MD3AdaptativeScaffold extends StatelessWidget {
 
 class _BodySection extends StatelessWidget {
   const _BodySection({
-    Key key,
+    Key? key,
     this.scaffoldKey,
-    this.minMargin,
-    this.maxMargin,
+    required this.minMargin,
+    required this.maxMargin,
     this.appBar,
     this.bottomNavigationBar,
-    this.body,
+    required this.body,
     this.startDrawer,
     this.endDrawer,
-    this.background,
+    required this.background,
     this.floatingActionButton,
   }) : super(key: key);
 
-  final GlobalKey<ScaffoldState> scaffoldKey;
-  final double/*!*/ minMargin;
-  final double/*!*/ maxMargin;
-  final PreferredSizeWidget appBar;
-  final Widget bottomNavigationBar;
-  final Widget/*!*/ body;
-  final Widget startDrawer;
-  final Widget endDrawer;
-  final Color/*!*/ background;
-  final Widget floatingActionButton;
+  final GlobalKey<ScaffoldState>? scaffoldKey;
+  final double minMargin;
+  final double maxMargin;
+  final PreferredSizeWidget? appBar;
+  final Widget? bottomNavigationBar;
+  final Widget body;
+  final Widget? startDrawer;
+  final Widget? endDrawer;
+  final Color background;
+  final Widget? floatingActionButton;
 
   Widget _margin() => ConstrainedBox(
         constraints: BoxConstraints(

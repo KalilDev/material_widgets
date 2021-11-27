@@ -68,7 +68,7 @@ class MD3FilterChipTheme extends InheritedTheme {
 class MD3FilterChip extends MD3ChipStyleChip {
   MD3FilterChip({
     Key? key,
-    required VoidCallback onPressed,
+    required VoidCallback? onPressed,
     VoidCallback? onLongPress,
     ValueChanged<bool>? onHover,
     ValueChanged<bool>? onFocusChange,

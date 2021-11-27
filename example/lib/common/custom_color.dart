@@ -17,7 +17,7 @@ List<dynamic> customColorThemeFor(
   BuildContext context,
   bool harmonized,
   Color color,
-  String name,
+  String/*!*/ name,
 ) {
   CustomColorScheme colorScheme;
   if (color == null) {

@@ -67,7 +67,7 @@ class MD3InputChipTheme extends InheritedTheme {
 class MD3InputChip extends MD3ChipStyleChip {
   MD3InputChip({
     Key? key,
-    required VoidCallback onPressed,
+    required VoidCallback? onPressed,
     VoidCallback? onLongPress,
     ValueChanged<bool>? onHover,
     ValueChanged<bool>? onFocusChange,

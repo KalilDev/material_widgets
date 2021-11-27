@@ -68,7 +68,7 @@ class MD3AssistChipTheme extends InheritedTheme {
 class MD3AssistChip extends MD3ChipStyleChip {
   MD3AssistChip({
     Key? key,
-    required VoidCallback onPressed,
+    required VoidCallback? onPressed,
     VoidCallback? onLongPress,
     ValueChanged<bool>? onHover,
     ValueChanged<bool>? onFocusChange,

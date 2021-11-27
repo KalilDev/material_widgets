@@ -15,10 +15,10 @@ class GridParameters {
     this.mainAxisSpacing,
   });
 
-  final int columnCount;
-  final double itemWidth;
-  final double crossAxisSpacing;
-  final double mainAxisSpacing;
+  final int/*!*/ columnCount;
+  final double/*!*/ itemWidth;
+  final double/*!*/ crossAxisSpacing;
+  final double/*!*/ mainAxisSpacing;
 }
 
 /// Compute the column count and the width of each widget in a card grid.

@@ -105,8 +105,8 @@ class Home extends StatelessWidget {
     this.toggleDark,
     this.toggleRainbow,
   }) : super(key: key);
-  final VoidCallback toggleDark;
-  final VoidCallback toggleRainbow;
+  final VoidCallback/*!*/ toggleDark;
+  final VoidCallback/*!*/ toggleRainbow;
 
   Widget _buildFab(BuildContext context) {
     if (context.sizeClass == MD3WindowSizeClass.compact) {

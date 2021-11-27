@@ -68,7 +68,7 @@ class MD3SuggestionChipTheme extends InheritedTheme {
 class MD3SuggestionChip extends MD3ChipStyleChip {
   MD3SuggestionChip({
     Key? key,
-    required VoidCallback onPressed,
+    required VoidCallback? onPressed,
     VoidCallback? onLongPress,
     ValueChanged<bool>? onHover,
     ValueChanged<bool>? onFocusChange,

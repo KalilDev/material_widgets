@@ -2,7 +2,7 @@ import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 
 class SharedAxisSwitcher extends StatelessWidget {
-  final Widget child;
+  final Widget/*!*/ child;
   final SharedAxisTransitionType type;
   final Color color;
 
@@ -33,7 +33,7 @@ class SharedAxisSwitcher extends StatelessWidget {
 }
 
 class FadeThroughSwitcher extends StatelessWidget {
-  final Widget child;
+  final Widget/*!*/ child;
   final Color color;
 
   const FadeThroughSwitcher({

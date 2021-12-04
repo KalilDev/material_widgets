@@ -27,6 +27,7 @@ class _SliderDemoState extends State<SliderDemo> {
         label: Text('Toggle enabled'),
         icon: Icon(Icons.label_off),
       ),
+      appBar: MD3SmallAppBar(title: Text('Slider')),
       body: ListView(
         children: [
           margin,

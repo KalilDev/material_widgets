@@ -97,7 +97,7 @@ class _CardStyleCardState extends State<CardStyleCard>
     final tintColor = resolve((s) => s?.elevationTintColor);
     final foreground = resolve((s) => s?.foregroundColor);
     final padding = resolve((s) => s?.padding);
-    final mouseCursor = resolve((s) => s?.mouseCursor);
+    final interactiveMouseCursor = resolve((s) => s?.interactiveMouseCursor);
     final borderSide = resolve((s) => s?.side);
     final clipBehavior = effectiveValue((s) => s?.clipBehavior);
     final animationDuration = effectiveValue((s) => s?.animationDuration);
@@ -151,7 +151,8 @@ class _CardStyleCardState extends State<CardStyleCard>
         focusNode: widget.focusNode,
         onTap: widget.onPressed,
         onLongPress: widget.onLongPress,
-        mouseCursor: mouseCursor,
+        mouseCursor:
+            _isInteractive ? interactiveMouseCursor : MouseCursor.defer,
         onHighlightChanged: updateMaterialState(MaterialState.pressed),
         onHover: updateMaterialState(
           MaterialState.hovered,

@@ -15,7 +15,7 @@ class CardStyle with Diagnosticable {
     this.elevationTintColor,
     this.foregroundColor,
     this.padding,
-    this.mouseCursor,
+    this.interactiveMouseCursor,
     this.side,
     this.clipBehavior,
     this.animationDuration,
@@ -31,7 +31,7 @@ class CardStyle with Diagnosticable {
   final MaterialStateProperty<Color?>? elevationTintColor;
   final MaterialStateProperty<Color?>? foregroundColor;
   final MaterialStateProperty<EdgeInsetsGeometry?>? padding;
-  final MaterialStateProperty<MouseCursor?>? mouseCursor;
+  final MaterialStateProperty<MouseCursor?>? interactiveMouseCursor;
   final MaterialStateProperty<BorderSide?>? side;
   final Clip? clipBehavior;
   final Duration? animationDuration;
@@ -51,7 +51,7 @@ class CardStyle with Diagnosticable {
         elevationTintColor,
         foregroundColor,
         padding,
-        mouseCursor,
+        interactiveMouseCursor,
         side,
         clipBehavior,
         animationDuration,
@@ -76,7 +76,7 @@ class CardStyle with Diagnosticable {
         elevationTintColor == other.elevationTintColor &&
         foregroundColor == other.foregroundColor &&
         padding == other.padding &&
-        mouseCursor == other.mouseCursor &&
+        interactiveMouseCursor == other.interactiveMouseCursor &&
         side == other.side &&
         clipBehavior == other.clipBehavior &&
         animationDuration == other.animationDuration &&
@@ -93,7 +93,7 @@ class CardStyle with Diagnosticable {
     MaterialStateProperty<Color?>? elevationTintColor,
     MaterialStateProperty<Color?>? foregroundColor,
     MaterialStateProperty<EdgeInsetsGeometry?>? padding,
-    MaterialStateProperty<MouseCursor?>? mouseCursor,
+    MaterialStateProperty<MouseCursor?>? interactiveMouseCursor,
     MaterialStateProperty<BorderSide?>? side,
     Clip? clipBehavior,
     Duration? animationDuration,
@@ -109,7 +109,8 @@ class CardStyle with Diagnosticable {
         elevationTintColor: elevationTintColor ?? this.elevationTintColor,
         foregroundColor: foregroundColor ?? this.foregroundColor,
         padding: padding ?? this.padding,
-        mouseCursor: mouseCursor ?? this.mouseCursor,
+        interactiveMouseCursor:
+            interactiveMouseCursor ?? this.interactiveMouseCursor,
         side: side ?? this.side,
         clipBehavior: clipBehavior ?? this.clipBehavior,
         animationDuration: animationDuration ?? this.animationDuration,
@@ -137,7 +138,8 @@ class CardStyle with Diagnosticable {
       elevationTintColor: elevationTintColor ?? other.elevationTintColor,
       foregroundColor: foregroundColor ?? other.foregroundColor,
       padding: padding ?? other.padding,
-      mouseCursor: mouseCursor ?? other.mouseCursor,
+      interactiveMouseCursor:
+          interactiveMouseCursor ?? other.interactiveMouseCursor,
       side: side ?? other.side,
       clipBehavior: clipBehavior ?? other.clipBehavior,
       animationDuration: animationDuration ?? other.animationDuration,
@@ -164,7 +166,8 @@ class CardStyle with Diagnosticable {
           a?.foregroundColor, b?.foregroundColor, t, Color.lerp),
       padding: _lerpProperties<EdgeInsetsGeometry?>(
           a?.padding, b?.padding, t, EdgeInsetsGeometry.lerp),
-      mouseCursor: t < 0.5 ? a?.mouseCursor : b?.mouseCursor,
+      interactiveMouseCursor:
+          t < 0.5 ? a?.interactiveMouseCursor : b?.interactiveMouseCursor,
       side: _lerpSides(a?.side, b?.side, t),
       clipBehavior: t < 0.5 ? a?.clipBehavior : b?.clipBehavior,
       animationDuration: t < 0.5 ? a?.animationDuration : b?.animationDuration,
@@ -203,7 +206,7 @@ class CardStyle with Diagnosticable {
             'padding', padding,
             defaultValue: null));
     properties.add(DiagnosticsProperty<MaterialStateProperty<MouseCursor?>>(
-        'mouseCursor', mouseCursor,
+        'interactiveMouseCursor', interactiveMouseCursor,
         defaultValue: null));
     properties.add(DiagnosticsProperty<MaterialStateProperty<BorderSide?>>(
         'side', side,

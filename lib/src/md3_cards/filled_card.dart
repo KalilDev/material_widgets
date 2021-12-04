@@ -45,7 +45,8 @@ class FilledCard extends CardStyleCard {
     return CardStyle(
       backgroundColor: ButtonStyleButton.allOrNull(backgroundColor),
       elevation: elevation,
-      mouseCursor: MaterialStateProperty.all(MouseCursor.defer),
+      interactiveMouseCursor:
+          MaterialStateProperty.all(SystemMouseCursors.click),
       shadowColor: ButtonStyleButton.allOrNull(shadowColor),
       stateLayerColor: stateLayerOpacity == null
           ? null

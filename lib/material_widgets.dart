@@ -2,12 +2,6 @@ library material_widgets;
 
 export 'package:flutter_monet_theme/flutter_monet_theme.dart';
 
-export 'src/card/card_style_card.dart';
-export 'src/card/colored_card.dart';
-export 'src/card/draggable_card.dart';
-export 'src/card/elevated_card.dart';
-export 'src/card/filled_card.dart';
-export 'src/card/outlined_card.dart';
 export 'src/material_onboarding.dart';
 export 'src/md3_appBar/appbar.dart';
 export 'src/md3_appBar/raw_appbar.dart';
@@ -17,6 +11,13 @@ export 'src/md3_appBar/sliver_appbar.dart';
 export 'src/md3_buttons/fab.dart';
 export 'src/md3_buttons/filled.dart';
 export 'src/md3_buttons/filled_tonal.dart';
+export 'src/md3_cards/card_style.dart';
+export 'src/md3_cards/card_style_card.dart';
+export 'src/md3_cards/colored_card.dart';
+export 'src/md3_cards/draggable_card.dart';
+export 'src/md3_cards/elevated_card.dart';
+export 'src/md3_cards/filled_card.dart';
+export 'src/md3_cards/outlined_card.dart';
 export 'src/md3_chips/assist.dart';
 export 'src/md3_chips/chip_style_chip.dart';
 export 'src/md3_chips/filter.dart';

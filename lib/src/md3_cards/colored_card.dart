@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:material_widgets/src/card/card_style_card.dart';
 import 'package:material_you/material_you.dart';
 
+import 'card_style.dart';
+import 'card_style_card.dart';
 import 'filled_card.dart';
 
 class ColoredCard extends FilledCard {
@@ -50,12 +51,12 @@ class ColoredCard extends FilledCard {
 
   @override
   CardStyle defaultStyleOf(BuildContext context) {
-    return super.defaultStyleOf(context).merge(
-          styleFrom(
-            backgroundColor: color.colorContainer,
-            foregroundColor: color.onColorContainer,
-            stateLayerOpacity: context.stateOverlayOpacity,
-          ),
-        );
+    return styleFrom(
+      backgroundColor: color.colorContainer,
+      foregroundColor: color.onColorContainer,
+      stateLayerOpacity: context.stateOverlayOpacity,
+    ).merge(
+      super.defaultStyleOf(context),
+    );
   }
 }

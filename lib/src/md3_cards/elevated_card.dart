@@ -1,10 +1,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:material_widgets/src/card/card_style_card.dart';
 import 'package:material_you/material_you.dart';
 
-class FilledCard extends CardStyleCard {
-  const FilledCard({
+import 'card_style.dart';
+import 'card_style_card.dart';
+
+class ElevatedCard extends CardStyleCard {
+  const ElevatedCard({
     Key? key,
     VoidCallback? onPressed,
     VoidCallback? onLongPress,
@@ -26,12 +28,17 @@ class FilledCard extends CardStyleCard {
 
   static CardStyle styleFrom({
     Color? backgroundColor,
+    Color? backgroundTintColor,
     Color? foregroundColor,
     MaterialStateProperty<MD3ElevationLevel>? elevation,
     MD3StateLayerOpacityTheme? stateLayerOpacity,
     Color? shadowColor,
     EdgeInsetsGeometry? padding,
     OutlinedBorder? shape,
+    Clip? clipBehavior,
+    Duration? animationDuration,
+    bool? enableFeedback,
+    InteractiveInkFeatureFactory? splashFactory,
   }) {
     if (stateLayerOpacity != null) {
       ArgumentError.checkNotNull(foregroundColor, 'foregroundColor');
@@ -47,9 +54,14 @@ class FilledCard extends CardStyleCard {
               foregroundColor!,
               stateLayerOpacity,
             ),
+      elevationTintColor: ButtonStyleButton.allOrNull(backgroundTintColor),
       foregroundColor: ButtonStyleButton.allOrNull(foregroundColor),
       shape: ButtonStyleButton.allOrNull(shape),
       padding: ButtonStyleButton.allOrNull(padding),
+      clipBehavior: clipBehavior ?? Clip.none,
+      animationDuration: animationDuration ?? kThemeChangeDuration,
+      enableFeedback: enableFeedback ?? true,
+      splashFactory: splashFactory,
     );
   }
 
@@ -59,37 +71,38 @@ class FilledCard extends CardStyleCard {
     final scheme = context.colorScheme;
     final elevation = context.elevation;
     return styleFrom(
-      backgroundColor: scheme.surfaceVariant,
+      backgroundColor: scheme.surface,
+      backgroundTintColor: scheme.primary,
       foregroundColor: scheme.onSurface,
       elevation: MD3MaterialStateElevation(
-        elevation.level0,
         elevation.level1,
-        focused: elevation.level1,
+        elevation.level2,
         dragged: elevation.level3,
       ),
       stateLayerOpacity: context.stateOverlayOpacity,
       shadowColor: theme.shadowColor,
       padding: EdgeInsets.zero,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      splashFactory: theme.splashFactory,
     );
   }
 
   @override
   CardStyle themeStyleOf(BuildContext context) =>
-      FilledCardTheme.of(context).style ?? CardStyle();
+      ElevatedCardTheme.of(context).style ?? CardStyle();
 }
 
 @immutable
-class FilledCardThemeData with Diagnosticable {
-  const FilledCardThemeData({this.style});
+class ElevatedCardThemeData with Diagnosticable {
+  const ElevatedCardThemeData({this.style});
 
   final CardStyle? style;
 
-  /*static FilledCardThemeData lerp(
-      FilledCardThemeData a, FilledCardThemeData b, double t) {
+  /*static ElevatedCardThemeData lerp(
+      ElevatedCardThemeData a, ElevatedCardThemeData b, double t) {
     assert(t != null);
     if (a == null && b == null) return null;
-    return FilledCardThemeData(
+    return ElevatedCardThemeData(
       style: CardStyle.lerp(a?.style, b?.style, t),
     );
   }*/
@@ -103,7 +116,7 @@ class FilledCardThemeData with Diagnosticable {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
     if (other.runtimeType != runtimeType) return false;
-    return other is FilledCardThemeData && other.style == style;
+    return other is ElevatedCardThemeData && other.style == style;
   }
 
   @override
@@ -115,26 +128,27 @@ class FilledCardThemeData with Diagnosticable {
   }
 }
 
-class FilledCardTheme extends InheritedTheme {
-  const FilledCardTheme({
+class ElevatedCardTheme extends InheritedTheme {
+  const ElevatedCardTheme({
     Key? key,
     required this.data,
     required Widget child,
   }) : super(key: key, child: child);
 
-  final FilledCardThemeData data;
+  final ElevatedCardThemeData data;
 
-  static FilledCardThemeData of(BuildContext context) {
-    final FilledCardTheme? buttonTheme =
-        context.dependOnInheritedWidgetOfExactType<FilledCardTheme>();
-    return buttonTheme?.data ?? const FilledCardThemeData();
+  static ElevatedCardThemeData of(BuildContext context) {
+    final ElevatedCardTheme? buttonTheme =
+        context.dependOnInheritedWidgetOfExactType<ElevatedCardTheme>();
+    return buttonTheme?.data ?? const ElevatedCardThemeData();
   }
 
   @override
   Widget wrap(BuildContext context, Widget child) {
-    return FilledCardTheme(data: data, child: child);
+    return ElevatedCardTheme(data: data, child: child);
   }
 
   @override
-  bool updateShouldNotify(FilledCardTheme oldWidget) => data != oldWidget.data;
+  bool updateShouldNotify(ElevatedCardTheme oldWidget) =>
+      data != oldWidget.data;
 }

@@ -1,10 +1,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:material_widgets/src/card/card_style_card.dart';
 import 'package:material_you/material_you.dart';
 
-class OutlinedCard extends CardStyleCard {
-  const OutlinedCard({
+import 'card_style.dart';
+import 'card_style_card.dart';
+
+class FilledCard extends CardStyleCard {
+  const FilledCard({
     Key? key,
     VoidCallback? onPressed,
     VoidCallback? onLongPress,
@@ -26,14 +28,16 @@ class OutlinedCard extends CardStyleCard {
 
   static CardStyle styleFrom({
     Color? backgroundColor,
-    Color? backgroundTintColor,
     Color? foregroundColor,
-    BorderSide? borderSide,
     MaterialStateProperty<MD3ElevationLevel>? elevation,
     MD3StateLayerOpacityTheme? stateLayerOpacity,
     Color? shadowColor,
     EdgeInsetsGeometry? padding,
     OutlinedBorder? shape,
+    Clip? clipBehavior,
+    Duration? animationDuration,
+    bool? enableFeedback,
+    InteractiveInkFeatureFactory? splashFactory,
   }) {
     if (stateLayerOpacity != null) {
       ArgumentError.checkNotNull(foregroundColor, 'foregroundColor');
@@ -49,11 +53,13 @@ class OutlinedCard extends CardStyleCard {
               foregroundColor!,
               stateLayerOpacity,
             ),
-      elevationTintColor: ButtonStyleButton.allOrNull(backgroundTintColor),
       foregroundColor: ButtonStyleButton.allOrNull(foregroundColor),
       shape: ButtonStyleButton.allOrNull(shape),
-      borderSide: ButtonStyleButton.allOrNull(borderSide),
       padding: ButtonStyleButton.allOrNull(padding),
+      clipBehavior: clipBehavior ?? Clip.none,
+      animationDuration: animationDuration ?? kThemeChangeDuration,
+      enableFeedback: enableFeedback ?? true,
+      splashFactory: splashFactory,
     );
   }
 
@@ -63,12 +69,8 @@ class OutlinedCard extends CardStyleCard {
     final scheme = context.colorScheme;
     final elevation = context.elevation;
     return styleFrom(
-      backgroundColor: scheme.surface,
-      backgroundTintColor: MD3ElevationLevel.surfaceTint(scheme),
+      backgroundColor: scheme.surfaceVariant,
       foregroundColor: scheme.onSurface,
-      borderSide: BorderSide(
-        color: scheme.outline,
-      ),
       elevation: MD3MaterialStateElevation(
         elevation.level0,
         elevation.level1,
@@ -78,28 +80,27 @@ class OutlinedCard extends CardStyleCard {
       stateLayerOpacity: context.stateOverlayOpacity,
       shadowColor: theme.shadowColor,
       padding: EdgeInsets.zero,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      splashFactory: theme.splashFactory,
     );
   }
 
   @override
   CardStyle themeStyleOf(BuildContext context) =>
-      OutlinedCardTheme.of(context).style ?? CardStyle();
+      FilledCardTheme.of(context).style ?? CardStyle();
 }
 
 @immutable
-class OutlinedCardThemeData with Diagnosticable {
-  const OutlinedCardThemeData({this.style});
+class FilledCardThemeData with Diagnosticable {
+  const FilledCardThemeData({this.style});
 
   final CardStyle? style;
 
-  /*static OutlinedCardThemeData lerp(
-      OutlinedCardThemeData a, OutlinedCardThemeData b, double t) {
+  /*static FilledCardThemeData lerp(
+      FilledCardThemeData a, FilledCardThemeData b, double t) {
     assert(t != null);
     if (a == null && b == null) return null;
-    return OutlinedCardThemeData(
+    return FilledCardThemeData(
       style: CardStyle.lerp(a?.style, b?.style, t),
     );
   }*/
@@ -113,7 +114,7 @@ class OutlinedCardThemeData with Diagnosticable {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
     if (other.runtimeType != runtimeType) return false;
-    return other is OutlinedCardThemeData && other.style == style;
+    return other is FilledCardThemeData && other.style == style;
   }
 
   @override
@@ -125,27 +126,26 @@ class OutlinedCardThemeData with Diagnosticable {
   }
 }
 
-class OutlinedCardTheme extends InheritedTheme {
-  const OutlinedCardTheme({
+class FilledCardTheme extends InheritedTheme {
+  const FilledCardTheme({
     Key? key,
     required this.data,
     required Widget child,
   }) : super(key: key, child: child);
 
-  final OutlinedCardThemeData data;
+  final FilledCardThemeData data;
 
-  static OutlinedCardThemeData of(BuildContext context) {
-    final OutlinedCardTheme? buttonTheme =
-        context.dependOnInheritedWidgetOfExactType<OutlinedCardTheme>();
-    return buttonTheme?.data ?? const OutlinedCardThemeData();
+  static FilledCardThemeData of(BuildContext context) {
+    final FilledCardTheme? buttonTheme =
+        context.dependOnInheritedWidgetOfExactType<FilledCardTheme>();
+    return buttonTheme?.data ?? const FilledCardThemeData();
   }
 
   @override
   Widget wrap(BuildContext context, Widget child) {
-    return OutlinedCardTheme(data: data, child: child);
+    return FilledCardTheme(data: data, child: child);
   }
 
   @override
-  bool updateShouldNotify(OutlinedCardTheme oldWidget) =>
-      data != oldWidget.data;
+  bool updateShouldNotify(FilledCardTheme oldWidget) => data != oldWidget.data;
 }

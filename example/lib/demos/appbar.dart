@@ -1,7 +1,9 @@
+import 'package:example/common/custom_color.dart';
 import 'package:example/common/layout.dart';
 import 'package:material_you/material_you.dart';
 import 'package:flutter/material.dart';
 import 'package:material_widgets/material_widgets.dart';
+import 'package:material_you/material_you.dart';
 
 class AppBarDemo extends StatelessWidget {
   const AppBarDemo({Key? key}) : super(key: key);
@@ -19,6 +21,7 @@ class AppBarDemo extends StatelessWidget {
           Text('Centered', style: title),
           gutter,
           _AppBarWrapper(
+            color: schemeForSeed(context, kYellowSeed),
             child: MD3CenterAlignedAppBar(
               leading: Icon(null),
               primary: false,
@@ -30,6 +33,7 @@ class AppBarDemo extends StatelessWidget {
           Text('Small', style: title),
           gutter,
           _AppBarWrapper(
+            color: schemeForSeed(context, kPinkSeed),
             child: MD3SmallAppBar(
               leading: Icon(null),
               primary: false,
@@ -45,6 +49,7 @@ class AppBarDemo extends StatelessWidget {
           Text('Medium', style: title),
           gutter,
           _AppBarWrapper(
+            color: schemeForSeed(context, kBlueSeed),
             child: MD3MediumAppBar(
               leading: Icon(null),
               primary: false,
@@ -60,6 +65,7 @@ class AppBarDemo extends StatelessWidget {
           Text('Large', style: title),
           gutter,
           _AppBarWrapper(
+            color: schemeForSeed(context, kDarkBlueSeed),
             child: MD3LargeAppBar(
               leading: Icon(null),
               primary: false,
@@ -81,15 +87,17 @@ class AppBarDemo extends StatelessWidget {
 class _AppBarWrapper extends StatelessWidget {
   const _AppBarWrapper({
     Key? key,
+    required this.color,
     required this.child,
   }) : super(key: key);
+  final CustomColorScheme color;
   final PreferredSizeWidget child;
 
   @override
   Widget build(BuildContext context) {
     return Material(
       borderRadius: BorderRadius.circular(24),
-      color: context.colorScheme.background,
+      color: color.colorContainer,
       child: Padding(
         padding: const EdgeInsets.all(32.0),
         child: ConstrainedBox(

@@ -1,6 +1,7 @@
 library material_widgets;
 
 export 'package:flutter_monet_theme/flutter_monet_theme.dart';
+export 'package:material_you/material_you.dart';
 
 export 'src/material_onboarding.dart';
 export 'src/md3_appBar/appbar.dart';

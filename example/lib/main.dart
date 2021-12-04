@@ -1,7 +1,6 @@
 import 'package:example/card_grid.dart';
 import 'package:flutter/material.dart';
 import 'package:material_widgets/material_widgets.dart';
-import 'package:material_you/material_you.dart';
 import 'package:material_color_utilities/material_color_utilities.dart';
 import 'demos.dart';
 
@@ -11,11 +10,13 @@ class RainbowSeedBuilder extends StatefulWidget {
     this.degreesPerSecond = 60,
     this.chroma = 48,
     this.tone = 40,
+    this.isEnabled = true,
     required this.builder,
   }) : super(key: key);
   final double degreesPerSecond;
   final double chroma;
   final double tone;
+  final bool isEnabled;
   final Widget Function(BuildContext context, Color) builder;
 
   @override
@@ -35,7 +36,7 @@ class _RainbowSeedBuilderState extends State<RainbowSeedBuilder>
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<int>(
-      stream: stream,
+      stream: widget.isEnabled ? stream : Stream.empty(),
       initialData: 0,
       builder: (context, snapshot) {
         final hct = HctColor.from(
@@ -78,6 +79,7 @@ class _MyAppState extends State<MyApp> {
     );
     final themeMode = _isDark ? ThemeMode.dark : ThemeMode.light;
     return RainbowSeedBuilder(
+      isEnabled: _isRainbow,
       builder: (context, rainbowSeed) => MD3Themes(
         seed: _isRainbow ? rainbowSeed : null,
         monetThemeForFallbackPalette: _isRainbow ? null : baseline_3p,

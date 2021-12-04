@@ -8,6 +8,7 @@ import 'demos/dialog.dart';
 import 'demos/elevation.dart';
 import 'demos/fab.dart';
 import 'demos/responsive_scaffold.dart';
+import 'demos/slider.dart';
 import 'demos/sliver_appbar.dart';
 import 'demos/theme.dart';
 import 'demos/typography.dart';
@@ -196,6 +197,14 @@ class Demo {
           'variable screen sizes, from phones and tablets, to desktop and '
           'beyond.',
       specUrl: 'https://m3.material.io/foundations/adaptive-design',
+    ),
+    Demo(
+      routeName: 'slider',
+      builder: (_) => SliderDemo(),
+      label: 'Slider',
+      description:
+          'Sliders allow users to make selections from a range of values.',
+      specUrl: 'https://material.io/components/sliders',
     ),
     Demo(
       routeName: '/sliver_app_bar',

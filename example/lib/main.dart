@@ -25,18 +25,36 @@ class RainbowSeedBuilder extends StatefulWidget {
 
 class _RainbowSeedBuilderState extends State<RainbowSeedBuilder>
     with SingleTickerProviderStateMixin {
-  final Stream<int> stream =
-      Stream.periodic(kThemeAnimationDuration, (i) => i + 1);
+  late Stream<int> stream;
 
   double get degreesPerTick =>
       widget.degreesPerSecond /
       (Duration(seconds: 1).inMilliseconds /
           kThemeChangeDuration.inMilliseconds);
 
+  void initState() {
+    super.initState();
+    _setStream();
+  }
+
+  void _setStream() {
+    stream = widget.isEnabled
+        ? Stream.periodic(kThemeAnimationDuration, (i) => i + 1)
+        : Stream.empty();
+  }
+
+  @override
+  void didUpdateWidget(RainbowSeedBuilder oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.isEnabled != widget.isEnabled) {
+      _setStream();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<int>(
-      stream: widget.isEnabled ? stream : Stream.empty(),
+      stream: stream,
       initialData: 0,
       builder: (context, snapshot) {
         final hct = HctColor.from(

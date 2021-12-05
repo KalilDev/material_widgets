@@ -1,4 +1,5 @@
 import 'package:example/card_grid.dart';
+import 'package:example/common/custom_color.dart';
 import 'package:flutter/material.dart';
 import 'package:material_widgets/material_widgets.dart';
 import 'package:material_color_utilities/material_color_utilities.dart';
@@ -98,9 +99,11 @@ class _MyAppState extends State<MyApp> {
     final themeMode = _isDark ? ThemeMode.dark : ThemeMode.light;
     return RainbowSeedBuilder(
       isEnabled: _isRainbow,
-      builder: (context, rainbowSeed) => MD3Themes(
+      builder: (context, rainbowSeed) =>
+          MD3ThemedApp<GalleryCustomColorScheme, GalleryCustomColorTheme>(
         seed: _isRainbow ? rainbowSeed : null,
         monetThemeForFallbackPalette: _isRainbow ? null : baseline_3p,
+        appThemeFactory: GalleryCustomColorTheme.harmonized,
         builder: (context, lightTheme, darkTheme) => MaterialApp(
           title: 'Flutter Demo',
           debugShowCheckedModeBanner: false,
@@ -108,7 +111,8 @@ class _MyAppState extends State<MyApp> {
           theme: lightTheme,
           darkTheme: darkTheme,
           themeMode: themeMode,
-          builder: (context, home) => AnimatedMonetColorScheme(
+          builder: (context, home) => AnimatedMonetColorSchemes<
+              GalleryCustomColorScheme, GalleryCustomColorTheme>(
             themeMode: themeMode,
             child: home!,
           ),

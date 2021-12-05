@@ -21,7 +21,7 @@ class AppBarDemo extends StatelessWidget {
           Text('Centered', style: title),
           gutter,
           _AppBarWrapper(
-            color: schemeForSeed(context, kYellowSeed),
+            color: context.galleryColors.yellow,
             child: MD3CenterAlignedAppBar(
               leading: Icon(null),
               primary: false,
@@ -33,7 +33,7 @@ class AppBarDemo extends StatelessWidget {
           Text('Small', style: title),
           gutter,
           _AppBarWrapper(
-            color: schemeForSeed(context, kPinkSeed),
+            color: context.galleryColors.pink,
             child: MD3SmallAppBar(
               leading: Icon(null),
               primary: false,
@@ -49,7 +49,7 @@ class AppBarDemo extends StatelessWidget {
           Text('Medium', style: title),
           gutter,
           _AppBarWrapper(
-            color: schemeForSeed(context, kBlueSeed),
+            color: context.galleryColors.blue,
             child: MD3MediumAppBar(
               leading: Icon(null),
               primary: false,
@@ -65,7 +65,7 @@ class AppBarDemo extends StatelessWidget {
           Text('Large', style: title),
           gutter,
           _AppBarWrapper(
-            color: schemeForSeed(context, kDarkBlueSeed),
+            color: context.galleryColors.darkBlue,
             child: MD3LargeAppBar(
               leading: Icon(null),
               primary: false,

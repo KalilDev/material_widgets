@@ -44,16 +44,16 @@ class _CardsDemoState extends State<CardsDemo> {
         );
       case 3:
         final colorI = i ~/ 4;
-        final color = kCustomColors[colorI % kCustomColors.length];
-        final theme = customColorThemeFor(context, true, color[0] as Color?, color[1] as String);
+        final namedColors = context.galleryColors.named;
+        final color = namedColors[colorI % namedColors.length];
         return ColoredCard(
           child: Center(
             child: Text(
-              colorI ~/ kCustomColors.length > 0 ? '' : theme[1],
+              colorI ~/ namedColors.length > 0 ? '' : color.name,
             ),
           ),
           onPressed: _onPressed,
-          color: theme[0],
+          color: color.scheme ?? context.colorScheme.tertiaryScheme,
         );
     }
     throw StateError('Unreachable');

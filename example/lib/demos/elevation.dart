@@ -7,10 +7,14 @@ import 'package:flutter/material.dart';
 class ElevationDemo extends StatelessWidget {
   const ElevationDemo({Key? key}) : super(key: key);
 
-  Widget _card(MD3ElevationLevel level, Color seed, BuildContext context) =>
+  Widget _card(
+    MD3ElevationLevel level,
+    CustomColorScheme color,
+    BuildContext context,
+  ) =>
       Center(
         child: Material(
-          color: schemeForSeed(context, seed).colorContainer,
+          color: color.colorContainer,
           borderRadius: BorderRadius.circular(24),
           child: Padding(
             padding: const EdgeInsets.all(32.0),
@@ -33,6 +37,7 @@ class ElevationDemo extends StatelessWidget {
   Widget build(BuildContext context) {
     final elevation = context.elevation;
     final title = context.textTheme.headlineSmall;
+    final colors = context.galleryColors;
 
     return MD3AdaptativeScaffold(
       appBar: MD3SmallAppBar(
@@ -43,27 +48,27 @@ class ElevationDemo extends StatelessWidget {
           margin,
           Text('Level 0', style: title),
           gutter,
-          _card(elevation.level0, kYellowSeed, context),
+          _card(elevation.level0, colors.yellow, context),
           margin,
           Text('Level 1', style: title),
           gutter,
-          _card(elevation.level1, kPinkSeed, context),
+          _card(elevation.level1, colors.pink, context),
           margin,
           Text('Level 2', style: title),
           gutter,
-          _card(elevation.level2, kBlueSeed, context),
+          _card(elevation.level2, colors.blue, context),
           margin,
           Text('Level 3', style: title),
           gutter,
-          _card(elevation.level3, kDarkBlueSeed, context),
+          _card(elevation.level3, colors.darkBlue, context),
           margin,
           Text('Level 4', style: title),
           gutter,
-          _card(elevation.level4, kLimeSeed, context),
+          _card(elevation.level4, colors.lime, context),
           margin,
           Text('Level 5', style: title),
           gutter,
-          _card(elevation.level5, kGreenSeed, context),
+          _card(elevation.level5, colors.green, context),
           margin,
         ],
       ),

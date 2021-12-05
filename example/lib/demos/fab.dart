@@ -165,7 +165,6 @@ class FABDemo extends StatefulWidget {
 }
 
 class _FABDemoState extends State<FABDemo> {
-  Color? customColorSeed;
   CustomColorScheme? customColor;
   int _customColorI = 0;
 
@@ -175,17 +174,13 @@ class _FABDemoState extends State<FABDemo> {
   }
 
   void _toggleCustomColor() => setState(() {
-        final nextI = ++_customColorI;
-        customColorSeed =
-            kCustomColors[nextI % (kCustomColors.length - 1)][0] as Color?;
         _updateCustomColor();
       });
 
   void _updateCustomColor() {
-    customColor = customColorSeed == null
-        ? null
-        : customColorThemeFor(context, true, customColorSeed, '')[0]
-            as CustomColorScheme;
+    final nextI = ++_customColorI;
+    final colors = context.galleryColors.named;
+    customColor = colors[nextI % colors.length].scheme;
   }
 
   bool _lowered = false;

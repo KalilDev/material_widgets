@@ -501,11 +501,9 @@ class _SwitchPainter extends ToggleablePainter {
     double currentValue,
     Color thumbColor,
   ) {
-    // The thumb contracts slightly during the animation
-    final double inset = 1.0 - (currentValue - 0.5).abs() * 2.0;
-    final double radius = _kThumbRadius - inset;
+    const radius = _kThumbRadius;
     canvas.drawCircle(
-      thumbPaintOffset + Offset(0 + radius, inset + radius),
+      thumbPaintOffset + Offset(0 + radius, radius),
       radius,
       Paint()..color = thumbColor,
     );

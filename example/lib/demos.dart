@@ -10,6 +10,7 @@ import 'demos/fab.dart';
 import 'demos/responsive_scaffold.dart';
 import 'demos/slider.dart';
 import 'demos/sliver_appbar.dart';
+import 'demos/switch.dart';
 import 'demos/theme.dart';
 import 'demos/typography.dart';
 import 'demos/onboarding.dart';
@@ -199,7 +200,7 @@ class Demo {
       specUrl: 'https://m3.material.io/foundations/adaptive-design',
     ),
     Demo(
-      routeName: 'slider',
+      routeName: '/slider',
       builder: (_) => SliderDemo(),
       label: 'Slider',
       description:
@@ -217,6 +218,13 @@ class Demo {
         'assets/appbar.png',
         cacheWidth: 312,
       ),
+    ),
+    Demo(
+      routeName: '/switch',
+      builder: (_) => SwitchDemo(),
+      label: 'Switch',
+      description: 'Switches toggle the state of a single item on or off.',
+      specUrl: 'https://material.io/components/switches',
     ),
     Demo(
       routeName: '/theme',

@@ -95,6 +95,15 @@ class Demo {
         ),
       );
 
+  static Widget _assetImage(String path) => Ink.image(
+        image: ResizeImage(
+          AssetImage(
+            path,
+          ),
+          width: 312,
+        ),
+      );
+
   static final List<Demo> demos = [
     Demo(
       routeName: '/appbar',
@@ -103,10 +112,7 @@ class Demo {
       description: 'Top app bars display information and actions at the top of '
           'a screen.',
       specUrl: 'https://m3.material.io/components/top-app-bar',
-      image: Image.asset(
-        'assets/appbar.png',
-        cacheWidth: 312,
-      ),
+      image: _assetImage('assets/appbar.png'),
     ),
     Demo(
       routeName: '/button',
@@ -115,10 +121,7 @@ class Demo {
       description: 'Buttons help people initiate actions, from sending an '
           'email, to sharing a document, to liking a post.',
       specUrl: 'https://m3.material.io/components/buttons',
-      image: Image.asset(
-        'assets/common_buttons.png',
-        cacheWidth: 312,
-      ),
+      image: _assetImage('assets/common_buttons.png'),
     ),
     Demo(
       routeName: '/card',
@@ -127,10 +130,7 @@ class Demo {
       description: 'Cards contain content and actions that relate '
           'information about a subject.',
       specUrl: 'https://m3.material.io/components/cards',
-      image: Image.asset(
-        'assets/cards.png',
-        cacheWidth: 312,
-      ),
+      image: _assetImage('assets/cards.png'),
     ),
     Demo(
       routeName: '/chip',
@@ -140,10 +140,7 @@ class Demo {
           'filter content, or trigger actions. Chips can use multiple '
           'interactive elements in the same area, such as a list or menu.',
       specUrl: 'https://m3.material.io/components/chips',
-      image: Image.asset(
-        'assets/chips.png',
-        cacheWidth: 312,
-      ),
+      image: _assetImage('assets/chips.png'),
     ),
     Demo(
       routeName: '/dialog',
@@ -153,10 +150,7 @@ class Demo {
           'require an action, communicate information, or help users '
           'accomplish a task.',
       specUrl: 'https://m3.material.io/components/dialogs',
-      image: Image.asset(
-        'assets/dialogs.png',
-        cacheWidth: 312,
-      ),
+      image: _assetImage('assets/dialogs.png'),
     ),
     Demo(
       routeName: '/elevation',
@@ -176,10 +170,7 @@ class Demo {
       description: 'The FAB represents the most important action on a screen. '
           'It puts key actions within reach.',
       specUrl: 'https://m3.material.io/components/floating-action-button',
-      image: Image.asset(
-        'assets/fab.png',
-        cacheWidth: 312,
-      ),
+      image: _assetImage('assets/fab.png'),
     ),
     Demo(
       routeName: '/onboarding',
@@ -214,10 +205,7 @@ class Demo {
       description: 'Top app bars display information and actions at the top of '
           'a screen.',
       specUrl: 'https://m3.material.io/components/top-app-bar',
-      image: Image.asset(
-        'assets/appbar.png',
-        cacheWidth: 312,
-      ),
+      image: _assetImage('assets/appbar.png'),
     ),
     Demo(
       routeName: '/switch',
@@ -246,10 +234,7 @@ class Demo {
           'contrasting and extensible styles to support a wide range of use '
           'cases.',
       specUrl: 'https://m3.material.io/styles/typography',
-      image: Image.asset(
-        'assets/typography.png',
-        cacheWidth: 312,
-      ),
+      image: _assetImage('assets/typography.png'),
     ),
   ];
 }

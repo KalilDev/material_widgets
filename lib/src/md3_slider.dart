@@ -2,6 +2,10 @@
 
 import 'package:flutter/material.dart';
 
+/// An [Slider] following the MD3 style. This is an wrapper for the [Slider]
+/// widget, which automatically sets the [SliderThemeData.trackShape] to
+/// [MD3SliderTrackShape], and animates it between [onChangeStart] and
+/// [onChangeEnd].
 class MD3Slider extends StatefulWidget {
   const MD3Slider({
     Key? key,

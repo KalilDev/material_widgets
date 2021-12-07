@@ -1,8 +1,114 @@
 # material_widgets
 
-An Flutter package implementing various material design components and patterns.
+An Flutter package implementing various Material Design 3 components and layout patterns. It uses my [material_you](https://github.com/KalilDev/material_you), [flutter_monet_theme](https://github.com/KalilDev/material_theme_reverse/tree/master/dart/flutter_monet_theme), [monet_theme](https://github.com/KalilDev/material_theme_reverse/tree/master/dart/monet_theme) and [palette_from_wallpaper](https://github.com/KalilDev/palette_from_wallpaper) packages in order to implement the MD3 theming, and builds on top of them to implement the MD3 components.
+
+## Gallery
+
+The Material Design 3 Gallery contains every component from this package and is available through an release APK on the [Releases page](https://github.com/KalilDev/material_widgets/releases), or through the web [Here](https://kalildev.github.io/material_widgets/).
+
+### Screenshots
+
+![Light](assets/gallery.png)
+![Dark](assets/gallery_dark.png)
+
+## Styling
+
+### Typography
+
+An fully device-type aware implementation of the [Material Design 3](https://m3.material.io/) [Typography](https://m3.material.io/styles/typography/overview)
+
+#### Images
+![Phone](assets/typography/phone.png)
+![Tablet](assets/typography/tablet.png)
+![Desktop](assets/typography/desktop.png)
+
+### Color system
+
+An fully fledged implementation of the [Material Design 3](https://m3.material.io/) [Color System](https://m3.material.io/styles/color/the-color-system/key-colors-tones). It supports an baseline theme, wallpaper-based seeded themes, themes from custom seeds, and custom harmonized colors
+
+#### Images
+![Tones](assets/color/tones.png)
+![Schemes](assets/color/schemes.png)
+![Schemes (dark)](assets/color/schemes_dark.png)
+
+### Elevation
+
+An fully fledged implementation of the [Material Design 3](https://m3.material.io/) Elevation, with 5 different levels, each with an different shadow and surface tint.
+
+#### Images
+![Level 0](assets/elevation/level0.png)
+![Level 1](assets/elevation/level1.png)
+![Level 2](assets/elevation/level2.png)
+![Level 3](assets/elevation/level3.png)
+![Level 4](assets/elevation/level4.png)
 
 ## Components:
+
+### Cards
+
+Some components which follow the [Material Design 3](https://m3.material.io/) spec
+for the [Cards](https://m3.material.io/components/cards), and an extra ColoredCard.
+
+#### Images
+![Light](assets/cards.png)
+![Dark](assets/cards_dark.png)
+
+### Chips
+
+Some components which follow the [Material Design 3](https://m3.material.io/) spec
+for the [Chips](https://m3.material.io/components/chips/overview).
+
+#### Images
+![Light](assets/chips.png)
+![Dark](assets/chips_dark.png)
+
+### Common Buttons
+
+An style for Elevated, Text and Outlined buttons, and Filled and FiledTonal buttons which follow the [Material Design 3](https://m3.material.io/) spec
+for the [Common Buttons](https://m3.material.io/components/buttons/overview).
+
+#### Images
+![Light](assets/buttons.png)
+![Dark](assets/buttons_dark.png)
+
+
+### Dialogs
+
+Basic and fullscreen dialogs and animations which follow the [Material Design 3](https://m3.material.io/) spec
+for the [Dialogs](https://m3.material.io/components/dialogs/overview).
+
+#### Images
+![Basic light](assets/dialogs/basic.png)
+![Basic dark](assets/dialogs/basic_dark.png)
+![Basic light (icon)](assets/dialogs/basic_icon.png)
+![Basic dark (icon)](assets/dialogs/basic_icon_dark.png)
+![Full screen light](assets/dialogs/full_screen.png)
+![Full screen dark](assets/dialogs/full_screen_dark.png)
+
+### Appbars
+
+Various appbars and an sliver appbar which follow the [Material Design 3](https://m3.material.io/) spec
+for the [Top app bar](https://m3.material.io/components/top-app-bar/overview).
+
+#### Images
+![Light](assets/appbar.png)
+![Dark](assets/appbar_dark.png)
+
+### Switch
+
+An guesstimate of what the [Material Design 3](https://m3.material.io/) switch component will look like (Based of the measures and eyeballing from the Google Clock app).
+
+#### Images
+![Light](assets/switch.png)
+![Dark](assets/switch_dark.png)
+
+### Slider
+
+An guesstimate of what the [Material Design 3](https://m3.material.io/) slider component will look like (Based of the eyeballing of the Material You advertising videos).
+
+#### Images
+![Light](assets/slider.png)
+![Dark](assets/slider_dark.png)
 
 ### MD3FloatingActionButton
 
@@ -58,17 +164,6 @@ for the [FAB](https://m3.material.io/components/floating-action-button) and
 | surface          |           ![Expanded (Hidden) - Surface](assets/fab/Expanded_(Hidden)_Surface.png)           |           ![Expanded (Hidden) - Surface - Lowered](assets/fab/Expanded_(Hidden)_Surface_Lowered.png)           |           ![Expanded (Hidden) - Surface](assets/fab/Dark_Expanded_(Hidden)_Surface.png)           |           ![Expanded (Hidden) - Surface - Lowered](assets/fab/Dark_Expanded_(Hidden)_Surface_Lowered.png)           |
 | secondary        |         ![Expanded (Hidden) - Secondary](assets/fab/Expanded_(Hidden)_Secondary.png)         |         ![Expanded (Hidden) - Secondary - Lowered](assets/fab/Expanded_(Hidden)_Secondary_Lowered.png)         |         ![Expanded (Hidden) - Secondary](assets/fab/Dark_Expanded_(Hidden)_Secondary.png)         |         ![Expanded (Hidden) - Secondary - Lowered](assets/fab/Dark_Expanded_(Hidden)_Secondary_Lowered.png)         |
 | tertiary         |          ![Expanded (Hidden) - Tertiary](assets/fab/Expanded_(Hidden)_Tertiary.png)          |          ![Expanded (Hidden) - Tertiary - Lowered](assets/fab/Expanded_(Hidden)_Tertiary_Lowered.png)          |          ![Expanded (Hidden) - Tertiary](assets/fab/Dark_Expanded_(Hidden)_Tertiary.png)          |          ![Expanded (Hidden) - Tertiary - Lowered](assets/fab/Dark_Expanded_(Hidden)_Tertiary_Lowered.png)          |
-
-### *Card
-
-An component which follows the [Material Design 3](https://m3.material.io/) spec
-for the [FAB](https://m3.material.io/components/floating-action-button) and
-[Extended FAB](https://m3.material.io/components/extended-fab) components.
-
-#### Images
-- Regular
-
-
 
 ## Getting Started
 

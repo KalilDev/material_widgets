@@ -331,3 +331,25 @@ class NavigationDrawerItem extends StatelessWidget {
     );
   }
 }
+
+class MD3DrawerScope extends InheritedWidget {
+  final bool isModal;
+  final bool? isEnd;
+
+  MD3DrawerScope({
+    Key? key,
+    required this.isModal,
+    required this.isEnd,
+    required Widget child,
+  }) : super(
+          key: key,
+          child: child,
+        );
+
+  static MD3DrawerScope of(BuildContext context) =>
+      context.dependOnInheritedWidgetOfExactType<MD3DrawerScope>()!;
+
+  @override
+  bool updateShouldNotify(MD3DrawerScope oldWidget) =>
+      isModal != oldWidget.isModal || isEnd != oldWidget.isModal;
+}

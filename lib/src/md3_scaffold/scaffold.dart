@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:material_you/material_you.dart';
+import '../navigation_drawer.dart';
 
 class MD3AdaptativeScaffold extends StatelessWidget {
   const MD3AdaptativeScaffold({
@@ -68,6 +69,8 @@ class MD3AdaptativeScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isLtr = Directionality.of(context) == TextDirection.ltr;
+    final startDrawer = _wrapDrawer(this.startDrawer, false, false);
+    final endDrawer = _wrapDrawer(this.endDrawer, false, true);
     final leftDrawer = isLtr ? startDrawer : endDrawer;
     final rightDrawer = isLtr ? endDrawer : startDrawer;
     return Row(
@@ -79,6 +82,14 @@ class MD3AdaptativeScaffold extends StatelessWidget {
     );
   }
 }
+
+Widget? _wrapDrawer(Widget? drawer, bool isModal, bool isEnd) => drawer == null
+    ? null
+    : MD3DrawerScope(
+        isModal: isModal,
+        isEnd: isEnd,
+        child: drawer,
+      );
 
 class _BodySection extends StatelessWidget {
   const _BodySection({
@@ -128,8 +139,8 @@ class _BodySection extends StatelessWidget {
         body: _buildBody(context),
         backgroundColor: background,
         bottomNavigationBar: bottomNavigationBar,
-        drawer: startDrawer,
-        endDrawer: endDrawer,
+        drawer: _wrapDrawer(startDrawer, true, false),
+        endDrawer: _wrapDrawer(endDrawer, true, true),
         floatingActionButton: floatingActionButton,
       );
 }

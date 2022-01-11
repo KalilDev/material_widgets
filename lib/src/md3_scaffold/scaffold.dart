@@ -37,13 +37,16 @@ class MD3AdaptativeScaffold extends StatelessWidget {
     final maxMargin = bodyMargin ? (isExpanded ? 200.0 : minMargin) : 0.0;
 
     Color background;
+    Color foreground;
     if (!surfaceTintBackground) {
       background = context.colorScheme.background;
+      foreground = context.colorScheme.onBackground;
     } else {
       background = context.elevation.level0.overlaidColor(
         context.colorScheme.surface,
         MD3ElevationLevel.surfaceTint(context.colorScheme),
       );
+      foreground = context.colorScheme.onSurface;
     }
     return _BodySection(
       scaffoldKey: scaffoldKey,
@@ -51,7 +54,10 @@ class MD3AdaptativeScaffold extends StatelessWidget {
       maxMargin: maxMargin,
       appBar: appBar,
       bottomNavigationBar: bottomNavigationBar,
-      body: body,
+      body: DefaultTextStyle.merge(
+        style: TextStyle(color: foreground),
+        child: body,
+      ),
       background: background,
       startDrawer: startModalDrawer,
       endDrawer: endModalDrawer,

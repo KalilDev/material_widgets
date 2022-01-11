@@ -38,7 +38,7 @@ class MD3FullScreenDialog extends StatelessWidget {
           titleSpacing: 0,
           title: title == null ? null : _title(context),
           actions: [
-            action,
+            Center(child: action),
             const SizedBox(width: 24),
           ],
         ),

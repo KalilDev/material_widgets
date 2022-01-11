@@ -2,19 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:material_you/material_you.dart';
 
-@immutable
-class MD3DraggableElevation extends MD3MaterialStateElevation
-    with Diagnosticable {
-  MD3DraggableElevation(
-    MD3ElevationLevel regular,
-    MD3ElevationLevel dragged,
-  ) : super(
-          regular,
-          regular,
-          dragged: dragged,
-        );
-}
-
 extension ColorMaterialState on Color {
   MaterialStateColor toMaterialState() {
     final self = this;

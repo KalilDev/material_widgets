@@ -86,18 +86,13 @@ class MD3PopupMenuItem<T> extends StatelessWidget
   /// By default, the divider has a height of 16 logical pixels.
   const MD3PopupMenuItem({
     Key? key,
-    this.height = kMinInteractiveDimension,
     required this.value,
     required this.child,
     this.trailing,
     this.onTap,
     this.enabled = true,
+    this.mouseCursor,
   }) : super(key: key);
-
-  /// The height of the menu item.
-  ///
-  /// Defaults to [kMinInteractiveDimension].
-  final double height;
 
   final T value;
 
@@ -105,6 +100,7 @@ class MD3PopupMenuItem<T> extends StatelessWidget
   final Widget? trailing;
   final VoidCallback? onTap;
   final bool enabled;
+  final MouseCursor? mouseCursor;
 
   static const double kSeparatorWidth = 8;
   // TODO: this or 18.0
@@ -115,37 +111,63 @@ class MD3PopupMenuItem<T> extends StatelessWidget
 
         Navigator.pop<T>(context, value);
       };
+  MaterialStateProperty<Color> _foregroundColor(MonetColorScheme scheme) =>
+      MaterialStateProperty.resolveWith<Color>((states) {
+        if (states.contains(MaterialState.disabled)) {
+          return scheme.onSurfaceVariant.withOpacity(0.6);
+        }
+        return scheme.onSurface;
+      });
 
-  Widget build(BuildContext context) => MergeSemantics(
-        child: Semantics(
-          button: true,
-          enabled: enabled,
-          child: SizedBox(
-            height: height,
-            child: InkWell(
-              onTap: enabled ? _onTap(context) : null,
-              canRequestFocus: enabled,
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: kHorizontalPadding),
-                child: Row(
-                  children: [
-                    DefaultTextStyle.merge(
-                      style: context.textTheme.titleMedium,
-                      child: child,
+  Widget build(BuildContext context) {
+    final states = {
+      if (!enabled) MaterialState.disabled,
+    };
+    final effectiveMouseCursor = MaterialStateProperty.resolveAs<MouseCursor?>(
+          mouseCursor,
+          states,
+        ) ??
+        MD3DisablableCursor(
+          SystemMouseCursors.click,
+          SystemMouseCursors.forbidden,
+        ).resolve(states);
+    final foregroundColor =
+        _foregroundColor(context.colorScheme).resolve(states);
+
+    return MergeSemantics(
+      child: Semantics(
+        button: true,
+        enabled: enabled,
+        child: SizedBox(
+          height: kMinInteractiveDimension,
+          child: InkWell(
+            onTap: enabled ? _onTap(context) : null,
+            mouseCursor: effectiveMouseCursor,
+            canRequestFocus: enabled,
+            child: Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: kHorizontalPadding),
+              child: Row(
+                children: [
+                  DefaultTextStyle.merge(
+                    style: context.textTheme.titleMedium.copyWith(
+                      color: foregroundColor,
                     ),
-                    if (trailing != null) ...[
-                      const SizedBox(width: kSeparatorWidth),
-                      const Spacer(),
-                      trailing!,
-                    ],
+                    child: child,
+                  ),
+                  if (trailing != null) ...[
+                    const SizedBox(width: kSeparatorWidth),
+                    const Spacer(),
+                    trailing!,
                   ],
-                ),
+                ],
               ),
             ),
           ),
         ),
-      );
+      ),
+    );
+  }
 
   @override
   bool represents(T value) => value == this.value;
@@ -228,10 +250,10 @@ class MD3SelectablePopupMenuItem<T> extends StatelessWidget
       });
   MaterialStateProperty<Color> _foregroundColor(MonetColorScheme scheme) =>
       MaterialStateProperty.resolveWith<Color>((states) {
+        if (states.contains(MaterialState.disabled)) {
+          return scheme.onSurfaceVariant.withOpacity(0.38);
+        }
         if (states.contains(MaterialState.selected)) {
-          if (states.contains(MaterialState.disabled)) {
-            return scheme.onSurfaceVariant.withOpacity(0.38);
-          }
           return scheme.onPrimary;
         }
         return scheme.onSurface;
@@ -247,12 +269,14 @@ class MD3SelectablePopupMenuItem<T> extends StatelessWidget
     final scheme = context.colorScheme;
     final backgroundColor = _backgroundColor(scheme).resolve(states);
     final foregroundColor = _foregroundColor(scheme).resolve(states);
-    final effectiveMouseCursor = MaterialStateProperty.resolveAs<MouseCursor>(
-      mouseCursor ?? MaterialStateMouseCursor.clickable,
-      <MaterialState>{
-        if (!enabled) MaterialState.disabled,
-      },
-    );
+    final effectiveMouseCursor = MaterialStateProperty.resolveAs<MouseCursor?>(
+          mouseCursor,
+          states,
+        ) ??
+        MD3DisablableCursor(
+          SystemMouseCursors.click,
+          SystemMouseCursors.forbidden,
+        ).resolve(states);
 
     return MergeSemantics(
       child: Semantics(

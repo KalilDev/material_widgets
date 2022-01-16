@@ -21,6 +21,7 @@ class CardStyle with Diagnosticable {
     this.animationDuration,
     this.enableFeedback,
     this.splashFactory,
+    this.splashColor,
   });
 
   final MaterialStateProperty<MD3ElevationLevel?>? elevation;
@@ -37,6 +38,7 @@ class CardStyle with Diagnosticable {
   final Duration? animationDuration;
   final bool? enableFeedback;
   final InteractiveInkFeatureFactory? splashFactory;
+  final Color? splashColor;
 
   static const double kHorizontalPadding = 16;
   static const double kMaxCardSpacing = 8;
@@ -57,6 +59,7 @@ class CardStyle with Diagnosticable {
         animationDuration,
         enableFeedback,
         splashFactory,
+        splashColor,
       ]);
 
   @override
@@ -81,7 +84,8 @@ class CardStyle with Diagnosticable {
         clipBehavior == other.clipBehavior &&
         animationDuration == other.animationDuration &&
         enableFeedback == other.enableFeedback &&
-        splashFactory == other.splashFactory;
+        splashFactory == other.splashFactory &&
+        splashColor == other.splashColor;
   }
 
   CardStyle copyWith({
@@ -99,6 +103,7 @@ class CardStyle with Diagnosticable {
     Duration? animationDuration,
     bool? enableFeedback,
     InteractiveInkFeatureFactory? splashFactory,
+    Color? splashColor,
   }) =>
       CardStyle(
         elevation: elevation ?? this.elevation,
@@ -116,6 +121,7 @@ class CardStyle with Diagnosticable {
         animationDuration: animationDuration ?? this.animationDuration,
         enableFeedback: enableFeedback ?? this.enableFeedback,
         splashFactory: splashFactory ?? this.splashFactory,
+        splashColor: splashColor ?? this.splashColor,
       );
 
   /// Returns a copy of this CardStyle where the non-null fields in [other]
@@ -145,6 +151,7 @@ class CardStyle with Diagnosticable {
       animationDuration: animationDuration ?? other.animationDuration,
       enableFeedback: enableFeedback ?? other.enableFeedback,
       splashFactory: splashFactory ?? other.splashFactory,
+      splashColor: splashColor ?? other.splashColor,
     );
   }
 
@@ -173,6 +180,7 @@ class CardStyle with Diagnosticable {
       animationDuration: t < 0.5 ? a?.animationDuration : b?.animationDuration,
       enableFeedback: t < 0.5 ? a?.enableFeedback : b?.enableFeedback,
       splashFactory: t < 0.5 ? a?.splashFactory : b?.splashFactory,
+      splashColor: Color.lerp(a?.splashColor, b?.splashColor, t),
     );
   }
 
@@ -220,6 +228,8 @@ class CardStyle with Diagnosticable {
         defaultValue: null));
     properties.add(DiagnosticsProperty<InteractiveInkFeatureFactory>(
         'splashFactory', splashFactory,
+        defaultValue: null));
+    properties.add(DiagnosticsProperty<Color>('splashColor', splashColor,
         defaultValue: null));
   }
 

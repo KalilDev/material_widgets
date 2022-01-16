@@ -103,6 +103,7 @@ class _CardStyleCardState extends State<CardStyleCard>
     final animationDuration = effectiveValue((s) => s?.animationDuration);
     final enableFeedback = effectiveValue((s) => s?.enableFeedback);
     final splashFactory = effectiveValue((s) => s?.splashFactory);
+    final splashColor = effectiveValue((s) => s?.splashColor);
 
     // If an opaque button's background is becoming translucent while its
     // elevation is changing, change the elevation first. Material implicitly
@@ -163,7 +164,7 @@ class _CardStyleCardState extends State<CardStyleCard>
           onChanged: widget.onFocusChange,
         ),
         overlayColor: stateLayer,
-        highlightColor: Colors.transparent,
+        splashColor: splashColor,
         customBorder: shape,
         enableFeedback: enableFeedback,
         splashFactory: splashFactory,

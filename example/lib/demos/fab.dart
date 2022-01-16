@@ -229,42 +229,44 @@ class _FABDemoState extends State<FABDemo> {
           ),
         ],
       ),
-      bodyMargin: false,
-      body: ListView(
-        padding: EdgeInsets.symmetric(horizontal: context.minMargin),
-        children: [
-          margin,
-          Text('Regular', style: title),
-          gutter,
-          _row(fabSpecPermutationsForType(
-              FabType.regular, _lowered, customColor)),
-          margin,
-          Text('Large', style: title),
-          gutter,
-          _row(
-              fabSpecPermutationsForType(FabType.large, _lowered, customColor)),
-          margin,
-          Text('Small', style: title),
-          gutter,
-          _row(
-              fabSpecPermutationsForType(FabType.small, _lowered, customColor)),
-          margin,
-          Text('Expanded', style: title),
-          gutter,
-          _row(fabSpecPermutationsForType(
-              FabType.expandedShown, _lowered, customColor)),
-          margin,
-          Text('Expanded (label only)', style: title),
-          gutter,
-          _row(fabSpecPermutationsForType(
-              FabType.expandedLabel, _lowered, customColor)),
-          margin,
-          Text('Expanded (hidden)', style: title),
-          gutter,
-          _row(fabSpecPermutationsForType(
-              FabType.expandedHidden, _lowered, customColor)),
-          margin,
-        ],
+      body: MD3ScaffoldBody.noMargin(
+        child: Builder(
+            builder: (context) => ListView(
+                  padding: InheritedMD3BodyMargin.of(context).padding,
+                  children: [
+                    margin,
+                    Text('Regular', style: title),
+                    gutter,
+                    _row(fabSpecPermutationsForType(
+                        FabType.regular, _lowered, customColor)),
+                    margin,
+                    Text('Large', style: title),
+                    gutter,
+                    _row(fabSpecPermutationsForType(
+                        FabType.large, _lowered, customColor)),
+                    margin,
+                    Text('Small', style: title),
+                    gutter,
+                    _row(fabSpecPermutationsForType(
+                        FabType.small, _lowered, customColor)),
+                    margin,
+                    Text('Expanded', style: title),
+                    gutter,
+                    _row(fabSpecPermutationsForType(
+                        FabType.expandedShown, _lowered, customColor)),
+                    margin,
+                    Text('Expanded (label only)', style: title),
+                    gutter,
+                    _row(fabSpecPermutationsForType(
+                        FabType.expandedLabel, _lowered, customColor)),
+                    margin,
+                    Text('Expanded (hidden)', style: title),
+                    gutter,
+                    _row(fabSpecPermutationsForType(
+                        FabType.expandedHidden, _lowered, customColor)),
+                    margin,
+                  ],
+                )),
       ),
     );
   }

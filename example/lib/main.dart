@@ -183,8 +183,7 @@ class Home extends StatelessWidget {
         ),
         floatingActionButton: _buildFab(context),
       ),
-      bodyMargin: false,
-      body: const _DemosGrid(),
+      body: MD3ScaffoldBody.noMargin(child: const _DemosGrid()),
     );
   }
 }
@@ -198,8 +197,9 @@ class _DemosGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) => LayoutBuilder(
         builder: (context, constraints) {
+          final margin = InheritedMD3BodyMargin.of(context).margin;
           final parameters = gridParametersForMinWidth(
-            constraints.maxWidth - 2 * context.minMargin,
+            constraints.maxWidth - 2 * margin,
             minWidth: 176,
           );
           return gridViewFromParameters(
@@ -209,7 +209,10 @@ class _DemosGrid extends StatelessWidget {
               childCount: Demo.demos.length,
             ),
             mainAxisExtent: parameters.itemWidth + Demo.kCardBottomHeight,
-            padding: EdgeInsets.all(context.minMargin),
+            padding: EdgeInsets.symmetric(
+              horizontal: margin,
+              vertical: context.sizeClass.minimumMargins,
+            ),
           );
         },
       );

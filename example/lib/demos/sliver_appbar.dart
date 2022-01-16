@@ -10,25 +10,26 @@ class SliverAppBarDemo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MD3AdaptativeScaffold(
-      bodyMargin: false,
-      body: CustomScrollView(
-        slivers: [
-          MD3SliverAppBar(
-            title: Text('Sliver AppBar'),
-            pinned: true,
-          ),
-          SliverToBoxAdapter(child: margin),
-          SliverFillViewport(
-            delegate: SliverChildListDelegate(
-              [
-                Center(
-                  child: Text('An view with an SliverAppBar'),
-                ),
-              ],
+      body: MD3ScaffoldBody.noMargin(
+        child: CustomScrollView(
+          slivers: [
+            MD3SliverAppBar(
+              title: Text('Sliver AppBar'),
+              pinned: true,
             ),
-          ),
-          SliverToBoxAdapter(child: margin),
-        ],
+            SliverToBoxAdapter(child: margin),
+            SliverFillViewport(
+              delegate: SliverChildListDelegate(
+                [
+                  Center(
+                    child: Text('An view with an SliverAppBar'),
+                  ),
+                ],
+              ),
+            ),
+            SliverToBoxAdapter(child: margin),
+          ],
+        ),
       ),
     );
   }

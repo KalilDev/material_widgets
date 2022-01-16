@@ -54,31 +54,32 @@ class _ResponsiveScaffoldDemoState extends State<ResponsiveScaffoldDemo> {
                   _buildFab(context, isExpanded, false),
             ),
       spec: navSpec,
-      bodyMargin: false,
-      body: CustomScrollView(
-        slivers: [
-          MD3SliverAppBar(
-            title: Text('Responsive Scaffold'),
-          ),
-          SliverFillViewport(
-            delegate: SliverChildListDelegate(
-              [
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('Current delegate:\n'
-                        '${_isDrawers ? 'MD3DrawersNavigationDelegate' : 'MD3BottomNavigationDelegate'}'),
-                    gutter,
-                    FilledButton(
-                      onPressed: _toggleDelegate,
-                      child: Text('Change Delegate'),
-                    ),
-                  ],
-                )
-              ],
+      body: MD3ScaffoldBody.noMargin(
+        child: CustomScrollView(
+          slivers: [
+            MD3SliverAppBar(
+              title: Text('Responsive Scaffold'),
             ),
-          )
-        ],
+            SliverFillViewport(
+              delegate: SliverChildListDelegate(
+                [
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text('Current delegate:\n'
+                          '${_isDrawers ? 'MD3DrawersNavigationDelegate' : 'MD3BottomNavigationDelegate'}'),
+                      gutter,
+                      FilledButton(
+                        onPressed: _toggleDelegate,
+                        child: Text('Change Delegate'),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

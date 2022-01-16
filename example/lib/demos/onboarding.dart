@@ -7,21 +7,22 @@ class OnboardingDemo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MD3AdaptativeScaffold(
-      bodyMargin: false,
-      body: MaterialOnboarding(
-        button: FilledButton(
-          child: Text('Get started'),
-          onPressed: () => ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Voila'),
-              action: SnackBarAction(
-                label: 'Exit',
-                onPressed: () => Navigator.of(context).pop(),
+      body: MD3ScaffoldBody.noMargin(
+        child: MaterialOnboarding(
+          button: FilledButton(
+            child: Text('Get started'),
+            onPressed: () => ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Voila'),
+                action: SnackBarAction(
+                  label: 'Exit',
+                  onPressed: () => Navigator.of(context).pop(),
+                ),
               ),
             ),
           ),
+          pages: pages,
         ),
-        pages: pages,
       ),
     );
   }

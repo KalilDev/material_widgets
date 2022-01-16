@@ -174,13 +174,13 @@ class _FABDemoState extends State<FABDemo> {
   }
 
   void _toggleCustomColor() => setState(() {
+        ++_customColorI;
         _updateCustomColor();
       });
 
   void _updateCustomColor() {
-    final nextI = ++_customColorI;
     final colors = context.galleryColors.named;
-    customColor = colors[nextI % colors.length].scheme;
+    customColor = colors[_customColorI % colors.length].scheme;
   }
 
   bool _lowered = false;

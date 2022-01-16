@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:material_you/material_you.dart';
+import '../md3_appBar/controller.dart';
 import '../navigation_drawer.dart';
 
 class MD3AdaptativeScaffold extends StatelessWidget {
@@ -73,12 +74,30 @@ class MD3AdaptativeScaffold extends StatelessWidget {
     final endDrawer = _wrapDrawer(this.endDrawer, false, true);
     final leftDrawer = isLtr ? startDrawer : endDrawer;
     final rightDrawer = isLtr ? endDrawer : startDrawer;
-    return Row(
-      children: [
-        if (leftDrawer != null) leftDrawer,
-        Expanded(child: _buildBody(context)),
-        if (rightDrawer != null) rightDrawer,
-      ],
+    return MD3AppBarController(
+      child: Row(
+        // We already handle the directionality
+        textDirection: TextDirection.ltr,
+        children: [
+          if (leftDrawer != null)
+            Builder(
+              builder: (context) => MD3AppBarScope(
+                isScrolledUnder:
+                    MD3AppBarControllerScope.of(context).isLeftScrolledUnder,
+                child: leftDrawer,
+              ),
+            ),
+          Expanded(child: _buildBody(context)),
+          if (rightDrawer != null)
+            Builder(
+              builder: (context) => MD3AppBarScope(
+                isScrolledUnder:
+                    MD3AppBarControllerScope.of(context).isRightScrolledUnder,
+                child: rightDrawer,
+              ),
+            ),
+        ],
+      ),
     );
   }
 }
@@ -135,10 +154,22 @@ class _BodySection extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
         key: scaffoldKey,
-        appBar: appBar,
+        appBar: appBar == null
+            ? null
+            : MD3AppBarScope(
+                isScrolledUnder:
+                    MD3AppBarControllerScope.of(context).isTopScrolledUnder,
+                child: appBar!,
+              ),
         body: _buildBody(context),
         backgroundColor: background,
-        bottomNavigationBar: bottomNavigationBar,
+        bottomNavigationBar: bottomNavigationBar == null
+            ? null
+            : MD3AppBarScope(
+                isScrolledUnder:
+                    MD3AppBarControllerScope.of(context).isBottomScrolledUnder,
+                child: bottomNavigationBar!,
+              ),
         drawer: _wrapDrawer(startDrawer, true, false),
         endDrawer: _wrapDrawer(endDrawer, true, true),
         floatingActionButton: floatingActionButton,

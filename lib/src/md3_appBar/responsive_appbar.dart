@@ -157,6 +157,7 @@ class ResponsiveAppbar extends StatelessWidget implements PreferredSizeWidget {
   ) {
     return MD3PopupMenuItem(
       value: action,
+      enabled: action.onPressed != null,
       child: action.title!,
     );
   }

@@ -2,6 +2,7 @@
 
 import 'dart:math';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:material_widgets/src/md3_appBar/size_scope.dart';
@@ -44,6 +45,7 @@ class MD3RawAppBar extends StatefulWidget implements PreferredSizeWidget {
     this.isElevated,
     this.elevationDuration = const Duration(milliseconds: 200),
     this.notifySize = true,
+    this.backgroundColor,
   })  : assert(primary != null),
         preferredSize =
             _preferredAppBarSize(appBarHeight, bottom?.preferredSize.height),
@@ -80,6 +82,7 @@ class MD3RawAppBar extends StatefulWidget implements PreferredSizeWidget {
   final bool? isElevated;
   final Duration elevationDuration;
   final bool notifySize;
+  final MaterialStateProperty<Color?>? backgroundColor;
 
   @override
   _MD3RawAppBarState createState() => _MD3RawAppBarState();
@@ -95,16 +98,39 @@ class _MD3RawAppBarState extends State<MD3RawAppBar>
       widget.primary && widget.notifySize;
 
   late AnimationController backgroundController;
-  Tween<Color?> get backgroundColorTween => ColorTween(
-        begin: context.elevation.level0.overlaidColor(
-          context.colorScheme.surface,
-          MD3ElevationLevel.surfaceTint(context.colorScheme),
-        ),
-        end: context.elevation.level2.overlaidColor(
-          context.colorScheme.surface,
-          MD3ElevationLevel.surfaceTint(context.colorScheme),
+
+  Tween<Color?> backgroundColorTweenFrom(
+    MaterialStateProperty<Color> backgroundColor,
+  ) =>
+      ColorTween(
+        begin: backgroundColor.resolve({}),
+        end: backgroundColor.resolve({MaterialState.scrolledUnder}),
+      );
+
+  MaterialStateProperty<Color> _defaultBackgroundColor(BuildContext context) =>
+      MD3ElevationTintableColor(
+        context.colorScheme.surface,
+        MD3ElevationLevel.surfaceTint(context.colorScheme),
+        MaterialStateProperty.resolveWith(
+          (states) => states.contains(MaterialState.scrolledUnder)
+              ? context.elevation.level2
+              : context.elevation.level0,
         ),
       );
+
+  MaterialStateProperty<Color> _effectiveBackgroundColor(BuildContext context) {
+    final defaultBackgroundColor = _defaultBackgroundColor(context);
+    final widgetBackgroundColor = widget.backgroundColor;
+    if (widgetBackgroundColor == null) {
+      return defaultBackgroundColor;
+    }
+
+    return MaterialStateProperty.resolveWith(
+      (states) =>
+          widgetBackgroundColor.resolve(states) ??
+          defaultBackgroundColor.resolve(states),
+    );
+  }
 
   late Animation<double> backgroundColorAnimation;
 
@@ -212,6 +238,9 @@ class _MD3RawAppBarState extends State<MD3RawAppBar>
 
   @override
   Widget build(BuildContext context) {
+    final backgroundColorTween = backgroundColorTweenFrom(
+      _effectiveBackgroundColor(context),
+    );
     return ValueListenableBuilder<Color?>(
       valueListenable: backgroundColorTween.animate(backgroundColorAnimation),
       builder: (context, backgroundColor, _) => AppBar(

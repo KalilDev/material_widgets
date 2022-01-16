@@ -86,18 +86,22 @@ class TonalColorWidget extends StatelessWidget {
       );
 
   @override
-  Widget build(BuildContext context) => Row(children: [
-        ConstrainedBox(
-          constraints: BoxConstraints(maxWidth: 700),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              _colors(),
-              _labels(context),
-            ],
+  Widget build(BuildContext context) => SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        primary: false,
+        child: Row(children: [
+          ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: 700),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                _colors(),
+                _labels(context),
+              ],
+            ),
           ),
-        ),
-      ]);
+        ]),
+      );
 }
 
 class MonetColorSchemeWidget extends StatelessWidget {

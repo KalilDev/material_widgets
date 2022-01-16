@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:material_you/material_you.dart';
 import '../md3_appBar/controller.dart';
+import '../md3_appBar/size_scope.dart';
 import '../navigation_drawer.dart';
 import 'body.dart';
 
@@ -71,28 +72,31 @@ class MD3AdaptativeScaffold extends StatelessWidget {
     final leftDrawer = isLtr ? startDrawer : endDrawer;
     final rightDrawer = isLtr ? endDrawer : startDrawer;
     return MD3AppBarController(
-      child: Row(
-        // We already handle the directionality
-        textDirection: TextDirection.ltr,
-        children: [
-          if (leftDrawer != null)
-            Builder(
-              builder: (context) => MD3AppBarScope(
-                isScrolledUnder:
-                    MD3AppBarControllerScope.of(context).isLeftScrolledUnder,
-                child: leftDrawer,
+      child: MD3AppBarSizeScope(
+        initialSize: appBar?.preferredSize ?? const Size.fromHeight(0),
+        child: Row(
+          // We already handle the directionality
+          textDirection: TextDirection.ltr,
+          children: [
+            if (leftDrawer != null)
+              Builder(
+                builder: (context) => MD3AppBarScope(
+                  isScrolledUnder:
+                      MD3AppBarControllerScope.of(context).isLeftScrolledUnder,
+                  child: leftDrawer,
+                ),
               ),
-            ),
-          Expanded(child: _buildBody(context)),
-          if (rightDrawer != null)
-            Builder(
-              builder: (context) => MD3AppBarScope(
-                isScrolledUnder:
-                    MD3AppBarControllerScope.of(context).isRightScrolledUnder,
-                child: rightDrawer,
+            Expanded(child: _buildBody(context)),
+            if (rightDrawer != null)
+              Builder(
+                builder: (context) => MD3AppBarScope(
+                  isScrolledUnder:
+                      MD3AppBarControllerScope.of(context).isRightScrolledUnder,
+                  child: rightDrawer,
+                ),
               ),
-            ),
-        ],
+          ],
+        ),
       ),
     );
   }

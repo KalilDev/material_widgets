@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:material_widgets/src/md3_size_class_property.dart';
 import 'package:material_you/material_you.dart';
 
 import '../../material_widgets.dart';
 import '../shrinkable_drawer_controller.dart';
+import 'spec_scaffold.dart';
 
 typedef FloatingActionButtonBuilder = Widget Function(BuildContext, bool);
 Widget _removeFabElevation(BuildContext context, Widget fab) =>
@@ -24,6 +26,7 @@ class MD3BottomNavigationDelegate extends MD3NavigationDelegate {
     this.floatingActionButton,
     this.navigationFabBuilder,
     this.showModalDrawerOnCompact = true,
+    this.surfaceTintBackground,
   });
 
   final PreferredSizeWidget? appBar;
@@ -33,6 +36,7 @@ class MD3BottomNavigationDelegate extends MD3NavigationDelegate {
   final Widget? floatingActionButton;
   final FloatingActionButtonBuilder? navigationFabBuilder;
   final bool showModalDrawerOnCompact;
+  final MD3SizeClassProperty<bool>? surfaceTintBackground;
 
   @override
   MD3AdaptativeScaffoldSpec buildCompact(
@@ -51,6 +55,8 @@ class MD3BottomNavigationDelegate extends MD3NavigationDelegate {
             ? _buildDrawer(context, spec, drawerHeader)
             : null,
         bottomNavigationBar: _buildNavigationBar(context, spec),
+        surfaceTintBackground:
+            surfaceTintBackground?.resolve(MD3WindowSizeClass.compact) ?? true,
       );
 
   Widget _buildNavigationBar(
@@ -78,7 +84,7 @@ class MD3BottomNavigationDelegate extends MD3NavigationDelegate {
     MD3NavigationSpec spec,
     Widget body,
   ) =>
-      _buildExpandableRail(spec, body, false);
+      _buildExpandableRailSpec(spec, body, false, MD3WindowSizeClass.medium);
 
   @override
   MD3AdaptativeScaffoldSpec buildExpanded(
@@ -86,12 +92,13 @@ class MD3BottomNavigationDelegate extends MD3NavigationDelegate {
     MD3NavigationSpec spec,
     Widget body,
   ) =>
-      _buildExpandableRail(spec, body, true);
+      _buildExpandableRailSpec(spec, body, true, MD3WindowSizeClass.expanded);
 
-  MD3AdaptativeScaffoldSpec _buildExpandableRail(
+  MD3AdaptativeScaffoldSpec _buildExpandableRailSpec(
     MD3NavigationSpec spec,
     Widget body,
     bool canExpand,
+    MD3WindowSizeClass sizeClass,
   ) =>
       MD3AdaptativeScaffoldSpec(
         body: body,
@@ -109,6 +116,8 @@ class MD3BottomNavigationDelegate extends MD3NavigationDelegate {
           initialSize: appBar?.preferredSize ?? const Size.fromHeight(0),
           child: child,
         ),
+        surfaceTintBackground:
+            surfaceTintBackground?.resolve(sizeClass) ?? true,
       );
 }
 
@@ -122,6 +131,7 @@ class MD3DrawersNavigationDelegate extends MD3NavigationDelegate {
     this.endDrawer,
     this.endModalDrawer,
     this.floatingActionButton,
+    this.surfaceTintBackground,
   });
 
   final PreferredSizeWidget? appBar;
@@ -130,12 +140,13 @@ class MD3DrawersNavigationDelegate extends MD3NavigationDelegate {
   final Widget? endDrawer;
   final Widget? endModalDrawer;
   final Widget? floatingActionButton;
+  final MD3SizeClassProperty<bool>? surfaceTintBackground;
 
-  @override
-  MD3AdaptativeScaffoldSpec buildCompact(
+  MD3AdaptativeScaffoldSpec _buildCompactOrMedium(
     BuildContext context,
     MD3NavigationSpec spec,
     Widget body,
+    MD3WindowSizeClass sizeClass,
   ) =>
       MD3AdaptativeScaffoldSpec(
         body: body,
@@ -145,7 +156,17 @@ class MD3DrawersNavigationDelegate extends MD3NavigationDelegate {
         endModalDrawer: endModalDrawer,
         floatingActionButton: floatingActionButton,
         startModalDrawer: _buildDrawer(context, spec, drawerHeader),
+        surfaceTintBackground:
+            surfaceTintBackground?.resolve(sizeClass) ?? true,
       );
+
+  @override
+  MD3AdaptativeScaffoldSpec buildCompact(
+    BuildContext context,
+    MD3NavigationSpec spec,
+    Widget body,
+  ) =>
+      _buildCompactOrMedium(context, spec, body, MD3WindowSizeClass.compact);
 
   @override
   MD3AdaptativeScaffoldSpec buildMedium(
@@ -153,7 +174,7 @@ class MD3DrawersNavigationDelegate extends MD3NavigationDelegate {
     MD3NavigationSpec spec,
     Widget body,
   ) =>
-      buildCompact(context, spec, body);
+      _buildCompactOrMedium(context, spec, body, MD3WindowSizeClass.medium);
 
   @override
   MD3AdaptativeScaffoldSpec buildExpanded(
@@ -174,6 +195,8 @@ class MD3DrawersNavigationDelegate extends MD3NavigationDelegate {
           drawerHeader,
           radius: Radius.zero,
         ),
+        surfaceTintBackground:
+            surfaceTintBackground?.resolve(MD3WindowSizeClass.expanded) ?? true,
       );
 }
 
@@ -427,22 +450,20 @@ Widget _buildDrawer(
 }) =>
     _drawer(
       context,
-      child: SafeArea(
-        child: ListView(
-          primary: false,
-          children: [
-            drawerHeader ??
-                const NavigationDrawerHeader(
-                  title: Text('Navegação'),
-                ),
-            ..._navigationDrawerItems(
-              context,
-              spec,
-              noLabel: noLabel,
-              tooltip: tooltip,
-            )
-          ],
-        ),
+      child: ListView(
+        primary: false,
+        children: [
+          drawerHeader ??
+              const NavigationDrawerHeader(
+                title: Text('Navegação'),
+              ),
+          ..._navigationDrawerItems(
+            context,
+            spec,
+            noLabel: noLabel,
+            tooltip: tooltip,
+          )
+        ],
       ),
       radius: radius,
     );

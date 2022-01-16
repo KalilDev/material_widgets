@@ -37,7 +37,7 @@ class _ResponsiveScaffoldDemoState extends State<ResponsiveScaffoldDemo> {
 
   @override
   Widget build(BuildContext context) {
-    final endDrawer = Drawer(
+    final endDrawer = MD3NavigationDrawer(
       child: Center(
         child: Text("End drawer"),
       ),

@@ -207,13 +207,15 @@ class MD3DialogLayout extends StatelessWidget {
     return _AlignmentAndMaxWidth(maxWidth, dialogAlignment);
   }
 
-  Widget _dialog(double maxWidth, double maxHeight) => ConstrainedBox(
-        constraints: BoxConstraints(
-          minWidth: 280,
-          maxWidth: maxWidth,
-          maxHeight: maxHeight,
+  Widget _dialog(double maxWidth, double maxHeight) => LayoutBuilder(
+        builder: (context, constraints) => ConstrainedBox(
+          constraints: BoxConstraints(
+            minWidth: min(280, constraints.maxWidth),
+            maxWidth: maxWidth,
+            maxHeight: maxHeight,
+          ),
+          child: child,
         ),
-        child: child,
       );
 
   Widget _aligned(MD3TabletDialogAlignment alignment, Widget child) {

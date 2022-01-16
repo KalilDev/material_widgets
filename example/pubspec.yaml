@@ -41,6 +41,7 @@ flutter:
     - assets/image_placeholder.png
     - assets/appbar.png
     - assets/cards.png
+    - assets/checkbox.png
     - assets/chips.png
     - assets/common_buttons.png
     - assets/dialogs.png

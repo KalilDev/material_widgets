@@ -29,6 +29,30 @@ class DialogDemo extends StatelessWidget {
       );
     }
 
+    void list() {
+      showDialog(
+        context: context,
+        builder: (context) => MD3BasicDialog(
+          title: Text('Basic Dialog'),
+          content: ListBody(
+            children: List.generate(
+              15,
+              (index) => ListTile(
+                title: Text('Tile at $index'),
+              ),
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text('Ok'),
+            )
+          ],
+          scrollable: true,
+        ),
+      );
+    }
+
     void basicIcon() {
       showDialog(
         context: context,
@@ -75,6 +99,10 @@ class DialogDemo extends StatelessWidget {
           Text('Basic dialog (With icon)', style: title),
           gutter,
           FilledButton(onPressed: basicIcon, child: Text('Show')),
+          margin,
+          Text('List dialog', style: title),
+          gutter,
+          FilledButton(onPressed: list, child: Text('Show')),
           margin,
           Text('Full screen dialog', style: title),
           gutter,

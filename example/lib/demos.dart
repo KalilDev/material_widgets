@@ -1,3 +1,4 @@
+import 'package:example/demos/checkbox.dart';
 import 'package:example/demos/menu.dart';
 import 'package:material_widgets/material_widgets.dart';
 

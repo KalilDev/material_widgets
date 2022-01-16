@@ -35,6 +35,7 @@ export 'src/md3_scaffold/delegates.dart';
 export 'src/md3_scaffold/navigation_scaffold.dart';
 export 'src/md3_scaffold/scaffold.dart';
 export 'src/md3_scaffold/spec_scaffold.dart';
+export 'src/md3_size_class_property.dart';
 export 'src/md3_slider.dart';
 export 'src/md3_switch.dart';
 export 'src/md3_tab_bar.dart';

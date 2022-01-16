@@ -134,6 +134,15 @@ class Demo {
       image: _assetImage('assets/cards.png'),
     ),
     Demo(
+      routeName: '/checkbox',
+      builder: (_) => CheckboxDemo(),
+      label: 'Checkbox',
+      description: 'Checkboxes allow users to select one or more items from a '
+          'set. Checkboxes can turn an option on or off.',
+      specUrl: 'https://material.io/components/checkboxes',
+      image: _assetImage('assets/checkbox.png'),
+    ),
+    Demo(
       routeName: '/chip',
       builder: (_) => ChipsDemo(),
       label: 'Chips',

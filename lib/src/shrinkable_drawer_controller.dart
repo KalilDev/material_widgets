@@ -28,7 +28,7 @@ class ShrinkableDrawerController extends StatefulWidget {
     required this.alignment,
     this.drawerCallback,
     this.shrunkWidth = 56.0,
-    this.drawerWidth = 360.0,
+    this.drawerWidth = 232.0,
   }) : super(key: key);
 
   /// The widget below this widget in the tree.

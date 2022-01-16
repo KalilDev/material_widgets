@@ -1,3 +1,4 @@
+import 'package:example/demos/menu.dart';
 import 'package:material_widgets/material_widgets.dart';
 
 import 'demos/appbar.dart';
@@ -171,6 +172,15 @@ class Demo {
           'It puts key actions within reach.',
       specUrl: 'https://m3.material.io/components/floating-action-button',
       image: _assetImage('assets/fab.png'),
+    ),
+    Demo(
+      routeName: '/menu',
+      builder: (_) => MenuDemo(),
+      label: 'Popup menu',
+      description: 'A menu displays a list of choices on a temporary surface. '
+          'They appear when users interact with a button, action, or other '
+          'control.',
+      specUrl: 'https://material.io/components/menus',
     ),
     Demo(
       routeName: '/onboarding',

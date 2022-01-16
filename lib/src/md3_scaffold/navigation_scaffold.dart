@@ -4,25 +4,6 @@ import 'package:material_you/material_you.dart';
 
 import 'spec_scaffold.dart';
 
-abstract class MD3NavigationDelegate {
-  const MD3NavigationDelegate();
-  MD3AdaptativeScaffoldSpec buildCompact(
-    BuildContext context,
-    MD3NavigationSpec spec,
-    Widget body,
-  );
-  MD3AdaptativeScaffoldSpec buildMedium(
-    BuildContext context,
-    MD3NavigationSpec spec,
-    Widget body,
-  );
-  MD3AdaptativeScaffoldSpec buildExpanded(
-    BuildContext context,
-    MD3NavigationSpec spec,
-    Widget body,
-  );
-}
-
 class NavigationItem {
   factory NavigationItem({
     required String labelText,

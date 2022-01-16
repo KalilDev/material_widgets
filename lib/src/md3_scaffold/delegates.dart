@@ -17,6 +17,65 @@ Widget _removeFabElevation(BuildContext context, Widget fab) =>
       child: fab,
     );
 
+abstract class MD3NavigationDelegate {
+  const MD3NavigationDelegate();
+
+  Widget buildNavigationBar(
+    MD3NavigationSpec spec,
+  ) =>
+      NavigationBar(
+        selectedIndex: spec.selectedIndex,
+        onDestinationSelected: spec.onChanged,
+        destinations: spec.items
+            .map(
+              (e) => NavigationDestination(
+                icon: e.icon,
+                selectedIcon: e.activeIcon,
+                label: e.labelText,
+                tooltip: e.tooltip,
+              ),
+            )
+            .toList(),
+      );
+
+  Widget buildExpandableRail(
+    MD3NavigationSpec spec, {
+    FloatingActionButtonBuilder? floatingActionButtonBuilder,
+    bool canExpand = true,
+    Widget? header,
+    double railAlignment = -0.5,
+  }) =>
+      _ExpandableRail(
+        spec: spec,
+        floatingActionButtonBuilder: floatingActionButtonBuilder,
+        canExpand: canExpand,
+        header: header,
+        railAlignment: railAlignment,
+      );
+
+  Widget buildNavigationDrawer(
+    MD3NavigationSpec spec,
+    Widget? drawerHeader,
+  ) =>
+      _buildDrawer(spec, drawerHeader);
+
+  MD3AdaptativeScaffoldSpec buildCompact(
+    BuildContext context,
+    MD3NavigationSpec spec,
+    Widget body,
+  );
+  MD3AdaptativeScaffoldSpec buildMedium(
+    BuildContext context,
+    MD3NavigationSpec spec,
+    Widget body,
+  );
+  MD3AdaptativeScaffoldSpec buildExpanded(
+    BuildContext context,
+    MD3NavigationSpec spec,
+    Widget body,
+  );
+}
+
 class MD3BottomNavigationDelegate extends MD3NavigationDelegate {
   const MD3BottomNavigationDelegate({
     this.appBar,
@@ -54,31 +113,12 @@ class MD3BottomNavigationDelegate extends MD3NavigationDelegate {
         floatingActionButton:
             floatingActionButton ?? navigationFabBuilder?.call(context, false),
         startModalDrawer: showModalDrawerOnCompact
-            ? _buildDrawer(context, spec, drawerHeader)
+            ? buildNavigationDrawer(spec, drawerHeader)
             : null,
-        bottomNavigationBar: _buildNavigationBar(context, spec),
+        bottomNavigationBar: buildNavigationBar(spec),
         surfaceBackground:
             surfaceBackground?.resolve(MD3WindowSizeClass.compact) ?? true,
         properties: properties,
-      );
-
-  Widget _buildNavigationBar(
-    BuildContext context,
-    MD3NavigationSpec spec,
-  ) =>
-      NavigationBar(
-        selectedIndex: spec.selectedIndex,
-        onDestinationSelected: spec.onChanged,
-        destinations: spec.items
-            .map(
-              (e) => NavigationDestination(
-                icon: e.icon,
-                selectedIcon: e.activeIcon,
-                label: e.labelText,
-                tooltip: e.tooltip,
-              ),
-            )
-            .toList(),
       );
 
   @override
@@ -110,14 +150,10 @@ class MD3BottomNavigationDelegate extends MD3NavigationDelegate {
         endModalDrawer: endModalDrawer,
         floatingActionButton:
             navigationFabBuilder == null ? floatingActionButton : null,
-        startDrawer: _ExpandableRail(
-          spec: spec,
+        startDrawer: buildExpandableRail(
+          spec,
           floatingActionButtonBuilder: navigationFabBuilder,
           canExpand: canExpand,
-        ),
-        buildScaffold: (context, child) => MD3AppBarSizeScope(
-          initialSize: appBar?.preferredSize ?? const Size.fromHeight(0),
-          child: child,
         ),
         surfaceBackground: surfaceBackground?.resolve(sizeClass) ?? true,
         properties: properties,
@@ -147,7 +183,7 @@ class MD3DrawersNavigationDelegate extends MD3NavigationDelegate {
   final MD3SizeClassProperty<bool>? surfaceBackground;
   final MD3ScaffoldProperties? properties;
 
-  MD3AdaptativeScaffoldSpec _buildCompactOrMedium(
+  MD3AdaptativeScaffoldSpec _buildSpec(
     BuildContext context,
     MD3NavigationSpec spec,
     Widget body,
@@ -160,7 +196,7 @@ class MD3DrawersNavigationDelegate extends MD3NavigationDelegate {
         endDrawer: endDrawer,
         endModalDrawer: endModalDrawer,
         floatingActionButton: floatingActionButton,
-        startModalDrawer: _buildDrawer(context, spec, drawerHeader),
+        startModalDrawer: buildNavigationDrawer(spec, drawerHeader),
         surfaceBackground: surfaceBackground?.resolve(sizeClass) ?? true,
         properties: properties,
       );
@@ -171,7 +207,7 @@ class MD3DrawersNavigationDelegate extends MD3NavigationDelegate {
     MD3NavigationSpec spec,
     Widget body,
   ) =>
-      _buildCompactOrMedium(context, spec, body, MD3WindowSizeClass.compact);
+      _buildSpec(context, spec, body, MD3WindowSizeClass.compact);
 
   @override
   MD3AdaptativeScaffoldSpec buildMedium(
@@ -179,7 +215,7 @@ class MD3DrawersNavigationDelegate extends MD3NavigationDelegate {
     MD3NavigationSpec spec,
     Widget body,
   ) =>
-      _buildCompactOrMedium(context, spec, body, MD3WindowSizeClass.medium);
+      _buildSpec(context, spec, body, MD3WindowSizeClass.medium);
 
   @override
   MD3AdaptativeScaffoldSpec buildExpanded(
@@ -187,23 +223,7 @@ class MD3DrawersNavigationDelegate extends MD3NavigationDelegate {
     MD3NavigationSpec spec,
     Widget body,
   ) =>
-      MD3AdaptativeScaffoldSpec(
-        body: body,
-        appBar: appBar,
-        bottomNavigationBar: bottomNavigationBar,
-        endDrawer: endDrawer,
-        endModalDrawer: endModalDrawer,
-        floatingActionButton: floatingActionButton,
-        startDrawer: _buildDrawer(
-          context,
-          spec,
-          drawerHeader,
-          radius: Radius.zero,
-        ),
-        surfaceBackground:
-            surfaceBackground?.resolve(MD3WindowSizeClass.expanded) ?? true,
-        properties: properties,
-      );
+      _buildSpec(context, spec, body, MD3WindowSizeClass.expanded);
 }
 
 extension _ItE<T> on Iterable<T> {
@@ -360,9 +380,7 @@ class _ExpandableRailState extends State<_ExpandableRail>
       shrunkWidth: 80,
       drawerCallback: _onDrawerChange,
       alignment: DrawerAlignment.start,
-      child: _drawer(
-        context,
-        radius: Radius.zero,
+      child: MD3NavigationDrawer(
         child: Column(
           children: [
             SizedBox(height: MediaQuery.of(context).viewPadding.top),
@@ -436,26 +454,15 @@ class _ExpandableRailItem extends StatelessWidget {
   }
 }
 
-Widget _drawer(
-  BuildContext context, {
-  Radius radius = const Radius.circular(16),
-  Widget? child,
-}) =>
-    MD3NavigationDrawer(
-      radius: radius,
-      child: child,
-    );
-
 Widget _buildDrawer(
-  BuildContext context,
   MD3NavigationSpec spec,
   Widget? drawerHeader, {
   bool noLabel = false,
   bool tooltip = false,
-  Radius radius = const Radius.circular(16),
+  Radius radius = Radius.zero,
 }) =>
-    _drawer(
-      context,
+    MD3NavigationDrawer(
+      radius: radius,
       child: ListView(
         primary: false,
         children: [
@@ -464,18 +471,15 @@ Widget _buildDrawer(
                 title: Text('Navegação'),
               ),
           ..._navigationDrawerItems(
-            context,
             spec,
             noLabel: noLabel,
             tooltip: tooltip,
           )
         ],
       ),
-      radius: radius,
     );
 
 Iterable<Widget> _navigationDrawerItems(
-  BuildContext context,
   MD3NavigationSpec spec, {
   bool noLabel = false,
   bool tooltip = false,

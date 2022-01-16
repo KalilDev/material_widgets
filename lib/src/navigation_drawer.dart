@@ -400,14 +400,26 @@ class NavigationDrawerItem extends StatelessWidget {
 class MD3NavigationDrawer extends StatelessWidget {
   const MD3NavigationDrawer({
     Key? key,
-    this.radius = const Radius.circular(16),
-    this.padding =
+    this.edgeRadius = Radius.zero,
+    this.modalEdgeRadius = Radius.zero,
+    Radius radius = Radius.zero,
+    this.modalViewRadius = const Radius.circular(16),
+    EdgeInsetsGeometry padding =
         const EdgeInsets.symmetric(horizontal: _kDrawerHorizontalPadding),
     this.child,
     this.backgroundColor,
-  }) : super(key: key);
-  final Radius radius;
-  final EdgeInsets padding;
+    this.modalOuterPadding = EdgeInsets.zero,
+    this.side = BorderSide.none,
+  })  : innerPadding = padding,
+        viewRadius = radius,
+        super(key: key);
+  final Radius edgeRadius;
+  final Radius modalEdgeRadius;
+  final Radius viewRadius;
+  final Radius modalViewRadius;
+  final EdgeInsetsGeometry modalOuterPadding;
+  final EdgeInsetsGeometry innerPadding;
+  final BorderSide side;
   final Color? backgroundColor;
   final Widget? child;
 
@@ -430,23 +442,34 @@ class MD3NavigationDrawer extends StatelessWidget {
     final width = scope.isModal ? _kModalDrawerWidth : _kStandardDrawerWidth;
     final effectiveColor =
         backgroundColor ?? _defaultColor(context, elevationLevel);
-
+    final actualViewRadius = scope.isModal ? modalViewRadius : viewRadius;
+    final actualEdgeRadius = scope.isModal ? modalEdgeRadius : edgeRadius;
     final shape = RoundedRectangleBorder(
       borderRadius: BorderRadiusDirectional.horizontal(
-        start: scope.isEnd == true ? radius : Radius.zero,
-        end: scope.isEnd == false ? radius : Radius.zero,
+        start: scope.isEnd == true && scope.isModal
+            ? actualViewRadius
+            : actualEdgeRadius,
+        end: scope.isEnd == false && scope.isModal
+            ? actualViewRadius
+            : actualEdgeRadius,
       ),
+      side: side,
     );
 
-    return Drawer(
-      backgroundColor: effectiveColor,
-      elevation: elevationLevel.value,
-      shape: shape,
-      child: SizedBox(
-        width: width,
-        child: Padding(
-          padding: padding,
-          child: child,
+    return SafeArea(
+      child: Padding(
+        padding: scope.isModal ? modalOuterPadding : EdgeInsets.zero,
+        child: Drawer(
+          backgroundColor: effectiveColor,
+          elevation: elevationLevel.value,
+          shape: shape,
+          child: SizedBox(
+            width: width,
+            child: Padding(
+              padding: innerPadding,
+              child: child,
+            ),
+          ),
         ),
       ),
     );
@@ -465,6 +488,35 @@ class MD3DrawerScope extends InheritedWidget {
         );
   final bool isModal;
   final bool? isEnd;
+
+  static Widget? wrapStartModal({required Widget? child}) => child == null
+      ? null
+      : MD3DrawerScope(
+          isEnd: false,
+          isModal: true,
+          child: child,
+        );
+  static Widget? wrapEndModal({required Widget? child}) => child == null
+      ? null
+      : MD3DrawerScope(
+          isEnd: true,
+          isModal: true,
+          child: child,
+        );
+  static Widget? wrapStartStandard({required Widget? child}) => child == null
+      ? null
+      : MD3DrawerScope(
+          isEnd: false,
+          isModal: false,
+          child: child,
+        );
+  static Widget? wrapEndStandard({required Widget? child}) => child == null
+      ? null
+      : MD3DrawerScope(
+          isEnd: true,
+          isModal: false,
+          child: child,
+        );
 
   static MD3DrawerScope of(BuildContext context) =>
       context.dependOnInheritedWidgetOfExactType<MD3DrawerScope>()!;

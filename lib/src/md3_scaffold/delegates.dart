@@ -168,14 +168,11 @@ class MD3DrawersNavigationDelegate extends MD3NavigationDelegate {
         endDrawer: endDrawer,
         endModalDrawer: endModalDrawer,
         floatingActionButton: floatingActionButton,
-        startDrawer: SizedBox(
-          width: 256,
-          child: _buildDrawer(
-            context,
-            spec,
-            drawerHeader,
-            level0Elevation: true,
-          ),
+        startDrawer: _buildDrawer(
+          context,
+          spec,
+          drawerHeader,
+          radius: Radius.zero,
         ),
       );
 }
@@ -196,11 +193,13 @@ class _ExpandableRail extends StatefulWidget {
     this.floatingActionButtonBuilder,
     this.header,
     this.canExpand = true,
+    this.railAlignment = -0.5,
   }) : super(key: key);
   final MD3NavigationSpec spec;
   final FloatingActionButtonBuilder? floatingActionButtonBuilder;
   final Widget? header;
   final bool canExpand;
+  final double railAlignment;
 
   @override
   _ExpandableRailState createState() => _ExpandableRailState();
@@ -253,7 +252,7 @@ class _ExpandableRailState extends State<_ExpandableRail>
 
   Widget _menuButton(BuildContext context) => SizedBox(
         height: 64,
-        width: 80,
+        width: 56,
         child: Center(
           child: IconButton(
             icon: AnimatedIcon(
@@ -265,56 +264,48 @@ class _ExpandableRailState extends State<_ExpandableRail>
         ),
       );
 
-  Widget _fabHeader(BuildContext context) => Column(
-        children: [
-          if (widget.floatingActionButtonBuilder != null)
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              child: SizedBox(
-                width: double.infinity,
-                child: _removeFabElevation(
-                  context,
-                  Builder(
-                    builder: (context) => widget.floatingActionButtonBuilder!(
-                      context,
-                      _isOpen,
-                    ),
-                  ),
-                ),
-              ),
+  Widget _fabHeader(BuildContext context) {
+    if (widget.floatingActionButtonBuilder != null) {
+      return SizedBox(
+        width: double.infinity,
+        child: _removeFabElevation(
+          context,
+          Builder(
+            builder: (context) => widget.floatingActionButtonBuilder!(
+              context,
+              _isOpen,
             ),
-          const Expanded(child: SizedBox())
-        ],
+          ),
+        ),
       );
+    }
+    return SizedBox();
+  }
 
   Widget _shrinkable(BuildContext context, Widget? child) => SizeTransition(
         sizeFactor: iconAnimController,
         axis: Axis.horizontal,
         axisAlignment: -1,
-        child: Center(child: child),
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: child,
+        ),
       );
 
-  Iterable<Widget> _navigationDrawerItems(
+  Iterable<_ExpandableRailItem> _railItems(
     BuildContext context,
     MD3NavigationSpec spec,
   ) =>
       spec.items.mapIndexed(
         (e, i) {
           final selected = spec.selectedIndex == i;
-          final child = NavigationDrawerItem(
+          return _ExpandableRailItem(
             icon: selected ? e.activeIcon : e.icon,
-            selected: selected,
-            title: _shrinkable(context, e.label),
+            isSelected: selected,
+            label: e.label,
+            tileExpansionAnimation: iconAnimController,
+            tooltip: e.labelText,
             onTap: () => spec.onChanged(i),
-          );
-
-          if (_isOpen) {
-            return child;
-          }
-
-          return Tooltip(
-            message: e.labelText,
-            child: child,
           );
         },
       );
@@ -342,7 +333,7 @@ class _ExpandableRailState extends State<_ExpandableRail>
       alignment: DrawerAlignment.start,
       child: _drawer(
         context,
-        level0Elevation: true,
+        radius: Radius.zero,
         child: Column(
           children: [
             SizedBox(height: MediaQuery.of(context).viewPadding.top),
@@ -350,12 +341,19 @@ class _ExpandableRailState extends State<_ExpandableRail>
               height: appBarHeight,
               child: _appBarSizedHeader(context, appBarHeight),
             ),
-            Expanded(flex: 4, child: _fabHeader(context)),
-            ..._navigationDrawerItems(
-              context,
-              widget.spec,
-            ),
-            const Expanded(flex: 7, child: SizedBox()),
+            _fabHeader(context),
+            Expanded(
+              child: Align(
+                alignment: Alignment(0, widget.railAlignment),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: _railItems(
+                    context,
+                    widget.spec,
+                  ).toList(),
+                ),
+              ),
+            )
           ],
         ),
       ),
@@ -363,16 +361,59 @@ class _ExpandableRailState extends State<_ExpandableRail>
   }
 }
 
+class _ExpandableRailItem extends StatelessWidget {
+  const _ExpandableRailItem({
+    Key? key,
+    required this.tileExpansionAnimation,
+    this.tooltip,
+    this.isSelected = false,
+    this.onTap,
+    required this.icon,
+    required this.label,
+  }) : super(key: key);
+  final Animation<double> tileExpansionAnimation;
+  final String? tooltip;
+  final bool isSelected;
+  final VoidCallback? onTap;
+  final Widget icon;
+  final Widget label;
+
+  Widget _tileLabel(BuildContext context, Widget? child) => SizeTransition(
+        sizeFactor: tileExpansionAnimation,
+        axis: Axis.horizontal,
+        axisAlignment: -1,
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: child,
+        ),
+      );
+
+  @override
+  Widget build(BuildContext context) {
+    final child = NavigationDrawerItem(
+      icon: icon,
+      selected: isSelected,
+      title: _tileLabel(context, label),
+      onTap: onTap,
+    );
+    if (tileExpansionAnimation.isCompleted || tooltip == null) {
+      return child;
+    }
+
+    return Tooltip(
+      message: tooltip,
+      child: child,
+    );
+  }
+}
+
 Widget _drawer(
   BuildContext context, {
+  Radius radius = const Radius.circular(16),
   Widget? child,
-  bool level0Elevation = false,
 }) =>
-    Drawer(
-      backgroundColor: context.elevation.level0.overlaidColor(
-        context.colorScheme.surface,
-        MD3ElevationLevel.surfaceTint(context.colorScheme),
-      ),
+    MD3NavigationDrawer(
+      radius: radius,
       child: child,
     );
 
@@ -382,11 +423,10 @@ Widget _buildDrawer(
   Widget? drawerHeader, {
   bool noLabel = false,
   bool tooltip = false,
-  bool level0Elevation = false,
+  Radius radius = const Radius.circular(16),
 }) =>
     _drawer(
       context,
-      level0Elevation: level0Elevation,
       child: SafeArea(
         child: ListView(
           primary: false,
@@ -404,6 +444,7 @@ Widget _buildDrawer(
           ],
         ),
       ),
+      radius: radius,
     );
 
 Iterable<Widget> _navigationDrawerItems(

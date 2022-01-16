@@ -189,7 +189,10 @@ class _MD3RawAppBarState extends State<MD3RawAppBar>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _scrollingNotifierHandle.update(MD3AppBarScope.of(context).isScrolledUnder);
+    _scrollingNotifierHandle
+        // may be null when we arent on the expected appbar locations.
+        // in which case, the handle will just be kept detached.
+        .update(MD3AppBarScope.maybeOf(context)?.isScrolledUnder);
     _sizeScopeHandle.update(
       _shouldNotifySize(widget)
           ? MD3AppBarSizeScopeState.maybeOf(context)

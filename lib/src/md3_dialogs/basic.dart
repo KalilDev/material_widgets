@@ -31,7 +31,7 @@ class MD3BasicDialog extends StatelessWidget {
   const MD3BasicDialog({
     Key? key,
     this.dialogAlignment = MD3TabletDialogAlignment.end,
-    this.dividerAfterTitle = true,
+    this.dividerAfterTitle = false,
     this.icon,
     required this.title,
     required this.content,

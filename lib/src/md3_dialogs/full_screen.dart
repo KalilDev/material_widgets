@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:material_widgets/material_widgets.dart';
 import 'package:material_widgets/src/md3_appBar/raw_appbar.dart';
 import 'package:material_widgets/src/md3_scaffold/scaffold.dart';
 import 'package:material_you/material_you.dart';
@@ -42,10 +43,11 @@ class MD3FullScreenDialog extends StatelessWidget {
             const SizedBox(width: 24),
           ],
         ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
-          child: body,
+        body: MD3ScaffoldBody.noMargin(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: body,
+          ),
         ),
-        bodyMargin: false,
       );
 }

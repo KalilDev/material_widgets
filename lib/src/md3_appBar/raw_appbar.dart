@@ -278,13 +278,12 @@ class _MD3RawAppBarState extends State<MD3RawAppBar>
     Color backgroundColor,
   ) =>
       SystemUiOverlayStyle(
-        statusBarColor: backgroundColor,
+        statusBarColor: Colors.transparent,
         statusBarBrightness: ThemeData.estimateBrightnessForColor(
           backgroundColor,
         ),
         statusBarIconBrightness: ThemeData.estimateBrightnessForColor(
           context.colorScheme.onSurface,
         ),
-        systemNavigationBarContrastEnforced: false,
       );
 }

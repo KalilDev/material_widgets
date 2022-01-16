@@ -1,16 +1,5 @@
 import 'package:flutter/material.dart';
 
-// TODO(eseidel): Draw width should vary based on device size:
-// https://material.io/design/components/navigation-drawer.html#specs
-
-// Mobile:
-// Should not use the Standard drawer, but instead an modal drawer
-
-// Desktop/Tablet:
-// Width for a Standard drawer is 256dp.
-// The right nav can vary depending on content.
-
-const double _kWidth = 256.0;
 const Duration _kBaseSettleDuration = Duration(milliseconds: 246);
 
 /// Provides interactive behavior for [Drawer] widgets conforming to the
@@ -38,7 +27,8 @@ class ShrinkableDrawerController extends StatefulWidget {
     required this.child,
     required this.alignment,
     this.drawerCallback,
-    this.shrunkWidth = 56,
+    this.shrunkWidth = 56.0,
+    this.drawerWidth = 360.0,
   }) : super(key: key);
 
   /// The widget below this widget in the tree.
@@ -56,6 +46,7 @@ class ShrinkableDrawerController extends StatefulWidget {
   final DrawerCallback? drawerCallback;
 
   final double shrunkWidth;
+  final double drawerWidth;
 
   @override
   ShrinkableDrawerControllerState createState() =>
@@ -110,9 +101,9 @@ class ShrinkableDrawerControllerState extends State<ShrinkableDrawerController>
   Tween<double> get _drawerSizeTween {
     switch (widget.alignment) {
       case DrawerAlignment.start:
-        return Tween(begin: widget.shrunkWidth, end: _kWidth);
+        return Tween(begin: widget.shrunkWidth, end: widget.drawerWidth);
       case DrawerAlignment.end:
-        return Tween(begin: widget.shrunkWidth, end: _kWidth);
+        return Tween(begin: widget.shrunkWidth, end: widget.drawerWidth);
     }
   }
 

@@ -35,6 +35,7 @@ export 'src/md3_scaffold/navigation_scaffold.dart';
 export 'src/md3_scaffold/scaffold.dart';
 export 'src/md3_slider.dart';
 export 'src/md3_switch.dart';
+export 'src/md3_tab_bar.dart';
 export 'src/navigation_drawer.dart';
 export 'src/system_edge_to_edge.dart';
 export 'src/theme_switcher.dart';

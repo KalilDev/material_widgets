@@ -13,7 +13,8 @@ class MD3AdaptativeScaffoldSpec {
     this.endModalDrawer,
     this.floatingActionButton,
     Widget Function(BuildContext, Widget)? buildScaffold,
-    this.surfaceTintBackground = true,
+    this.surfaceBackground = true,
+    this.properties,
   }) : wrapScaffold = buildScaffold;
 
   final PreferredSizeWidget? appBar;
@@ -25,7 +26,8 @@ class MD3AdaptativeScaffoldSpec {
   final Widget? endModalDrawer;
   final Widget? floatingActionButton;
   final Widget Function(BuildContext, Widget)? wrapScaffold;
-  final bool surfaceTintBackground;
+  final bool surfaceBackground;
+  final MD3ScaffoldProperties? properties;
 }
 
 class MD3AdaptativeSpecScaffold extends StatelessWidget {
@@ -49,7 +51,8 @@ class MD3AdaptativeSpecScaffold extends StatelessWidget {
       endDrawer: scaffoldSpec.endDrawer,
       startModalDrawer: scaffoldSpec.startModalDrawer,
       endModalDrawer: scaffoldSpec.endModalDrawer,
-      surfaceTintBackground: scaffoldSpec.surfaceTintBackground,
+      surfaceBackground: scaffoldSpec.surfaceBackground,
+      properties: scaffoldSpec.properties,
     );
     if (scaffoldSpec.wrapScaffold != null) {
       return scaffoldSpec.wrapScaffold!(context, scaffold);

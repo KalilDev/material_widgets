@@ -26,7 +26,8 @@ class MD3BottomNavigationDelegate extends MD3NavigationDelegate {
     this.floatingActionButton,
     this.navigationFabBuilder,
     this.showModalDrawerOnCompact = true,
-    this.surfaceTintBackground,
+    this.surfaceBackground,
+    this.properties,
   });
 
   final PreferredSizeWidget? appBar;
@@ -36,7 +37,8 @@ class MD3BottomNavigationDelegate extends MD3NavigationDelegate {
   final Widget? floatingActionButton;
   final FloatingActionButtonBuilder? navigationFabBuilder;
   final bool showModalDrawerOnCompact;
-  final MD3SizeClassProperty<bool>? surfaceTintBackground;
+  final MD3SizeClassProperty<bool>? surfaceBackground;
+  final MD3ScaffoldProperties? properties;
 
   @override
   MD3AdaptativeScaffoldSpec buildCompact(
@@ -55,8 +57,9 @@ class MD3BottomNavigationDelegate extends MD3NavigationDelegate {
             ? _buildDrawer(context, spec, drawerHeader)
             : null,
         bottomNavigationBar: _buildNavigationBar(context, spec),
-        surfaceTintBackground:
-            surfaceTintBackground?.resolve(MD3WindowSizeClass.compact) ?? true,
+        surfaceBackground:
+            surfaceBackground?.resolve(MD3WindowSizeClass.compact) ?? true,
+        properties: properties,
       );
 
   Widget _buildNavigationBar(
@@ -116,8 +119,8 @@ class MD3BottomNavigationDelegate extends MD3NavigationDelegate {
           initialSize: appBar?.preferredSize ?? const Size.fromHeight(0),
           child: child,
         ),
-        surfaceTintBackground:
-            surfaceTintBackground?.resolve(sizeClass) ?? true,
+        surfaceBackground: surfaceBackground?.resolve(sizeClass) ?? true,
+        properties: properties,
       );
 }
 
@@ -131,7 +134,8 @@ class MD3DrawersNavigationDelegate extends MD3NavigationDelegate {
     this.endDrawer,
     this.endModalDrawer,
     this.floatingActionButton,
-    this.surfaceTintBackground,
+    this.surfaceBackground,
+    this.properties,
   });
 
   final PreferredSizeWidget? appBar;
@@ -140,7 +144,8 @@ class MD3DrawersNavigationDelegate extends MD3NavigationDelegate {
   final Widget? endDrawer;
   final Widget? endModalDrawer;
   final Widget? floatingActionButton;
-  final MD3SizeClassProperty<bool>? surfaceTintBackground;
+  final MD3SizeClassProperty<bool>? surfaceBackground;
+  final MD3ScaffoldProperties? properties;
 
   MD3AdaptativeScaffoldSpec _buildCompactOrMedium(
     BuildContext context,
@@ -156,8 +161,8 @@ class MD3DrawersNavigationDelegate extends MD3NavigationDelegate {
         endModalDrawer: endModalDrawer,
         floatingActionButton: floatingActionButton,
         startModalDrawer: _buildDrawer(context, spec, drawerHeader),
-        surfaceTintBackground:
-            surfaceTintBackground?.resolve(sizeClass) ?? true,
+        surfaceBackground: surfaceBackground?.resolve(sizeClass) ?? true,
+        properties: properties,
       );
 
   @override
@@ -195,8 +200,9 @@ class MD3DrawersNavigationDelegate extends MD3NavigationDelegate {
           drawerHeader,
           radius: Radius.zero,
         ),
-        surfaceTintBackground:
-            surfaceTintBackground?.resolve(MD3WindowSizeClass.expanded) ?? true,
+        surfaceBackground:
+            surfaceBackground?.resolve(MD3WindowSizeClass.expanded) ?? true,
+        properties: properties,
       );
 }
 

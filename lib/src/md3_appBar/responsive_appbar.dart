@@ -37,11 +37,27 @@ enum _MD3AppBarType {
   mediumOrLarge,
 }
 
+extension on _MD3AppBarType {
+  double get height {
+    switch (this) {
+      case _MD3AppBarType.center:
+        return MD3CenterAlignedAppBar.kHeight;
+      case _MD3AppBarType.small:
+        return MD3SmallAppBar.kHeight;
+      case _MD3AppBarType.medium:
+        return MD3MediumAppBar.kHeight;
+      case _MD3AppBarType.large:
+        return MD3LargeAppBar.kHeight;
+      case _MD3AppBarType.mediumOrLarge:
+        return MD3LargeOrMediumAppBar.kHeight;
+    }
+  }
+}
+
 class ResponsiveAppbar extends StatelessWidget implements PreferredSizeWidget {
   @Deprecated('Use one of the named ResponsiveAppbar constructors')
   ResponsiveAppbar({
     Key? key,
-    @Deprecated('Removed on MD3') PreferredSizeWidget? bottom,
     @Deprecated('Depends on the app bar type') double? toolbarHeight,
     this.title,
     this.leading,
@@ -50,8 +66,8 @@ class ResponsiveAppbar extends StatelessWidget implements PreferredSizeWidget {
     this.primary = true,
     this.notifySize = true,
     this.isElevated,
+    this.bottom,
   })  : _appBarType = _MD3AppBarType.small,
-        preferredSize = const Size.fromHeight(MD3SmallAppBar.kHeight),
         buildActions = actions == null ? buildActions : ((_) => actions),
         super(key: key);
 
@@ -63,8 +79,8 @@ class ResponsiveAppbar extends StatelessWidget implements PreferredSizeWidget {
     this.primary = true,
     this.notifySize = true,
     this.isElevated,
+    this.bottom,
   })  : _appBarType = _MD3AppBarType.center,
-        preferredSize = const Size.fromHeight(MD3SmallAppBar.kHeight),
         super(key: key);
 
   const ResponsiveAppbar.small({
@@ -75,8 +91,8 @@ class ResponsiveAppbar extends StatelessWidget implements PreferredSizeWidget {
     this.primary = true,
     this.notifySize = true,
     this.isElevated,
+    this.bottom,
   })  : _appBarType = _MD3AppBarType.small,
-        preferredSize = const Size.fromHeight(MD3SmallAppBar.kHeight),
         super(key: key);
 
   const ResponsiveAppbar.medium({
@@ -87,8 +103,8 @@ class ResponsiveAppbar extends StatelessWidget implements PreferredSizeWidget {
     this.primary = true,
     this.notifySize = true,
     this.isElevated,
+    this.bottom,
   })  : _appBarType = _MD3AppBarType.medium,
-        preferredSize = const Size.fromHeight(MD3MediumAppBar.kHeight),
         super(key: key);
 
   const ResponsiveAppbar.large({
@@ -99,8 +115,8 @@ class ResponsiveAppbar extends StatelessWidget implements PreferredSizeWidget {
     this.primary = true,
     this.notifySize = true,
     this.isElevated,
+    this.bottom,
   })  : _appBarType = _MD3AppBarType.large,
-        preferredSize = const Size.fromHeight(MD3LargeAppBar.kHeight),
         super(key: key);
 
   const ResponsiveAppbar.mediumOrLarge({
@@ -111,8 +127,8 @@ class ResponsiveAppbar extends StatelessWidget implements PreferredSizeWidget {
     this.primary = true,
     this.notifySize = true,
     this.isElevated,
+    this.bottom,
   })  : _appBarType = _MD3AppBarType.mediumOrLarge,
-        preferredSize = const Size.fromHeight(MD3LargeOrMediumAppBar.kHeight),
         super(key: key);
 
   final Widget? title;
@@ -122,8 +138,10 @@ class ResponsiveAppbar extends StatelessWidget implements PreferredSizeWidget {
   final bool primary;
   final bool notifySize;
   final bool? isElevated;
+  final PreferredSizeWidget? bottom;
   @override
-  final Size preferredSize;
+  Size get preferredSize => Size.fromHeight(
+      _appBarType.height + (bottom?.preferredSize.height ?? 0.0));
 
   Widget _actionToActionWidget(MD3ResponsiveAppBarAction? action) {
     return IconButton(
@@ -222,6 +240,7 @@ class ResponsiveAppbar extends StatelessWidget implements PreferredSizeWidget {
           primary: primary,
           notifySize: notifySize,
           isElevated: isElevated,
+          bottom: bottom,
         );
       case _MD3AppBarType.small:
         return MD3SmallAppBar(
@@ -231,6 +250,7 @@ class ResponsiveAppbar extends StatelessWidget implements PreferredSizeWidget {
           primary: primary,
           notifySize: notifySize,
           isElevated: isElevated,
+          bottom: bottom,
         );
       case _MD3AppBarType.medium:
         return MD3MediumAppBar(
@@ -240,6 +260,7 @@ class ResponsiveAppbar extends StatelessWidget implements PreferredSizeWidget {
           primary: primary,
           notifySize: notifySize,
           isElevated: isElevated,
+          bottom: bottom,
         );
       case _MD3AppBarType.large:
         return MD3LargeAppBar(
@@ -249,6 +270,7 @@ class ResponsiveAppbar extends StatelessWidget implements PreferredSizeWidget {
           primary: primary,
           notifySize: notifySize,
           isElevated: isElevated,
+          bottom: bottom,
         );
       case _MD3AppBarType.mediumOrLarge:
         return MD3LargeOrMediumAppBar(
@@ -258,6 +280,7 @@ class ResponsiveAppbar extends StatelessWidget implements PreferredSizeWidget {
           primary: primary,
           notifySize: notifySize,
           isElevated: isElevated,
+          bottom: bottom,
         );
     }
   }

@@ -7,6 +7,8 @@ import 'package:flutter/services.dart';
 import 'package:material_widgets/src/md3_appBar/size_scope.dart';
 import 'package:material_you/material_you.dart';
 
+import 'controller.dart';
+
 Size _preferredAppBarSize(double? toolbarHeight, double? bottomHeight) {
   toolbarHeight ??= kToolbarHeight;
   bottomHeight ??= 0;
@@ -86,7 +88,8 @@ class MD3RawAppBar extends StatefulWidget implements PreferredSizeWidget {
 class _MD3RawAppBarState extends State<MD3RawAppBar>
     with SingleTickerProviderStateMixin {
   late Handle<MD3AppBarSizeScopeState> _sizeScopeHandle;
-  late Handle<ScrollController> _scrollControllerHandle;
+  late Handle<ValueListenable<bool>> _scrollingNotifierHandle;
+  bool _isScrollingUnder = false;
 
   static bool _shouldNotifySize(MD3RawAppBar widget) =>
       widget.primary && widget.notifySize;
@@ -104,6 +107,29 @@ class _MD3RawAppBarState extends State<MD3RawAppBar>
       );
 
   late Animation<double> backgroundColorAnimation;
+
+  void _onScrolledUpdate() {
+    final isScrollingUnder = _scrollingNotifierHandle.value!.value;
+    if (isScrollingUnder == _isScrollingUnder) {
+      return;
+    }
+    _isScrollingUnder = isScrollingUnder;
+    if (widget.isElevated != null || !widget.primary) {
+      return;
+    }
+    if (isScrollingUnder) {
+      if (backgroundController.velocity > 0 ||
+          backgroundController.isCompleted) {
+        return;
+      }
+      backgroundController.forward();
+      return;
+    }
+    if (backgroundController.velocity < 0 || backgroundController.isDismissed) {
+      return;
+    }
+    backgroundController.reverse();
+  }
 
   @override
   void initState() {
@@ -123,23 +149,21 @@ class _MD3RawAppBarState extends State<MD3RawAppBar>
       (scope) => scope.registerAppBar(this, widget.preferredSize),
       (scope) => scope.unregisterAppBar(this),
     );
-    _scrollControllerHandle = Handle(
-      (controller) {
-        controller.addListener(_onScroll);
-        _updateIsScrolled();
+    _scrollingNotifierHandle = Handle(
+      (notifier) {
+        notifier.addListener(_onScrolledUpdate);
+        if (_isScrollingUnder != notifier.value) {
+          _onScrolledUpdate();
+        }
       },
-      (controller) {
-        controller.removeListener(_onScroll);
-        _updateIsScrolled();
-      },
+      (notifier) => notifier.removeListener(_onScrolledUpdate),
     );
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final primaryScrollController = PrimaryScrollController.of(context);
-    _scrollControllerHandle.update(primaryScrollController);
+    _scrollingNotifierHandle.update(MD3AppBarScope.of(context).isScrolledUnder);
     _sizeScopeHandle.update(
       _shouldNotifySize(widget)
           ? MD3AppBarSizeScopeState.maybeOf(context)
@@ -161,7 +185,7 @@ class _MD3RawAppBarState extends State<MD3RawAppBar>
 
   void _updateIsElevated(bool? curr) {
     if (curr == null) {
-      _updateIsScrolled();
+      _onScrolledUpdate();
       return;
     }
     final currVal = curr ? 1.0 : 0.0;
@@ -182,39 +206,8 @@ class _MD3RawAppBarState extends State<MD3RawAppBar>
   void dispose() {
     backgroundController.dispose();
     _sizeScopeHandle.dispose();
-    _scrollControllerHandle.dispose();
+    _scrollingNotifierHandle.dispose();
     super.dispose();
-  }
-
-  void _updateIsScrolled() {
-    if (widget.isElevated != null || !widget.primary) {
-      return;
-    }
-    final scrollController = _scrollControllerHandle.value;
-    if (scrollController == null || !scrollController.hasClients) {
-      return;
-    }
-    final positions = scrollController.positions;
-    final offset = positions
-        .map((e) => e.pixels)
-        .fold<double>(0.0, (largest, e) => max(largest, e));
-    final isScrolled = offset > 0;
-    if (isScrolled) {
-      if (backgroundController.velocity > 0 ||
-          backgroundController.isCompleted) {
-        return;
-      }
-      backgroundController.forward();
-      return;
-    }
-    if (backgroundController.velocity < 0 || backgroundController.isDismissed) {
-      return;
-    }
-    backgroundController.reverse();
-  }
-
-  void _onScroll() {
-    _updateIsScrolled();
   }
 
   @override

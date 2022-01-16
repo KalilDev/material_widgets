@@ -30,6 +30,7 @@ export 'src/md3_layout/layout.dart';
 export 'src/md3_menu/button.dart';
 export 'src/md3_menu/menu_entry.dart';
 export 'src/md3_menu/popup_menu.dart';
+export 'src/md3_scaffold/body.dart';
 export 'src/md3_scaffold/delegates.dart';
 export 'src/md3_scaffold/navigation_scaffold.dart';
 export 'src/md3_scaffold/scaffold.dart';

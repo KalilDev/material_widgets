@@ -38,6 +38,7 @@ class MD3CenterAlignedAppBar extends StatelessWidget
     this.primary = true,
     this.notifySize = true,
     this.isElevated,
+    this.bottom,
   }) : super(key: key);
   final Widget? leading;
   final Widget? trailing;
@@ -45,6 +46,7 @@ class MD3CenterAlignedAppBar extends StatelessWidget
   final bool primary;
   final bool notifySize;
   final bool? isElevated;
+  final PreferredSizeWidget? bottom;
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +54,7 @@ class MD3CenterAlignedAppBar extends StatelessWidget
       centerTitle: true,
       title: title,
       leading: leading ?? _appBarNavigationItemOrPlaceholder(context),
-      appBarHeight: 64,
+      appBarHeight: kHeight,
       actions: [
         const SizedBox(width: 12),
         _MD3AppBarTrailingIconContainer(
@@ -63,12 +65,15 @@ class MD3CenterAlignedAppBar extends StatelessWidget
       primary: primary,
       notifySize: notifySize,
       isElevated: isElevated,
+      bottom: bottom,
     );
   }
 
   @override
-  // ignore: avoid_field_initializers_in_const_classes
-  final Size preferredSize = const Size.fromHeight(64);
+  Size get preferredSize =>
+      Size.fromHeight(kHeight + (bottom?.preferredSize.height ?? 0));
+
+  static const double kHeight = 64.0;
 }
 
 Widget? _appBarNavigationItemOrPlaceholder(
@@ -104,6 +109,7 @@ class MD3SmallAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.primary = true,
     this.notifySize = true,
     this.isElevated,
+    this.bottom,
   }) : super(key: key);
   final Widget? leading;
   final List<Widget>? actions;
@@ -111,6 +117,7 @@ class MD3SmallAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool primary;
   final bool notifySize;
   final bool? isElevated;
+  final PreferredSizeWidget? bottom;
 
   @override
   Widget build(BuildContext context) {
@@ -143,12 +150,13 @@ class MD3SmallAppBar extends StatelessWidget implements PreferredSizeWidget {
       primary: primary,
       notifySize: notifySize,
       isElevated: isElevated,
+      bottom: bottom,
     );
   }
 
   @override
-  // ignore: avoid_field_initializers_in_const_classes
-  final Size preferredSize = const Size.fromHeight(64);
+  Size get preferredSize =>
+      Size.fromHeight(kHeight + (bottom?.preferredSize.height ?? 0));
 
   static const double kHeight = 64;
 }
@@ -164,6 +172,7 @@ class MD3MediumAppBar extends _MD3LargeOrMediumAppBar {
     bool primary = true,
     bool notifySize = true,
     bool? isElevated,
+    PreferredSizeWidget? bottom,
   }) : super(
           key: key,
           titleStyleBuilder: titleStyle,
@@ -175,6 +184,7 @@ class MD3MediumAppBar extends _MD3LargeOrMediumAppBar {
           primary: primary,
           notifySize: notifySize,
           isElevated: isElevated,
+          bottom: bottom,
         );
   static TextStyle titleStyle(BuildContext context) =>
       context.textTheme.headlineSmall.copyWith(
@@ -201,6 +211,7 @@ class MD3LargeAppBar extends _MD3LargeOrMediumAppBar {
     bool primary = true,
     bool notifySize = true,
     bool? isElevated,
+    PreferredSizeWidget? bottom,
   }) : super(
           key: key,
           titleStyleBuilder: titleStyle,
@@ -212,6 +223,7 @@ class MD3LargeAppBar extends _MD3LargeOrMediumAppBar {
           primary: primary,
           notifySize: notifySize,
           isElevated: isElevated,
+          bottom: bottom,
         );
   static TextStyle titleStyle(BuildContext context) =>
       context.textTheme.headlineMedium.copyWith(
@@ -236,6 +248,7 @@ class MD3LargeOrMediumAppBar extends StatefulWidget
     this.primary = true,
     this.notifySize = true,
     this.isElevated,
+    this.bottom,
   }) : super(key: key);
   final Widget? leading;
   final List<Widget>? actions;
@@ -243,10 +256,11 @@ class MD3LargeOrMediumAppBar extends StatefulWidget
   final bool primary;
   final bool notifySize;
   final bool? isElevated;
+  final PreferredSizeWidget? bottom;
 
   @override
-  // ignore: avoid_field_initializers_in_const_classes
-  final Size preferredSize = const Size.fromHeight(kHeight);
+  Size get preferredSize =>
+      Size.fromHeight(kHeight + (bottom?.preferredSize.height ?? 0));
 
   static const double kHeight = MD3LargeAppBar.kHeight;
 
@@ -390,7 +404,8 @@ class _MD3LargeOrMediumAppBarState extends State<MD3LargeOrMediumAppBar>
       ConstrainedBox(
         constraints: BoxConstraints(
           maxHeight: height +
-              (widget.primary ? MediaQuery.of(context).viewPadding.top : 0),
+              (widget.primary ? MediaQuery.of(context).viewPadding.top : 0) +
+              (widget.bottom?.preferredSize.height ?? 0),
         ),
         child: _MD3LargeOrMediumAppBar(
           leading: widget.leading,
@@ -402,6 +417,7 @@ class _MD3LargeOrMediumAppBarState extends State<MD3LargeOrMediumAppBar>
           primary: widget.primary,
           notifySize: widget.notifySize,
           isElevated: widget.isElevated,
+          bottom: widget.bottom,
         ),
       );
   @override
@@ -445,6 +461,7 @@ class _MD3LargeOrMediumAppBar extends StatelessWidget
     this.primary = true,
     this.notifySize = true,
     this.isElevated,
+    this.bottom,
   }) : super(key: key);
   final Widget? leading;
   final List<Widget>? actions;
@@ -456,6 +473,7 @@ class _MD3LargeOrMediumAppBar extends StatelessWidget
   final bool primary;
   final bool notifySize;
   final bool? isElevated;
+  final PreferredSizeWidget? bottom;
 
   @override
   Widget build(BuildContext context) {
@@ -481,13 +499,14 @@ class _MD3LargeOrMediumAppBar extends StatelessWidget
           appBarHeight: 64.0 + topAdditionalPaddding,
           bottom: _MD3LargerAppBarBottom(
             height: bottomHeight - topAdditionalPaddding,
+            bottom: bottom,
           ),
           primary: primary,
           notifySize: notifySize,
           isElevated: isElevated,
         ),
         Positioned(
-          bottom: bottomPadding,
+          bottom: bottomPadding + (bottom?.preferredSize.height ?? 0),
           left: 16,
           child: DefaultTextStyle(
             style: titleStyleBuilder(context),
@@ -499,7 +518,8 @@ class _MD3LargeOrMediumAppBar extends StatelessWidget
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(64 + bottomHeight);
+  Size get preferredSize =>
+      Size.fromHeight(64 + bottomHeight + (bottom?.preferredSize.height ?? 0));
 }
 
 class _MD3LargerAppBarBottom extends StatelessWidget
@@ -507,11 +527,25 @@ class _MD3LargerAppBarBottom extends StatelessWidget
   _MD3LargerAppBarBottom({
     Key? key,
     required double height,
-  })  : preferredSize = Size.fromHeight(height),
+    this.bottom,
+  })  : preferredSize =
+            Size.fromHeight(height + (bottom?.preferredSize.height ?? 0)),
         super(key: key);
   @override
   final Size preferredSize;
+  final PreferredSizeWidget? bottom;
 
   @override
-  Widget build(BuildContext context) => const SizedBox();
+  Widget build(BuildContext context) => SizedBox(
+        height: preferredSize.height,
+        child: bottom == null
+            ? null
+            : Align(
+                alignment: Alignment.bottomCenter,
+                child: SizedBox(
+                  height: bottom!.preferredSize.height,
+                  child: bottom,
+                ),
+              ),
+      );
 }

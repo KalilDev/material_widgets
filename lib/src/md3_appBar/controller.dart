@@ -19,6 +19,9 @@ class MD3AppBarScope extends InheritedWidget implements PreferredSizeWidget {
   static MD3AppBarScope of(BuildContext context) =>
       context.dependOnInheritedWidgetOfExactType<MD3AppBarScope>()!;
 
+  static MD3AppBarScope? maybeOf(BuildContext context) =>
+      context.dependOnInheritedWidgetOfExactType<MD3AppBarScope>();
+
   @override
   Size get preferredSize {
     final child = this.child;

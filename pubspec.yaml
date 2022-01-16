@@ -4,7 +4,7 @@ version: 0.4.0-preview.4
 # homepage:
 
 environment:
-  sdk: '>=2.12.0 <3.0.0'
+  sdk: '>=2.16.0-0 <3.0.0'
   flutter: '>=1.17.0'
 
 dependencies:
@@ -13,7 +13,7 @@ dependencies:
   smooth_page_indicator: ^1.0.0
   meta: ^1.2.4
   collection: ^1.14.0
-  material_you: ^0.0.26
+  material_you: ^0.0.27
   shape_theme_switcher: ^0.0.3
   flutter_monet_theme: ^0.4.2
 

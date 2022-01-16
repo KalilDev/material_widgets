@@ -133,16 +133,13 @@ class ResponsiveAppbar extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 
-  PopupMenuItem<MD3ResponsiveAppBarAction> _actionToPopupMenuItem(
+  MD3PopupMenuItem<MD3ResponsiveAppBarAction> _actionToPopupMenuItem(
     BuildContext context,
     MD3ResponsiveAppBarAction action,
   ) {
-    return PopupMenuItem(
+    return MD3PopupMenuItem(
       value: action,
-      textStyle: context.textTheme.labelLarge.copyWith(
-        color: context.colorScheme.onSurface,
-      ),
-      child: action.title,
+      child: action.title!,
     );
   }
 
@@ -163,11 +160,10 @@ class ResponsiveAppbar extends StatelessWidget implements PreferredSizeWidget {
             ),
             Offset.zero & overlay.size,
           );
-          showMenu<MD3ResponsiveAppBarAction>(
+          showMD3Menu<MD3ResponsiveAppBarAction>(
             context: context,
             items: items.toList(),
             position: position,
-            clipBehavior: Clip.antiAlias,
           ).then((e) => e?.onPressed?.call());
         }
 

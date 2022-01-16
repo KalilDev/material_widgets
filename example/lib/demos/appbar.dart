@@ -1,12 +1,48 @@
 import 'package:example/common/custom_color.dart';
 import 'package:example/common/layout.dart';
+import 'package:example/demos/fab.dart';
 import 'package:material_you/material_you.dart';
 import 'package:flutter/material.dart';
 import 'package:material_widgets/material_widgets.dart';
 import 'package:material_you/material_you.dart';
 
-class AppBarDemo extends StatelessWidget {
+class AppBarDemo extends StatefulWidget {
   const AppBarDemo({Key? key}) : super(key: key);
+
+  @override
+  State<AppBarDemo> createState() => _AppBarDemoState();
+}
+
+class _AppBarDemoState extends State<AppBarDemo>
+    with SingleTickerProviderStateMixin {
+  bool isElevated = false;
+  void _toggleElevated() => setState(() => isElevated = !isElevated);
+
+  bool _hasBottom = false;
+  void _toggleBottom() => setState(() => _hasBottom = !_hasBottom);
+
+  late final _tabController = TabController(vsync: this, length: 3);
+  void initState() {
+    super.initState();
+    _tabController;
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  PreferredSizeWidget _buildBottom(BuildContext context) => MD3TabBar(
+        tabs: [
+          Tab(text: 'First tab'),
+          Tab(text: 'Second tab'),
+          Tab(text: 'Third tab'),
+        ],
+        controller: _tabController,
+      );
+
+  PreferredSizeWidget? get bottom => _hasBottom ? _buildBottom(context) : null;
 
   @override
   Widget build(BuildContext context) {
@@ -14,6 +50,26 @@ class AppBarDemo extends StatelessWidget {
     return MD3AdaptativeScaffold(
       appBar: MD3SmallAppBar(
         title: Text('Top AppBar'),
+      ),
+      floatingActionButton: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Tooltip(
+            message: 'Toggle elevation',
+            child: MD3FloatingActionButton.small(
+              onPressed: _toggleElevated,
+              fabColorScheme: MD3FABColorScheme.tertiary,
+              child: Icon(Icons.low_priority),
+            ),
+          ),
+          gutter,
+          MD3FloatingActionButton.expanded(
+            onPressed: _toggleBottom,
+            label: Text('Toggle Bottom'),
+            icon: Icon(Icons.border_bottom),
+          ),
+        ],
       ),
       body: ListView(
         children: [
@@ -27,6 +83,8 @@ class AppBarDemo extends StatelessWidget {
               primary: false,
               title: Text('Title Large'),
               trailing: Icon(Icons.more_vert),
+              bottom: bottom,
+              isElevated: isElevated,
             ),
           ),
           margin,
@@ -43,6 +101,8 @@ class AppBarDemo extends StatelessWidget {
                 Icon(Icons.calendar_today),
                 Icon(Icons.more_vert),
               ],
+              bottom: bottom,
+              isElevated: isElevated,
             ),
           ),
           margin,
@@ -59,6 +119,8 @@ class AppBarDemo extends StatelessWidget {
                 Icon(Icons.calendar_today),
                 Icon(Icons.more_vert),
               ],
+              bottom: bottom,
+              isElevated: isElevated,
             ),
           ),
           margin,
@@ -75,6 +137,44 @@ class AppBarDemo extends StatelessWidget {
                 Icon(Icons.calendar_today),
                 Icon(Icons.more_vert),
               ],
+              bottom: bottom,
+              isElevated: isElevated,
+            ),
+          ),
+          margin,
+          Text('Responsive (small)', style: title),
+          gutter,
+          _AppBarWrapper(
+            color: context.galleryColors.lime,
+            child: ResponsiveAppbar.center(
+              leading: Icon(null),
+              primary: false,
+              title: Text('Title Large'),
+              buildActions: (_) => [
+                MD3ResponsiveAppBarAction(
+                  icon: Icon(Icons.attach_file),
+                  tooltip: 'Anexar arquivo',
+                  title: Text('Arquivo'),
+                  onPressed: () {},
+                ),
+                MD3ResponsiveAppBarAction(
+                  icon: Icon(Icons.calendar_today),
+                  tooltip: 'Ir ao calendario',
+                  title: Text('Calendario'),
+                  onPressed: () {},
+                ),
+                MD3ResponsiveAppBarAction(
+                  icon: Icon(Icons.settings),
+                  title: Text('Settings'),
+                  onPressed: () {},
+                ),
+                MD3ResponsiveAppBarAction(
+                  title: Text('Send Feedback'),
+                  onPressed: () {},
+                ),
+              ],
+              bottom: bottom,
+              isElevated: isElevated,
             ),
           ),
           margin,

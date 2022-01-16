@@ -36,6 +36,7 @@ class MD3BasicDialog extends StatelessWidget {
     required this.title,
     required this.content,
     this.extraContent,
+    this.scrollable = false,
     this.actions = const [],
   }) : super(key: key);
 
@@ -45,6 +46,7 @@ class MD3BasicDialog extends StatelessWidget {
   final Widget title;
   final Widget content;
   final Widget? extraContent;
+  final bool scrollable;
   final List<Widget> actions;
 
   @override
@@ -58,6 +60,7 @@ class MD3BasicDialog extends StatelessWidget {
             content: content,
             extraContent: extraContent,
             actions: actions,
+            scrollable: scrollable,
           ),
         ),
       );
@@ -71,6 +74,7 @@ class _MD3BasicDialog extends StatelessWidget {
     required this.title,
     required this.content,
     this.extraContent,
+    this.scrollable = false,
     this.actions = const [],
   }) : super(key: key);
 
@@ -79,6 +83,7 @@ class _MD3BasicDialog extends StatelessWidget {
   final Widget title;
   final Widget content;
   final Widget? extraContent;
+  final bool scrollable;
   final List<Widget> actions;
 
   Widget _wrapContent(BuildContext context, {required Widget content}) =>
@@ -115,8 +120,13 @@ class _MD3BasicDialog extends StatelessWidget {
         ),
       );
 
+  Widget _maybeWrapScrollable({required Widget child}) =>
+      scrollable ? SingleChildScrollView(child: child) : child;
+
   @override
   Widget build(BuildContext context) {
+    final crossAxisAlignment =
+        icon != null ? CrossAxisAlignment.center : CrossAxisAlignment.start;
     return Material(
       borderRadius: BorderRadius.circular(28),
       color: context.elevation.level3.overlaidColor(
@@ -127,22 +137,33 @@ class _MD3BasicDialog extends StatelessWidget {
         padding: const EdgeInsets.all(24.0),
         child: IntrinsicWidth(
           child: Column(
+            crossAxisAlignment: crossAxisAlignment,
             mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: icon != null
-                ? CrossAxisAlignment.center
-                : CrossAxisAlignment.start,
             children: [
-              if (icon != null) ..._iconAndTitle(context) else _title(context),
-              MD3DialogDivider(
-                isVisible: extraContent == null && dividerAfterTitle,
+              Flexible(
+                child: _maybeWrapScrollable(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: crossAxisAlignment,
+                    children: [
+                      if (icon != null)
+                        ..._iconAndTitle(context)
+                      else
+                        _title(context),
+                      MD3DialogDivider(
+                        isVisible: extraContent == null && dividerAfterTitle,
+                      ),
+                      _wrapContent(context, content: content),
+                      if (extraContent != null) ...[
+                        const MD3DialogDivider(),
+                        _wrapContent(context, content: extraContent!),
+                        const MD3DialogDivider(height: 24),
+                      ] else
+                        const SizedBox(height: 8.0),
+                    ],
+                  ),
+                ),
               ),
-              _wrapContent(context, content: content),
-              if (extraContent != null) ...[
-                const MD3DialogDivider(),
-                _wrapContent(context, content: extraContent!),
-                const MD3DialogDivider(height: 24),
-              ] else
-                const SizedBox(height: 8.0),
               if (actions.isNotEmpty) _actions(context),
             ],
           ),

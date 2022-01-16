@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:material_you/material_you.dart';
 import '../md3_appBar/controller.dart';
 import '../navigation_drawer.dart';
+import 'body.dart';
 
 class MD3AdaptativeScaffold extends StatelessWidget {
   const MD3AdaptativeScaffold({
@@ -16,7 +17,6 @@ class MD3AdaptativeScaffold extends StatelessWidget {
     this.endModalDrawer,
     this.floatingActionButton,
     this.surfaceTintBackground = true,
-    this.bodyMargin = true,
   }) : super(key: key);
 
   final GlobalKey<ScaffoldState>? scaffoldKey;
@@ -29,15 +29,8 @@ class MD3AdaptativeScaffold extends StatelessWidget {
   final Widget? endModalDrawer;
   final Widget? floatingActionButton;
   final bool surfaceTintBackground;
-  final bool bodyMargin;
 
   Widget _buildBody(BuildContext context) {
-    final sizeClass = context.sizeClass;
-    final isExpanded = sizeClass == MD3WindowSizeClass.expanded;
-
-    final minMargin = bodyMargin ? context.sizeClass.minimumMargins : 0.0;
-    final maxMargin = bodyMargin ? (isExpanded ? 200.0 : minMargin) : 0.0;
-
     Color background;
     Color foreground;
     if (!surfaceTintBackground) {
@@ -52,13 +45,11 @@ class MD3AdaptativeScaffold extends StatelessWidget {
     }
     return _BodySection(
       scaffoldKey: scaffoldKey,
-      minMargin: minMargin,
-      maxMargin: maxMargin,
       appBar: appBar,
       bottomNavigationBar: bottomNavigationBar,
       body: DefaultTextStyle.merge(
         style: TextStyle(color: foreground),
-        child: body,
+        child: MD3ScaffoldBody.maybeWrap(child: body),
       ),
       background: background,
       startDrawer: startModalDrawer,
@@ -114,8 +105,6 @@ class _BodySection extends StatelessWidget {
   const _BodySection({
     Key? key,
     this.scaffoldKey,
-    required this.minMargin,
-    required this.maxMargin,
     this.appBar,
     this.bottomNavigationBar,
     required this.body,
@@ -126,8 +115,6 @@ class _BodySection extends StatelessWidget {
   }) : super(key: key);
 
   final GlobalKey<ScaffoldState>? scaffoldKey;
-  final double minMargin;
-  final double maxMargin;
   final PreferredSizeWidget? appBar;
   final Widget? bottomNavigationBar;
   final Widget body;
@@ -135,21 +122,6 @@ class _BodySection extends StatelessWidget {
   final Widget? endDrawer;
   final Color background;
   final Widget? floatingActionButton;
-
-  Widget _margin() => ConstrainedBox(
-        constraints: BoxConstraints(
-          minWidth: minMargin,
-          maxWidth: maxMargin,
-        ),
-      );
-
-  Widget _buildBody(BuildContext context) => Row(
-        children: [
-          _margin(),
-          Expanded(child: body),
-          _margin(),
-        ],
-      );
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -161,7 +133,7 @@ class _BodySection extends StatelessWidget {
                     MD3AppBarControllerScope.of(context).isTopScrolledUnder,
                 child: appBar!,
               ),
-        body: _buildBody(context),
+        body: body,
         backgroundColor: background,
         bottomNavigationBar: bottomNavigationBar == null
             ? null

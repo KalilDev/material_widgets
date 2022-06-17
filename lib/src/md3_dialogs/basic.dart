@@ -80,7 +80,7 @@ class _MD3BasicDialog extends StatelessWidget {
 
   final bool dividerAfterTitle;
   final Widget? icon;
-  final Widget title;
+  final Widget? title;
   final Widget content;
   final Widget? extraContent;
   final bool scrollable;
@@ -99,15 +99,17 @@ class _MD3BasicDialog extends StatelessWidget {
           color: context.colorScheme.onSurface,
         ),
         textAlign: center ? TextAlign.center : TextAlign.start,
-        child: title,
+        child: title!,
       );
   List<Widget> _iconAndTitle(BuildContext context) => [
         IconTheme.merge(
           data: const IconThemeData(size: 24),
           child: icon!,
         ),
-        const SizedBox(height: 16),
-        _title(context, true),
+        if (title != null) ...[
+          const SizedBox(height: 16),
+          _title(context, true),
+        ]
       ];
   Widget _actions(BuildContext context) => SizedBox(
         width: double.infinity,
@@ -146,13 +148,17 @@ class _MD3BasicDialog extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: crossAxisAlignment,
                     children: [
-                      if (icon != null)
-                        ..._iconAndTitle(context)
-                      else
+                      if (icon != null) ...[
+                        ..._iconAndTitle(context),
+                        MD3DialogDivider(
+                          isVisible: extraContent == null && dividerAfterTitle,
+                        ),
+                      ] else if (title != null) ...[
                         _title(context),
-                      MD3DialogDivider(
-                        isVisible: extraContent == null && dividerAfterTitle,
-                      ),
+                        MD3DialogDivider(
+                          isVisible: extraContent == null && dividerAfterTitle,
+                        ),
+                      ],
                       _wrapContent(context, content: content),
                       if (extraContent != null) ...[
                         const MD3DialogDivider(),
@@ -249,8 +255,8 @@ class MD3DialogLayout extends StatelessWidget {
       MediaQuery.of(context).size.width - 2 * margin,
     );
 
-    return Padding(
-      padding: EdgeInsets.all(margin),
+    return SafeArea(
+      minimum: EdgeInsets.all(margin) + MediaQuery.of(context).viewPadding,
       child: _aligned(
         alignmentAndMaxWidth.alignment,
         Center(

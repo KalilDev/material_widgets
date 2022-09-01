@@ -4,19 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:material_widgets/material_widgets.dart';
 import 'package:material_color_utilities/material_color_utilities.dart';
 import 'demos.dart';
+import 'package:dynamic_color_compat/dynamic_color_compat.dart';
 
 class RainbowSeedBuilder extends StatefulWidget {
   const RainbowSeedBuilder({
     Key? key,
     this.degreesPerSecond = 60,
-    this.chroma = 48,
-    this.tone = 40,
     this.isEnabled = true,
     required this.builder,
   }) : super(key: key);
   final double degreesPerSecond;
-  final double chroma;
-  final double tone;
   final bool isEnabled;
   final Widget Function(BuildContext context, Color) builder;
 
@@ -58,12 +55,13 @@ class _RainbowSeedBuilderState extends State<RainbowSeedBuilder>
       stream: stream,
       initialData: 0,
       builder: (context, snapshot) {
-        final hct = HctColor.from(
-          degreesPerTick * snapshot.data!,
-          widget.chroma,
-          widget.tone,
+        final hsl = HSLColor.fromAHSL(
+          1,
+          (degreesPerTick * snapshot.data!) % 360,
+          0.4,
+          0.4,
         );
-        final color = Color(hct.toInt());
+        final color = hsl.toColor();
         return widget.builder(context, color);
       },
     );
@@ -71,11 +69,9 @@ class _RainbowSeedBuilderState extends State<RainbowSeedBuilder>
 }
 
 void main() {
-  runPlatformThemedApp(
+  runDynamicallyThemedApp(
     SystemEdgeToEdge(child: MyApp()),
-    initialOrFallback: () => PlatformPalette.fallback(
-      primaryColor: Color(0xDEADBEEF),
-    ),
+    fallback: () => baseline3PCorePalette,
   );
 }
 
@@ -101,9 +97,8 @@ class _MyAppState extends State<MyApp> {
       isEnabled: _isRainbow,
       builder: (context, rainbowSeed) =>
           MD3ThemedApp<GalleryCustomColorScheme, GalleryCustomColorTheme>(
-        seed: _isRainbow ? rainbowSeed : null,
-        monetThemeForFallbackPalette: _isRainbow ? null : baseline_3p,
         appThemeFactory: GalleryCustomColorTheme.harmonized,
+        corePalette: _isRainbow ? CorePalette.of(rainbowSeed.value) : null,
         builder: (context, lightTheme, darkTheme) => MaterialApp(
           title: 'Flutter Demo',
           debugShowCheckedModeBanner: false,

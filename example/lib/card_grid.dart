@@ -108,6 +108,7 @@ GridView gridViewFromParameters(
   double childAspectRatio = 1.0,
   double? mainAxisExtent,
   EdgeInsetsGeometry? padding,
+  Axis scrollDirection = Axis.vertical,
 }) =>
     GridView.custom(
       gridDelegate: gridDelegateFromParameters(
@@ -117,4 +118,5 @@ GridView gridViewFromParameters(
       ),
       childrenDelegate: childDelegate,
       padding: padding,
+      scrollDirection: scrollDirection,
     );

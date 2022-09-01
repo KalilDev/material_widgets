@@ -1,6 +1,6 @@
 name: material_widgets
 description: An package of widgets conforming to the material design spec.
-version: 0.4.0-preview.4
+version: 0.4.0-preview.7
 # homepage:
 
 environment:
@@ -13,7 +13,7 @@ dependencies:
   smooth_page_indicator: ^1.0.0
   meta: ^1.2.4
   collection: ^1.14.0
-  material_you: ^0.0.27
+  material_you: ^0.0.31
   shape_theme_switcher: ^0.0.3
   flutter_monet_theme: ^0.4.2
 

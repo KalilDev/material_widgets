@@ -249,7 +249,7 @@ class MD3PopupMenuButtonState<T> extends State<MD3PopupMenuButton<T>> {
         position: position,
         shape: widget.shape ?? popupMenuTheme.shape,
         color: widget.color ?? popupMenuTheme.color,
-        clipBehavior: widget.clipBehavior ?? popupMenuTheme.clipBehavior,
+        clipBehavior: widget.clipBehavior,
         menuKind: widget.menuKind,
       ).then<void>((T? newValue) {
         if (!mounted) return null;

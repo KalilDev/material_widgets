@@ -172,9 +172,7 @@ class _PopupMenu<T> extends StatelessWidget {
               elevation: route.elevation ??
                   popupMenuTheme.elevation ??
                   context.elevation.level2.value,
-              clipBehavior: route.clipBehavior ??
-                  popupMenuTheme.clipBehavior ??
-                  Clip.none,
+              clipBehavior: route.clipBehavior ?? Clip.none,
               child: child,
             ),
           ),

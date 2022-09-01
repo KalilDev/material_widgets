@@ -44,8 +44,8 @@ class ThemeSwitcher extends StatelessWidget {
     return ShapeThemeSwitcher(
       theme: theme,
       borderTween: ShapeBorderTween(
-        begin: const WobblyBorder().toOutlinedBorder(),
-        end: const WobblyBorder(initialAngle: pi / 4).toOutlinedBorder(),
+        begin: const WobblyBorder(),
+        end: const WobblyBorder(initialAngle: pi / 4),
       ),
       duration: const Duration(milliseconds: 800),
       child: child,

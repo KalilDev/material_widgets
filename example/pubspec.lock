@@ -14,7 +14,7 @@ packages:
       name: async
       url: "http://localhost:4000"
     source: hosted
-    version: "2.8.2"
+    version: "2.9.0"
   boolean_selector:
     dependency: transitive
     description:
@@ -28,35 +28,42 @@ packages:
       name: characters
       url: "http://localhost:4000"
     source: hosted
-    version: "1.2.0"
-  charcode:
-    dependency: transitive
-    description:
-      name: charcode
-      url: "http://localhost:4000"
-    source: hosted
-    version: "1.3.1"
+    version: "1.2.1"
   clock:
     dependency: transitive
     description:
       name: clock
       url: "http://localhost:4000"
     source: hosted
-    version: "1.1.0"
+    version: "1.1.1"
   collection:
     dependency: transitive
     description:
       name: collection
       url: "http://localhost:4000"
     source: hosted
-    version: "1.15.0"
+    version: "1.16.0"
+  dynamic_color:
+    dependency: transitive
+    description:
+      name: dynamic_color
+      url: "http://localhost:4000"
+    source: hosted
+    version: "1.5.3"
+  dynamic_color_compat:
+    dependency: transitive
+    description:
+      name: dynamic_color_compat
+      url: "http://localhost:4000"
+    source: hosted
+    version: "0.0.1"
   fake_async:
     dependency: transitive
     description:
       name: fake_async
       url: "http://localhost:4000"
     source: hosted
-    version: "1.2.0"
+    version: "1.3.1"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -99,35 +106,35 @@ packages:
       name: material_color_utilities
       url: "http://localhost:4000"
     source: hosted
-    version: "0.1.3"
+    version: "0.1.5"
   material_widgets:
     dependency: "direct main"
     description:
       path: ".."
       relative: true
     source: path
-    version: "0.4.0-preview.4"
+    version: "0.4.0-preview.7"
   material_you:
     dependency: transitive
     description:
       name: material_you
       url: "http://localhost:4000"
     source: hosted
-    version: "0.0.27"
+    version: "0.0.31"
   meta:
     dependency: transitive
     description:
       name: meta
       url: "http://localhost:4000"
     source: hosted
-    version: "1.7.0"
+    version: "1.8.0"
   monet_theme:
     dependency: transitive
     description:
       name: monet_theme
       url: "http://localhost:4000"
     source: hosted
-    version: "0.4.0"
+    version: "0.4.1"
   palette_from_wallpaper:
     dependency: transitive
     description:
@@ -141,7 +148,7 @@ packages:
       name: path
       url: "http://localhost:4000"
     source: hosted
-    version: "1.8.1"
+    version: "1.8.2"
   plugin_platform_interface:
     dependency: transitive
     description:
@@ -181,7 +188,7 @@ packages:
       name: source_span
       url: "http://localhost:4000"
     source: hosted
-    version: "1.8.1"
+    version: "1.9.0"
   stack_trace:
     dependency: transitive
     description:
@@ -202,7 +209,7 @@ packages:
       name: string_scanner
       url: "http://localhost:4000"
     source: hosted
-    version: "1.1.0"
+    version: "1.1.1"
   synchronized:
     dependency: transitive
     description:
@@ -216,7 +223,7 @@ packages:
       name: term_glyph
       url: "http://localhost:4000"
     source: hosted
-    version: "1.2.0"
+    version: "1.2.1"
   test_api:
     dependency: transitive
     description:
@@ -231,13 +238,6 @@ packages:
       url: "http://localhost:4000"
     source: hosted
     version: "2.0.0"
-  typed_data:
-    dependency: transitive
-    description:
-      name: typed_data
-      url: "http://localhost:4000"
-    source: hosted
-    version: "1.3.0"
   url_launcher:
     dependency: "direct main"
     description:
@@ -286,7 +286,7 @@ packages:
       name: vector_math
       url: "http://localhost:4000"
     source: hosted
-    version: "2.1.1"
+    version: "2.1.2"
 sdks:
-  dart: ">=2.16.0-100.0.dev <3.0.0"
-  flutter: ">=2.5.0"
+  dart: ">=2.17.0-0 <3.0.0"
+  flutter: ">=3.1.0-0.0.pre.1036"

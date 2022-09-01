@@ -28,6 +28,7 @@ class ShrinkableDrawerController extends StatefulWidget {
     required this.alignment,
     this.drawerCallback,
     this.shrunkWidth = 56.0,
+    // Becomes 256 with the padding on the NavigationDrawer
     this.drawerWidth = 232.0,
   }) : super(key: key);
 

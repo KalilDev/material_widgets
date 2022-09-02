@@ -224,6 +224,7 @@ class MD3SliderTrackShape extends SliderTrackShape with BaseSliderTrackShape {
     required SliderThemeData sliderTheme,
     required Animation<double> enableAnimation,
     required Offset thumbCenter,
+    Offset? secondaryOffset,
     bool isEnabled = true,
     bool isDiscrete = false,
     required TextDirection textDirection,

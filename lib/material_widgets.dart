@@ -1,7 +1,9 @@
 library material_widgets;
 
+export 'package:dynamic_color_compat/dynamic_color_compat.dart';
 export 'package:flutter_monet_theme/flutter_monet_theme.dart';
-export 'package:material_you/material_you.dart';
+export 'package:material_you/material_you.dart'
+    hide ContextE, runPlatformThemedApp;
 
 export 'src/material_onboarding.dart';
 export 'src/md3_appBar/appbar.dart';
